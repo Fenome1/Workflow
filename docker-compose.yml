@@ -1,0 +1,26 @@
+﻿version: '3.9'
+
+services:
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server:latest
+    container_name: MSSQL
+    environment:
+      SA_PASSWORD: P@ssw0rd
+      ACCEPT_EULA: Y
+      MSSQL_PID: Express
+    ports:
+      - "1433:1433"
+    volumes:
+      - sql_system:/var/opt/mssql/
+      - sql_data:/var/opt/sqlserver/sql_data
+      - sql_log:/var/opt/sqlserver/sql_log
+      - sql_backup:/var/opt/sqlserver/sql_backups
+    #logging:
+      #driver: none
+
+volumes:
+  sql_system:
+  sql_data:
+  sql_log:
+  sql_backup:
