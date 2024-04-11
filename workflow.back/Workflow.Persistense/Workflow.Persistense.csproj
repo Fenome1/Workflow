@@ -7,22 +7,25 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Configurations\" />
-      <Folder Include="Context\" />
+        <Folder Include="Configurations\"/>
+        <Folder Include="Context\"/>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="EntityFrameworkCore.CommonTools" Version="2.0.2" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0-preview.2.24128.4" />
+        <PackageReference Include="EntityFrameworkCore.CommonTools" Version="2.0.2"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0-preview.2.24128.4">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0-preview.2.24128.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0-preview.2.24128.4"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0-preview.2.24128.4">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Workflow.Core\Workflow.Core.csproj"/>
     </ItemGroup>
 
 

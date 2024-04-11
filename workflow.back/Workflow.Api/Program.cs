@@ -1,16 +1,56 @@
-var builder = WebApplication.CreateBuilder(args);
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using Workflow.Api.Module;
+using Workflow.Application.Hubs;
+using Workflow.Application.Modules;
+using Workflow.Persistense.Context;
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+var applicationBuilder = WebApplication.CreateBuilder(args);
 
-var app = builder.Build();
+applicationBuilder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory(containerBuilder =>
+    {
+        var configuration = applicationBuilder.Configuration;
+        containerBuilder.RegisterModule(new ApiModule(configuration));
+        containerBuilder.RegisterModule(new ApplicationModule());
+    }
+));
 
-if (app.Environment.IsDevelopment())
+applicationBuilder.Services.AddControllers();
+applicationBuilder.Services.AddEndpointsApiExplorer();
+applicationBuilder.Services.AddSwaggerGen();
+
+applicationBuilder.Services.AddCors(options =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    options.AddDefaultPolicy(b =>
+    {
+        b.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+
+var app = applicationBuilder.Build();
+
+app.UseSwagger();
+app.UseSwaggerUI();
+
+app.UseRouting();
+
+app.UseCors(x => x
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .SetIsOriginAllowed(_ => true)
+    .AllowCredentials());
 
 app.UseHttpsRedirection();
+
+app.UseAuthorization();
+
+app.MapControllers();
+app.MapHub<TestHub>("/testHub");
+
+await using var scope = app.Services.CreateAsyncScope();
+await using var context = scope.ServiceProvider.GetRequiredService<WorkflowDbContext>();
+await context.Database.EnsureCreatedAsync();
 
 app.Run();

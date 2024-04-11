@@ -7,27 +7,24 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Common\" />
-      <Folder Include="Features\" />
-      <Folder Include="Modules\" />
-      <Folder Include="Services\" />
-      <Folder Include="ViewModels\" />
+        <Folder Include="ViewModels\"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Workflow.Core\Workflow.Core.csproj" />
-        <ProjectReference Include="..\Workflow.Persistence\Workflow.Persistence.csproj" />
+        <PackageReference Include="Autofac" Version="8.0.0"/>
+        <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="9.0.0"/>
+        <PackageReference Include="AutoMapper" Version="13.0.1"/>
+        <PackageReference Include="AutoMapper.Contrib.Autofac.DependencyInjection" Version="8.0.0"/>
+        <PackageReference Include="BCrypt.Net-Next" Version="4.0.3"/>
+        <PackageReference Include="MediatR" Version="12.2.0"/>
+        <PackageReference Include="MediatR.Extensions.Autofac.DependencyInjection" Version="12.0.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.4"/>
+        <PackageReference Include="Microsoft.AspNetCore.SignalR.Common" Version="9.0.0-preview.2.24128.4"/>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Autofac" Version="8.0.0" />
-        <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="9.0.0" />
-        <PackageReference Include="AutoMapper" Version="13.0.1" />
-        <PackageReference Include="AutoMapper.Contrib.Autofac.DependencyInjection" Version="8.0.0" />
-        <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
-        <PackageReference Include="MediatR" Version="12.2.0" />
-        <PackageReference Include="MediatR.Extensions.Autofac.DependencyInjection" Version="12.0.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.4" />
+        <ProjectReference Include="..\Workflow.Core\Workflow.Core.csproj"/>
+        <ProjectReference Include="..\Workflow.Persistense\Workflow.Persistense.csproj"/>
     </ItemGroup>
 
 </Project>
