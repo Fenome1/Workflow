@@ -3,7 +3,7 @@ using Workflow.Core.Models;
 
 namespace Workflow.Application.ViewModels;
 
-public class UserViewModel : IMapWith<User>
+public record UserViewModel : IMapWith<User>
 {
     public required int UserId { get; set; }
     public required string Email { get; set; }

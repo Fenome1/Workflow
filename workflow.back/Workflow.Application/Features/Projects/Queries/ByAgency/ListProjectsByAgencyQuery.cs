@@ -1,6 +1,6 @@
-﻿namespace Workflow.Application.Features.Projects.Queries.ByAgency;
+﻿using MediatR;
+using Workflow.Application.ViewModels;
 
-public class ListProjectsByAgencyQuery
-{
-    
-}
+namespace Workflow.Application.Features.Projects.Queries.ByAgency;
+
+public record ListProjectsByAgencyQuery(int AgencyId) : IRequest<List<ProjectViewModel>>;

@@ -7,7 +7,7 @@ namespace Workflow.Api.Controllers;
 
 public class UserController : BaseController
 {
-    [HttpPost("Register", Name = "Register")]
+    [HttpPost("Register")]
     [AllowAnonymous]
     public async Task<ActionResult<int>> Register([FromBody] CreateUserCommand command)
     {

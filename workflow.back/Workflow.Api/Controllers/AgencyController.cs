@@ -8,24 +8,24 @@ namespace Workflow.Api.Controllers;
 
 public class AgencyController : BaseController
 {
-    [HttpPut("Update", Name = "Update")]
-    public async Task<ActionResult<int>> Update([FromBody] UpdateAgencyCommand command)
-    {
-        try
-        {
-            return Ok(await Mediator.Send(command));
-        }
-        catch (Exception e)
-        {
-            return BadRequest($"{e.Message}");
-        }
-    }
     [HttpGet("{userId}")]
     public async Task<ActionResult<int>> GetByUserId(int userId)
     {
         try
         {
             return Ok(await Mediator.Send(new ListAgenciesByUserQuery(userId)));
+        }
+        catch (Exception e)
+        {
+            return BadRequest($"{e.Message}");
+        }
+    }
+    [HttpPut("Update")]
+    public async Task<ActionResult<int>> Update([FromBody] UpdateAgencyCommand command)
+    {
+        try
+        {
+            return Ok(await Mediator.Send(command));
         }
         catch (Exception e)
         {

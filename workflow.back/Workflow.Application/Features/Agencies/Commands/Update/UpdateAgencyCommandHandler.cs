@@ -10,7 +10,8 @@ public class UpdateAgencyCommandHandler(WorkflowDbContext context, IMapper mappe
 {
     public async Task<int> Handle(UpdateAgencyCommand request, CancellationToken cancellationToken)
     {
-        var agency = await context.Agencies.FindAsync(request.AgencyId);
+        var agency = await context.Agencies
+            .FindAsync(request.AgencyId);
 
         if (agency is null)
             throw new NotFoundException(nameof(agency));

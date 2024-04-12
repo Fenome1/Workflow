@@ -5,4 +5,4 @@ using Workflow.Core.Models;
 
 namespace Workflow.Application.Features.Agencies.Commands.Create;
 
-public record class CreateAgencyCommand(int UserId) : IRequest<int>;
+public record CreateAgencyCommand(int UserId) : IRequest<int>;
