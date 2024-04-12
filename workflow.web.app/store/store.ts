@@ -1,5 +1,6 @@
 import {baseApi} from "./apis/baseApi";
 import {combineReducers, configureStore} from "@reduxjs/toolkit";
+import {signalRMiddleware} from "./signalRClient.ts";
 
 const rootReducer = combineReducers({
     [baseApi.reducerPath]: baseApi.reducer,
@@ -10,7 +11,7 @@ export const setupStore = () => {
         reducer: rootReducer,
         middleware: getDefaultMiddleware =>
             getDefaultMiddleware({
-            }).concat(baseApi.middleware),
+            }).concat(baseApi.middleware, signalRMiddleware)
     })
 }
 

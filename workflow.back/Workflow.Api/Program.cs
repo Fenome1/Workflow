@@ -1,9 +1,9 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Workflow.Api.Module;
-using Workflow.Application.Hubs;
 using Workflow.Application.Modules;
 using Workflow.Persistense.Context;
+
 
 var applicationBuilder = WebApplication.CreateBuilder(args);
 
@@ -47,7 +47,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-app.MapHub<TestHub>("/testHub");
 
 await using var scope = app.Services.CreateAsyncScope();
 await using var context = scope.ServiceProvider.GetRequiredService<WorkflowDbContext>();

@@ -1,13 +1,11 @@
 import {ITest} from "../features/models/ITest.ts";
 import {useCreateUserOrderMutation, useGetTestsQuery} from "../store/apis/testApi.ts";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {ICreateTestCommand} from "../features/commands/test/ICreateTestCommand.ts";
-import {HubConnectionBuilder} from "@microsoft/signalr";
-import {BASE_HUB_URL} from "../config.ts";
 
 function App() {
 
-    const {data: tests, refetch} = useGetTestsQuery()
+    const {data: tests} = useGetTestsQuery()
     const [title, setTitle] = useState("")
     const [createTest] = useCreateUserOrderMutation();
 
@@ -18,22 +16,6 @@ function App() {
         createTest(data)
         setTitle("")
     }
-
-    useEffect(() => {
-        const connection = new HubConnectionBuilder()
-            .withUrl(`${BASE_HUB_URL}/testHub`)
-            .build();
-
-        connection.start().then(() => {
-            console.log('Connected to SignalR hub!');
-        }).catch(error => {
-            console.error('Failed to connect to SignalR hub:', error);
-        });
-
-        connection.on('TestCreated', (test: ITest) => {
-            refetch()
-        });
-    }, []);
 
     return (
         <>
