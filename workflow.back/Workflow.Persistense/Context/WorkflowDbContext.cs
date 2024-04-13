@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using Workflow.Core.Models;
 
 namespace Workflow.Persistense.Context;
@@ -41,6 +43,7 @@ public partial class WorkflowDbContext : DbContext
 
             entity.HasOne(d => d.Owner).WithMany(p => p.AgenciesNavigation)
                 .HasForeignKey(d => d.OwnerId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Agencies_Users");
 
             entity.HasMany(d => d.Users).WithMany(p => p.Agencies)
@@ -48,11 +51,9 @@ public partial class WorkflowDbContext : DbContext
                     "AgenciesUser",
                     r => r.HasOne<User>().WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("FK_AgenciesUsers_Users"),
                     l => l.HasOne<Agency>().WithMany()
                         .HasForeignKey("AgencyId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("FK_AgenciesUsers_Agencies"),
                     j =>
                     {
@@ -87,26 +88,25 @@ public partial class WorkflowDbContext : DbContext
 
             entity.HasOne(d => d.Column).WithMany(p => p.Objectives)
                 .HasForeignKey(d => d.ColumnId)
-                .HasConstraintName("FK_Tasks_Columns");
+                .HasConstraintName("FK_Objectives_Columns");
 
             entity.HasOne(d => d.Priority).WithMany(p => p.Objectives)
                 .HasForeignKey(d => d.PriorityId)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_Objectives_Priority");
 
-            entity.HasMany(d => d.Users).WithMany(p => p.Tasks)
+            entity.HasMany(d => d.Users).WithMany(p => p.Objectives)
                 .UsingEntity<Dictionary<string, object>>(
                     "ObjectivesUser",
                     r => r.HasOne<User>().WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("FK_ObjectivesUsers_Users"),
                     l => l.HasOne<Objective>().WithMany()
-                        .HasForeignKey("TaskId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasForeignKey("ObjectiveId")
                         .HasConstraintName("FK_ObjectivesUsers_Objectives"),
                     j =>
                     {
-                        j.HasKey("TaskId", "UserId").HasName("PK_TasksUsers");
+                        j.HasKey("ObjectiveId", "UserId").HasName("PK_TasksUsers");
                         j.ToTable("ObjectivesUsers");
                     });
         });

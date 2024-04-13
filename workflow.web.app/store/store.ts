@@ -10,8 +10,7 @@ export const setupStore = () => {
     return configureStore({
         reducer: rootReducer,
         middleware: getDefaultMiddleware =>
-            getDefaultMiddleware({
-            }).concat(baseApi.middleware, signalRMiddleware)
+            getDefaultMiddleware().concat(baseApi.middleware, signalRMiddleware)
     })
 }
 

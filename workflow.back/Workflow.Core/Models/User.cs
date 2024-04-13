@@ -18,5 +18,5 @@ public partial class User
 
     public virtual ICollection<Agency> Agencies { get; set; } = new List<Agency>();
 
-    public virtual ICollection<Objective> Tasks { get; set; } = new List<Objective>();
+    public virtual ICollection<Objective> Objectives { get; set; } = new List<Objective>();
 }

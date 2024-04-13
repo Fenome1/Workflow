@@ -24,6 +24,7 @@ public class CreateProjectCommandHandler(
         var newProject = mapper.Map<Project>(request);
 
         await context.Projects.AddAsync(newProject, cancellationToken);
+
         await context.SaveChangesAsync(cancellationToken);
         
         return newProject.ProjectId;
