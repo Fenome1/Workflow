@@ -1,7 +1,6 @@
-import {HttpTransportType, HubConnectionBuilder, LogLevel, signalMiddleware, withCallbacks} from "redux-signalr";
-import {BASE_HUB_URL} from "../config";
+import {BASE_HUB_URL} from "../../config.ts";
 import {AppDispatch, RootState} from "./store.ts";
-import {useDispatch} from "react-redux";
+import {HttpTransportType, HubConnectionBuilder, LogLevel, signalMiddleware, withCallbacks} from "redux-signalr";
 
 const connection = new HubConnectionBuilder()
     .configureLogging(LogLevel.Debug)
@@ -14,11 +13,6 @@ const connection = new HubConnectionBuilder()
     .build();
 
 const callbacks = withCallbacks<AppDispatch, RootState>()
-    .add('TestCreated', () => () => {
-        const dispatch = useDispatch();
-        dispatch(receiveNewTest(newTest));
-    });
-});
 
 export const signalRMiddleware = signalMiddleware({
     callbacks,

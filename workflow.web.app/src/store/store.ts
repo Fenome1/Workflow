@@ -1,4 +1,4 @@
-import {baseApi} from "./apis/baseApi";
+import {baseApi} from "./apis/baseApi.ts";
 import {combineReducers, configureStore} from "@reduxjs/toolkit";
 import {signalRMiddleware} from "./signalRClient.ts";
 
