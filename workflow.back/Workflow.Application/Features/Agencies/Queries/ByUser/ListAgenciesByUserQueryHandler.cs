@@ -7,7 +7,7 @@ using Workflow.Persistense.Context;
 
 namespace Workflow.Application.Features.Agencies.Queries.ByUser;
 
-public class ListAgenciesByUserQueryHandler(WorkflowDbContext context, IMapper mapper)
+public sealed class ListAgenciesByUserQueryHandler(WorkflowDbContext context, IMapper mapper)
     : IRequestHandler<ListAgenciesByUserQuery, List<AgencyViewModel>>
 {
     public async Task<List<AgencyViewModel>> Handle(ListAgenciesByUserQuery request,
@@ -18,7 +18,7 @@ public class ListAgenciesByUserQueryHandler(WorkflowDbContext context, IMapper m
             .Include(a => a.Users)
             .Where(a => a.OwnerId == request.UserId ||
                         a.Users.Any(u => u.UserId == request.UserId))
-            .ToListAsync(cancellationToken: cancellationToken);
+            .ToListAsync(cancellationToken);
 
         if (userAgencies is null)
             throw new NotFoundException(nameof(userAgencies));

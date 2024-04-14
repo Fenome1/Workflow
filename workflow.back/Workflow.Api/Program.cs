@@ -2,10 +2,11 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Workflow.Api.Module;
 using Workflow.Application.Modules;
+using Workflow.Application.Services.TokenService;
 using Workflow.Persistense.Context;
 
-
 var applicationBuilder = WebApplication.CreateBuilder(args);
+applicationBuilder.Services.Configure<JwtOptions>(applicationBuilder.Configuration.GetSection("Jwt"));
 
 applicationBuilder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory(containerBuilder =>
     {

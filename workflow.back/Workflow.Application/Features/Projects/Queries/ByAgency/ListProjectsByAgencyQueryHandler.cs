@@ -7,7 +7,7 @@ using Workflow.Persistense.Context;
 
 namespace Workflow.Application.Features.Projects.Queries.ByAgency;
 
-public class ListProjectsByAgencyQueryHandler(
+public sealed class ListProjectsByAgencyQueryHandler(
     WorkflowDbContext context,
     IMapper mapper) : IRequestHandler<ListProjectsByAgencyQuery, List<ProjectViewModel>>
 {
@@ -17,7 +17,7 @@ public class ListProjectsByAgencyQueryHandler(
         var projectsByAgencies = await context.Projects
             .AsNoTrackingWithIdentityResolution()
             .Where(p => p.AgencyId == request.AgencyId)
-            .ToListAsync(cancellationToken: cancellationToken);
+            .ToListAsync(cancellationToken);
 
         if (projectsByAgencies is null)
             throw new NotFoundException(nameof(projectsByAgencies));

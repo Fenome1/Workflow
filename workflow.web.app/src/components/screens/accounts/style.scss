@@ -1,0 +1,34 @@
+.auth-card {
+  min-width: 360px !important;
+  min-height: 360px !important;
+  border-radius: 25px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+  .auth-card-body {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 25px;
+
+    .auth-header {
+      display: flex;
+      justify-content: center;
+      font-size: 27pt;
+    }
+
+    .login-button {
+
+    }
+
+    .register-button {
+      font-size: 10pt;
+    }
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .auth-card {
+    min-width: 0 !important;
+    min-height: 0 !important;
+  }
+}

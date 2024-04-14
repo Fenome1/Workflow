@@ -7,16 +7,16 @@ using Workflow.Persistense.Context;
 
 namespace Workflow.Application.Features.Projects.Commands.Create;
 
-public class CreateProjectCommandHandler(
-    WorkflowDbContext context, 
+public sealed class CreateProjectCommandHandler(
+    WorkflowDbContext context,
     IMapper mapper) : IRequestHandler<CreateProjectCommand, int>
 {
     public async Task<int> Handle(CreateProjectCommand request, CancellationToken cancellationToken)
     {
         var isAgencyExists = await context.Agencies
             .AsNoTrackingWithIdentityResolution()
-            .AnyAsync(a => a.AgencyId == request.AgencyId, 
-                cancellationToken: cancellationToken);
+            .AnyAsync(a => a.AgencyId == request.AgencyId,
+                cancellationToken);
 
         if (!isAgencyExists)
             throw new NotFoundException(nameof(Agencies));
@@ -26,7 +26,7 @@ public class CreateProjectCommandHandler(
         await context.Projects.AddAsync(newProject, cancellationToken);
 
         await context.SaveChangesAsync(cancellationToken);
-        
+
         return newProject.ProjectId;
     }
 }

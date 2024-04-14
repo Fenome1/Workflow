@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Workflow.Application.Common.Exceptions;
 using Workflow.Application.Features.Projects.Commands.Create;
@@ -18,19 +17,19 @@ public sealed class CreateAgencyCommandHandler(
         var isUserExists = await context.Users
             .AsNoTrackingWithIdentityResolution()
             .AnyAsync(u => u.UserId == request.UserId,
-                cancellationToken: cancellationToken);
+                cancellationToken);
 
         if (!isUserExists)
             throw new NotFoundException(typeof(User).ToString());
 
-        var newAgency = new Agency()
+        var newAgency = new Agency
         {
             OwnerId = request.UserId,
             Name = "Моё агенство"
         };
 
         await context.AddAsync(newAgency, cancellationToken);
-        
+
         await context.SaveChangesAsync(cancellationToken);
 
         await CreateDefaultProject(cancellationToken, newAgency);
@@ -39,9 +38,11 @@ public sealed class CreateAgencyCommandHandler(
     }
 
     private async Task CreateDefaultProject(CancellationToken cancellationToken, Agency newAgency)
-        => await mediator.Send(new CreateProjectCommand()
-            {
-                AgencyId = newAgency.AgencyId,
-                Name = "Проект 1"
-            }, cancellationToken);
+    {
+        await mediator.Send(new CreateProjectCommand
+        {
+            AgencyId = newAgency.AgencyId,
+            Name = "Проект 1"
+        }, cancellationToken);
+    }
 }

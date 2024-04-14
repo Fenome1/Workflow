@@ -7,9 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="Features\Users\Queries\ByAgency\" />
-        <Folder Include="Features\Users\Queries\List\" />
-        <Folder Include="Hubs\" />
+        <Folder Include="Features\Users\Queries\ByAgency\"/>
+        <Folder Include="Features\Users\Queries\List\"/>
+        <Folder Include="Hubs\"/>
     </ItemGroup>
 
     <ItemGroup>

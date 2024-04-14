@@ -5,6 +5,7 @@ using MediatR.Extensions.Autofac.DependencyInjection.Builder;
 using Workflow.Application.Common.Interfaces;
 using Workflow.Application.Common.Mappings;
 using Workflow.Application.Services;
+using Workflow.Application.Services.TokenService;
 
 namespace Workflow.Application.Modules;
 
@@ -17,7 +18,11 @@ public sealed class ApplicationModule : Module
         builder.RegisterType<PasswordHasher>()
             .As<IPasswordHasher>()
             .AsSelf();
-        
+
+        builder.RegisterType<TokenService>()
+            .As<ITokenService>()
+            .AsSelf();
+
         builder.RegisterMediatR(MediatRConfigurationBuilder
             .Create(ThisAssembly)
             .WithAllOpenGenericHandlerTypesRegistered()

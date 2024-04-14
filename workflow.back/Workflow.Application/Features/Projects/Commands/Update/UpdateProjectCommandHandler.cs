@@ -4,7 +4,7 @@ using Workflow.Persistense.Context;
 
 namespace Workflow.Application.Features.Projects.Commands.Update;
 
-public class UpdateProjectCommandHandler(WorkflowDbContext context) : IRequestHandler<UpdateProjectCommand, int>
+public sealed class UpdateProjectCommandHandler(WorkflowDbContext context) : IRequestHandler<UpdateProjectCommand, int>
 {
     public async Task<int> Handle(UpdateProjectCommand request, CancellationToken cancellationToken)
     {

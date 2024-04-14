@@ -1,6 +1,6 @@
 import {createBrowserRouter, createRoutesFromElements, Navigate, Route} from "react-router-dom";
-import LoginPage from "./components/screens/login/LoginPage.tsx";
-import RegisterPage from "./components/screens/register/RegisterPage.tsx";
+import LoginPage from "./components/screens/accounts/login/LoginPage.tsx";
+import RegisterPage from "./components/screens/accounts/register/RegisterPage.tsx";
 
 
 export const router = createBrowserRouter(

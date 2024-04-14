@@ -1,6 +1,6 @@
 ﻿namespace Workflow.Core.Models;
 
-public partial class User
+public class User
 {
     public int UserId { get; set; }
 
@@ -15,6 +15,8 @@ public partial class User
     public string? MiddleName { get; set; }
 
     public virtual ICollection<Agency> AgenciesNavigation { get; set; } = new List<Agency>();
+
+    public virtual RefreshToken? RefreshToken { get; set; }
 
     public virtual ICollection<Agency> Agencies { get; set; } = new List<Agency>();
 

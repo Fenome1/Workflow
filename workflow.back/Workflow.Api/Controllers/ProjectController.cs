@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Workflow.Api.Controllers.Base;
 using Workflow.Application.Features.Projects.Commands.Create;
 using Workflow.Application.Features.Projects.Commands.Delete;
@@ -9,6 +10,7 @@ namespace Workflow.Api.Controllers;
 
 public class ProjectController : BaseController
 {
+    [Authorize]
     [HttpGet("{agencyId}")]
     public async Task<ActionResult<int>> GetByAgencyId(int agencyId)
     {
@@ -21,6 +23,8 @@ public class ProjectController : BaseController
             return BadRequest($"{e.Message}");
         }
     }
+    
+    [Authorize]
     [HttpPost("Create")]
     public async Task<ActionResult<int>> Create([FromBody] CreateProjectCommand command)
     {
@@ -33,6 +37,8 @@ public class ProjectController : BaseController
             return BadRequest($"{e.Message}");
         }
     }
+
+    [Authorize]
     [HttpPut("Update")]
     public async Task<ActionResult<int>> Update([FromBody] UpdateProjectCommand command)
     {
@@ -45,6 +51,8 @@ public class ProjectController : BaseController
             return BadRequest($"{e.Message}");
         }
     }
+
+    [Authorize]
     [HttpDelete("Delete/{projectId}")]
     public async Task<ActionResult<int>> Delete(int projectId)
     {

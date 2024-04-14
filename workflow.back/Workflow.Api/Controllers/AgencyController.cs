@@ -1,13 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Workflow.Api.Controllers.Base;
 using Workflow.Application.Features.Agencies.Commands.Update;
 using Workflow.Application.Features.Agencies.Queries.ByUser;
-using Workflow.Application.Features.Users.Commands.Create;
 
 namespace Workflow.Api.Controllers;
 
 public class AgencyController : BaseController
 {
+    [Authorize]
     [HttpGet("{userId}")]
     public async Task<ActionResult<int>> GetByUserId(int userId)
     {
@@ -20,6 +21,7 @@ public class AgencyController : BaseController
             return BadRequest($"{e.Message}");
         }
     }
+    [Authorize]
     [HttpPut("Update")]
     public async Task<ActionResult<int>> Update([FromBody] UpdateAgencyCommand command)
     {

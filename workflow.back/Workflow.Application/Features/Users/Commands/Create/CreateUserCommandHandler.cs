@@ -8,8 +8,8 @@ using Workflow.Persistense.Context;
 namespace Workflow.Application.Features.Users.Commands.Create;
 
 public sealed class CreateUserCommandHandler(
-    WorkflowDbContext context, 
-    IMapper mapper, 
+    WorkflowDbContext context,
+    IMapper mapper,
     IPasswordHasher passwordHasher,
     IMediator mediator) : IRequestHandler<CreateUserCommand, int>
 {
@@ -27,7 +27,7 @@ public sealed class CreateUserCommandHandler(
         await context.Users.AddAsync(user, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
 
-        await mediator.Send(new CreateAgencyCommand(user.UserId), 
+        await mediator.Send(new CreateAgencyCommand(user.UserId),
             cancellationToken);
 
         return user.UserId;

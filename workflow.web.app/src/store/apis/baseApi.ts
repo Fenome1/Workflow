@@ -2,7 +2,7 @@ import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import {BASE_API_URL} from "../../../config.ts";
 
 export enum ApiTags {
-    Test = "Test",
+    User = "User",
 }
 
 const baseQuery = fetchBaseQuery({
