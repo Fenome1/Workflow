@@ -1,22 +1,22 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Workflow.Api.Controllers.Base;
-using Workflow.Application.Features.Projects.Commands.Create;
-using Workflow.Application.Features.Projects.Commands.Delete;
-using Workflow.Application.Features.Projects.Commands.Update;
-using Workflow.Application.Features.Projects.Queries.ByAgency;
+using Workflow.Application.Features.Boards.Commands.Create;
+using Workflow.Application.Features.Boards.Commands.Delete;
+using Workflow.Application.Features.Boards.Commands.Update;
+using Workflow.Application.Features.Boards.Queries.ByProject;
 
 namespace Workflow.Api.Controllers;
 
-public class ProjectController : BaseController
+public class BoardController : BaseController
 {
-    [Authorize]
-    [HttpGet("Agency/{agencyId}")]
-    public async Task<ActionResult<int>> GetByAgencyId(int agencyId)
+    /*[Authorize]*/
+    [HttpGet("Project/{projectId}")]
+    public async Task<ActionResult<int>> GetByAgencyId(int projectId)
     {
         try
         {
-            return Ok(await Mediator.Send(new ListProjectsByAgencyQuery(agencyId)));
+            return Ok(await Mediator.Send(new ListBoardsByProjectQuery(projectId)));
         }
         catch (Exception e)
         {
@@ -26,7 +26,7 @@ public class ProjectController : BaseController
 
     [Authorize]
     [HttpPost("Create")]
-    public async Task<ActionResult<int>> Create([FromBody] CreateProjectCommand command)
+    public async Task<ActionResult<int>> Create([FromBody] CreateBoardCommand command)
     {
         try
         {
@@ -40,7 +40,7 @@ public class ProjectController : BaseController
 
     [Authorize]
     [HttpPut("Update")]
-    public async Task<ActionResult<int>> Update([FromBody] UpdateProjectCommand command)
+    public async Task<ActionResult<int>> Update([FromBody] UpdateBoardCommand command)
     {
         try
         {
@@ -53,12 +53,12 @@ public class ProjectController : BaseController
     }
 
     [Authorize]
-    [HttpDelete("Delete/{projectId}")]
-    public async Task<ActionResult<int>> Delete(int projectId)
+    [HttpDelete("Delete/{boardId}")]
+    public async Task<ActionResult<int>> Delete(int boardId)
     {
         try
         {
-            return Ok(await Mediator.Send(new DeleteProjectCommand(projectId)));
+            return Ok(await Mediator.Send(new DeleteBoardCommand(boardId)));
         }
         catch (Exception e)
         {

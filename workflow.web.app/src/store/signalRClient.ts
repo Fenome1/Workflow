@@ -2,7 +2,7 @@ import {BASE_HUB_URL} from "../../config.ts";
 import {AppDispatch, RootState} from "./store.ts";
 import {HttpTransportType, HubConnectionBuilder, LogLevel, signalMiddleware, withCallbacks} from "redux-signalr";
 
-const connection = new HubConnectionBuilder()
+export const connection = new HubConnectionBuilder()
     .configureLogging(LogLevel.Debug)
     .withUrl(`${BASE_HUB_URL}/testHub`, {
         skipNegotiation: true,
@@ -14,7 +14,8 @@ const connection = new HubConnectionBuilder()
 
 const callbacks = withCallbacks<AppDispatch, RootState>()
 
-export const signalRMiddleware = signalMiddleware({
+export const signal = signalMiddleware({
     callbacks,
-    connection
+    connection,
+    shouldConnectionStartImmediately: false
 });

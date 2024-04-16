@@ -17,7 +17,7 @@ public class ApiModule(IConfiguration configuration) : Autofac.Module
         services.AddDbContext<WorkflowDbContext>();
 
         services.AddSignalR();
-        
+
         services.Configure<JwtOptions>(configuration.GetSection(nameof(JwtOptions)));
 
         var jwtOptions = configuration.GetSection(nameof(JwtOptions)).Get<JwtOptions>();

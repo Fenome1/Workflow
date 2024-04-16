@@ -1,0 +1,83 @@
+.team-page {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+
+  .team-menu {
+    min-width: 250px;
+    max-width: 250px;
+    display: flex;
+    flex-direction: column;
+    border-right: 1pt gainsboro solid;
+    flex-grow: 1;
+
+    .team-menu-header {
+      border-bottom: 1pt gainsboro solid;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 27pt;
+      padding: 20px 0 20px 0;
+    }
+
+    .team-menu-tabs {
+      border-inline: 0;
+      flex-grow: 1;
+      border-bottom: 1pt gainsboro solid;
+
+      .team-menu-profile {
+        height: 50px;
+
+        .team-menu-profile-avatar {
+
+        }
+      }
+
+      .team-menu-objectives {
+
+      }
+
+      .team-menu-projects {
+
+      }
+    }
+
+    .agency-selector {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px;
+      margin-bottom: 10px;
+
+      .agency-selector-header {
+        padding: 10px;
+      }
+    }
+  }
+
+  .project-boards-container {
+    padding: 20px 20px 20px 50px;
+    flex-grow: 1;
+
+    .project-boards-header {
+      display: flex;
+      font-size: 27pt;
+      margin-bottom: 20px;
+      margin-left: 20px;
+    }
+
+    .project-boards {
+      padding: 20px;
+
+
+      .board-card {
+        margin: 10px 10px 10px 10px;
+        border: solid 1px gainsboro;
+      }
+
+      .board-card:first-child {
+        margin-left: 0;
+      }
+    }
+  }
+}

@@ -3,14 +3,15 @@ using Microsoft.AspNetCore.Mvc;
 using Workflow.Api.Controllers.Base;
 using Workflow.Application.Features.Agencies.Commands.Update;
 using Workflow.Application.Features.Agencies.Queries.ByUser;
+using Workflow.Application.ViewModels;
 
 namespace Workflow.Api.Controllers;
 
 public class AgencyController : BaseController
 {
     [Authorize]
-    [HttpGet("{userId}")]
-    public async Task<ActionResult<int>> GetByUserId(int userId)
+    [HttpGet("User/{userId}")]
+    public async Task<ActionResult<List<AgencyViewModel>>> GetByUserId(int userId)
     {
         try
         {
@@ -21,6 +22,7 @@ public class AgencyController : BaseController
             return BadRequest($"{e.Message}");
         }
     }
+
     [Authorize]
     [HttpPut("Update")]
     public async Task<ActionResult<int>> Update([FromBody] UpdateAgencyCommand command)

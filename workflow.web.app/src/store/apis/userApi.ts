@@ -69,7 +69,7 @@ export const userApi = baseApi.injectEndpoints({
         refresh: builder.mutation<ILoginUserResponse, IRefreshUserCommand>({
             queryFn: async (command, api, extraOptions) => {
                 const response = await baseQuery({
-                    url: `${ApiTags.User}/refresh`,
+                    url: `${ApiTags.User}/Refresh`,
                     method: HttpMethod.POST,
                     body: command,
                 }, api, extraOptions)

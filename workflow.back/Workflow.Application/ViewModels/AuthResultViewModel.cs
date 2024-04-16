@@ -1,6 +1,6 @@
 ﻿namespace Workflow.Application.ViewModels;
 
-public class AuthResultViewModel
+public record AuthResultViewModel
 {
     public required string AccessToken { get; set; }
     public required string RefreshToken { get; set; }

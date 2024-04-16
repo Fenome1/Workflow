@@ -26,7 +26,7 @@ public class UserController : BaseController
             return BadRequest($"{e.Message}");
         }
     }
-    
+
     [AllowAnonymous]
     [HttpPost("Login")]
     public async Task<ActionResult<UserViewModel>> Login([FromBody] LoginUserCommand command)

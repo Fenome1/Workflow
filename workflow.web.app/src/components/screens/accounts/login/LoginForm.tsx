@@ -4,10 +4,13 @@ import {useNavigate} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import {ILoginUserCommand} from "../../../../features/commands/user/ILoginUserCommand.ts";
 import {useLoginUserMutation} from "../../../../store/apis/userApi.ts";
+import {useCallback} from "react";
+import {connection} from "../../../../store/signalRClient.ts";
 
 const LoginForm = () => {
     const navigate = useNavigate()
     const toRegisterPage = () => navigate('/reg')
+    const toTeamPage = () => navigate('/team')
 
     const {register, reset, resetField, handleSubmit} = useForm<ILoginUserCommand>()
     const [login] = useLoginUserMutation();
@@ -17,14 +20,23 @@ const LoginForm = () => {
 
         if ("data" in result && result.data) {
             reset()
+            startConnection()
+            toTeamPage()
         }
 
         resetField("password")
     }
 
+    const startConnection = useCallback(() => {
+        connection
+            .start()
+            .then(() => console.log("Connection started"))
+            .catch((err) => console.error(err.toString()));
+    }, []);
+
     return (
         <div>
-            <span>Workflow</span>
+            <b>Workflow</b>
             <Card className="auth-card" onSubmit={handleSubmit(onSubmit)}>
                 <Card.Body className="auth-card-body">
                     <b className='auth-header mb-4'>Авторизация</b>

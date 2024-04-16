@@ -1,8 +1,12 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import {BASE_API_URL} from "../../../config.ts";
+import {RootState} from "../store.ts";
 
 export enum ApiTags {
     User = "User",
+    Agency = "Agency",
+    Project = "Project",
+    Board = 'Board'
 }
 
 const baseQuery = fetchBaseQuery({
@@ -11,7 +15,14 @@ const baseQuery = fetchBaseQuery({
         "Accept": "application/json",
         "Content-Type": "application/json",
     },
-    mode: "cors"
+    mode: "cors",
+    prepareHeaders: (headers, {getState}) => {
+        const accessToken = (getState() as RootState).user.accessToken ?? null;
+        if (accessToken) {
+            headers.set("Authorization", `Bearer ${accessToken}`)
+        }
+        return headers
+    }
 })
 
 export const baseApi = createApi({
