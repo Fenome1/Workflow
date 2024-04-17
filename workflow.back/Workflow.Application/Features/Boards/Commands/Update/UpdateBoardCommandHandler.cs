@@ -4,7 +4,7 @@ using Workflow.Persistense.Context;
 
 namespace Workflow.Application.Features.Boards.Commands.Update;
 
-public class UpdateBoardCommandHandler(WorkflowDbContext context) : IRequestHandler<UpdateBoardCommand, int>
+public sealed class UpdateBoardCommandHandler(WorkflowDbContext context) : IRequestHandler<UpdateBoardCommand, int>
 {
     public async Task<int> Handle(UpdateBoardCommand request, CancellationToken cancellationToken)
     {

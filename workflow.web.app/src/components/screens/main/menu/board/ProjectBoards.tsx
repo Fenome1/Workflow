@@ -1,5 +1,5 @@
 import {FC} from 'react';
-import {useGetBoardByProjectQuery} from "../../../../../store/apis/boardApi.ts";
+import {useGetBoardsByProjectQuery} from "../../../../../store/apis/boardApi.ts";
 import {useTypedSelector} from "../../../../../store/hooks/hooks.ts";
 import {IBoard} from "../../../../../features/models/IBoard.ts";
 import BoardCard from "./BoardCard.tsx";
@@ -8,7 +8,7 @@ import {Row} from "antd";
 const ProjectBoards: FC = () => {
     const selectedProjectIdRedux = useTypedSelector((state) => state.project?.selectedProjectId);
 
-    const {data: boards} = useGetBoardByProjectQuery(selectedProjectIdRedux || 0, {
+    const {data: boards} = useGetBoardsByProjectQuery(selectedProjectIdRedux || 0, {
         skip: selectedProjectIdRedux === null
     });
 

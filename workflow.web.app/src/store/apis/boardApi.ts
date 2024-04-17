@@ -4,7 +4,7 @@ import {IBoard} from "../../features/models/IBoard.ts";
 
 export const boardApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
-        getBoardByProject: builder.query<IBoard[], number>({
+        getBoardsByProject: builder.query<IBoard[], number>({
             query: query => ({
                 url: `${ApiTags.Board}/Project/${query}`,
                 method: HttpMethod.GET,
@@ -15,5 +15,5 @@ export const boardApi = baseApi.injectEndpoints({
 });
 
 export const {
-    useGetBoardByProjectQuery
+    useGetBoardsByProjectQuery
 } = boardApi

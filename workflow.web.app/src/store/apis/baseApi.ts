@@ -6,7 +6,8 @@ export enum ApiTags {
     User = "User",
     Agency = "Agency",
     Project = "Project",
-    Board = 'Board'
+    Board = 'Board',
+    Column = "Column"
 }
 
 const baseQuery = fetchBaseQuery({

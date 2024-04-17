@@ -4,7 +4,7 @@ using Workflow.Persistense.Context;
 
 namespace Workflow.Application.Features.Boards.Commands.Delete;
 
-public class DeleteBoardCommandHandler(WorkflowDbContext context) : IRequestHandler<DeleteBoardCommand, Unit>
+public sealed class DeleteBoardCommandHandler(WorkflowDbContext context) : IRequestHandler<DeleteBoardCommand, Unit>
 {
     public async Task<Unit> Handle(DeleteBoardCommand request, CancellationToken cancellationToken)
     {
