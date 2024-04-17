@@ -1,12 +1,12 @@
 import {FC, useEffect} from 'react';
 import {Menu} from "antd";
 import {GlobalOutlined, SolutionOutlined, UserOutlined} from "@ant-design/icons";
-import {useAppDispatch, useTypedSelector} from "../../../../store/hooks/hooks.ts";
-import AgencySelector from "./agency/AgencySelector.tsx";
-import {selectProject} from "../../../../store/slices/projectSlice.ts";
-import {Colors} from "../../../../common/Colors.ts";
-import '../style.scss'
-import {useGetProjectsByAgencyQuery} from "../../../../store/apis/projectApi.ts";
+import {useAppDispatch, useTypedSelector} from "../../../store/hooks/hooks.ts";
+import AgencySelector from "./AgencySelector.tsx";
+import {selectProject} from "../../../store/slices/projectSlice.ts";
+import {Colors} from "../../../common/Colors.ts";
+import './style.scss'
+import {useGetProjectsByAgencyQuery} from "../../../store/apis/projectApi.ts";
 
 const TeamMenu: FC = () => {
     const dispatch = useAppDispatch();

@@ -27,7 +27,7 @@ public class ColumnController : BaseController
         }
     }
 
-    /*[Authorize]*/
+    [Authorize]
     [HttpPost("Create")]
     public async Task<ActionResult<int>> Create([FromBody] CreateColumnCommand command)
     {

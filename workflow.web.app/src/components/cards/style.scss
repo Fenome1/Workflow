@@ -1,0 +1,63 @@
+.board-card {
+  margin: 10px 10px 10px 10px;
+  border: solid 1px gainsboro;
+}
+
+.board-card:first-child {
+  margin-left: 0;
+}
+
+.column-card:first-child {
+  margin: 10px 10px 10px 0;
+}
+
+.column-card:last-child {
+  margin: 10px 0 10px 10px;
+}
+
+.column-card:hover {
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.3), 0 15px 20px 0 rgba(0, 0, 0, 0.05);
+}
+
+.column-card {
+  margin: 10px 10px 10px 10px;
+  min-width: 400px;
+  border: solid 1px gainsboro;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 10px 10px 0 rgba(0, 0, 0, 0.01);
+  transition: all 0.15s ease;
+
+  .column-card-header {
+    margin: 15px 0 15px 0;
+    padding: 0 5px 15px 5px;
+    display: flex;
+    align-items: center;
+    border-bottom: solid 1px gainsboro;
+
+    .column-card-name {
+      padding: 5px;
+      font-size: 14pt;
+      flex-grow: 1;
+    }
+
+    .column-ellipsis-dropdown {
+
+    }
+  }
+
+  .column-objectives-content {
+    padding: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+
+  .column-add-objective {
+    display: flex;
+    align-items: center;
+    margin: 15px 0 15px 0;
+    padding: 15px 5px 0 5px;
+    border-top: solid 1px gainsboro;
+
+  }
+
+}

@@ -1,6 +1,7 @@
-import TeamMenu from "./menu/TeamMenu.tsx";
+import TeamMenu from "./TeamMenu.tsx";
 import {Colors} from "../../../common/Colors.ts";
-import ProjectBoards from "./menu/board/ProjectBoards.tsx";
+import ProjectBoards from "./ProjectBoards.tsx";
+import './style.scss'
 
 const Team = () => {
     return (
