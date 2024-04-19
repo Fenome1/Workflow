@@ -17,9 +17,6 @@ public sealed class UpdateColumnCommandHandler(WorkflowDbContext context) : IReq
         if (!string.IsNullOrWhiteSpace(request.Name))
             editingColumn.Name = request.Name;
 
-        if (request.Order is not null)
-            editingColumn.Order = request.Order.Value;
-
         await context.SaveChangesAsync(cancellationToken);
 
         return editingColumn.BoardId;

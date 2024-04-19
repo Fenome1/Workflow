@@ -1,0 +1,24 @@
+.project-boards-container {
+  padding: 20px 20px 20px 50px;
+  flex-grow: 1;
+
+  .project-boards-header {
+    display: flex;
+    font-size: 27pt;
+    margin-bottom: 20px;
+    margin-left: 20px;
+  }
+
+  .project-boards {
+    padding: 20px;
+
+    .board-card {
+      margin: 10px 10px 10px 10px;
+      border: solid 1px gainsboro;
+    }
+
+    .board-card:first-child {
+      margin-left: 0;
+    }
+  }
+}

@@ -1,0 +1,77 @@
+.board-column-container {
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+
+  .board-column-header-container {
+    margin-bottom: 15px;
+
+    .board-column-button {
+      margin-bottom: 15px;
+    }
+
+    .board-column-header {
+      display: flex;
+      font-size: 1.5rem;
+    }
+  }
+
+  .board-columns {
+    display: flex;
+    margin-bottom: 25px;
+
+    .column-card:first-child {
+      margin: 10px 10px 10px 0;
+    }
+
+    .column-card:last-child {
+      margin: 10px 0 10px 10px;
+    }
+
+    .column-card:hover {
+      box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.3), 0 15px 20px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    .column-card {
+      margin: 10px 10px 10px 10px;
+      min-width: 400px;
+      max-width: 100vh;
+      border: solid 1px gainsboro;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 10px 10px 0 rgba(0, 0, 0, 0.01);
+      transition: all 0.15s ease;
+
+      .column-card-header {
+        margin: 10px 0 0 0;
+        padding: 0 5px 5px 5px;
+        border-bottom: solid 1px gainsboro;
+
+        .column-card-header-title {
+          display: flex;
+          align-items: center;
+
+          .column-card-name {
+            padding: 5px;
+            font-size: 14pt;
+            flex-grow: 1;
+          }
+        }
+
+        .column-add-objective {
+          padding: 0;
+          margin-left: 5px;
+          font-size: 14px;
+        }
+
+      }
+
+      .column-objectives-content {
+        min-height: 5vh;
+        max-height: (100vh - 32vh);
+        overflow-y: auto;
+        padding: 5px;
+        margin: 5px 5px 5px 5px;
+      }
+    }
+  }
+}

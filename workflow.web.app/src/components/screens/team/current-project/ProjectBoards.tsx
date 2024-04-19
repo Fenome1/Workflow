@@ -1,8 +1,8 @@
 import {FC} from 'react';
-import {useGetBoardsByProjectQuery} from "../../../store/apis/boardApi.ts";
-import {useTypedSelector} from "../../../store/hooks/hooks.ts";
-import {IBoard} from "../../../features/models/IBoard.ts";
-import BoardCard from "../../cards/BoardCard.tsx";
+import {useGetBoardsByProjectQuery} from "../../../../store/apis/boardApi.ts";
+import {useTypedSelector} from "../../../../store/hooks/hooks.ts";
+import {IBoard} from "../../../../features/models/IBoard.ts";
+import BoardCard from "./BoardCard.tsx";
 import {Row} from "antd";
 import './style.scss'
 

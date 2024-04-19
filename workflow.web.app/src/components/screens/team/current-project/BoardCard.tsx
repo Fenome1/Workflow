@@ -1,10 +1,10 @@
 import {FC} from 'react';
-import {IBoard} from "../../features/models/IBoard.ts";
+import {IBoard} from "../../../../features/models/IBoard.ts";
 import {Card, Col} from 'antd';
-import "../screens/team/style.scss"
+import "../style.scss"
 import {useNavigate} from "react-router-dom";
-import {selectBoard} from "../../store/slices/boardSlice.ts";
-import {useAppDispatch} from "../../store/hooks/hooks.ts";
+import {selectBoard} from "../../../../store/slices/boardSlice.ts";
+import {useAppDispatch} from "../../../../store/hooks/hooks.ts";
 import './style.scss'
 
 interface BoardCardProps {

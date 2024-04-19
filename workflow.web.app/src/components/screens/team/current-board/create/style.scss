@@ -1,0 +1,17 @@
+.create-column-container {
+  display: flex;
+  flex-direction: row;
+  align-self: start;
+  justify-content: center;
+  align-items: center;
+
+  border: gainsboro 1px solid;
+  border-radius: 10px;
+  padding: 2px 5px 2px 5px;
+  margin-top: 10px;
+  min-width: 150px;
+}
+
+.create-column-button {
+  padding: 0;
+}

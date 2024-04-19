@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Workflow.Api.Controllers.Base;
 using Workflow.Application.Features.Columns.Commands.Create;
 using Workflow.Application.Features.Columns.Commands.Delete;
-using Workflow.Application.Features.Columns.Commands.Swap;
+using Workflow.Application.Features.Columns.Commands.Move;
 using Workflow.Application.Features.Columns.Commands.Update;
 using Workflow.Application.Features.Columns.Queries.ByBoard;
 using Workflow.Application.ViewModels;
@@ -57,7 +57,7 @@ public class ColumnController : BaseController
 
     [Authorize]
     [HttpPut("Swap")]
-    public async Task<ActionResult<Unit>> Delete([FromBody] SwapColumnOrderCommand command)
+    public async Task<ActionResult<Unit>> Delete([FromBody] MoveColumnOrderCommand command)
     {
         try
         {
