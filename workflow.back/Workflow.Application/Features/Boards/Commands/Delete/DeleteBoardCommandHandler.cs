@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Workflow.Application.Common.Exceptions;
+using Workflow.Core.Models;
 using Workflow.Persistense.Context;
 
 namespace Workflow.Application.Features.Boards.Commands.Delete;
@@ -12,7 +13,7 @@ public sealed class DeleteBoardCommandHandler(WorkflowDbContext context) : IRequ
             .FindAsync(request.BoardId);
 
         if (deletingBoard is null)
-            throw new NotFoundException(nameof(deletingBoard));
+            throw new NotFoundException(nameof(Board), request.BoardId);
 
         context.Boards.Remove(deletingBoard);
         await context.SaveChangesAsync(cancellationToken);

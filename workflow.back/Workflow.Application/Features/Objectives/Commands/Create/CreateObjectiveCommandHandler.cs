@@ -14,23 +14,27 @@ public sealed class CreateObjectiveCommandHandler(
     public async Task<int> Handle(CreateObjectiveCommand request, CancellationToken cancellationToken)
     {
         var ownerColumn = await context.Columns
-            .AsNoTrackingWithIdentityResolution()
             .Include(c => c.Objectives)
             .FirstOrDefaultAsync(b => b.ColumnId == request.ColumnId,
                 cancellationToken);
 
         if (ownerColumn is null)
-            throw new NotFoundException(nameof(ownerColumn));
+            throw new NotFoundException(nameof(Column), request.ColumnId);
+
+        await using var transaction = await context.Database.BeginTransactionAsync(cancellationToken);
 
         var newObjective = mapper.Map<Objective>(request);
+        newObjective.Order = 0;
 
-        var lastOrder = ownerColumn.Objectives.Count;
-        newObjective.Order = lastOrder;
+        foreach (var objective in ownerColumn.Objectives)
+            objective.Order += 1;
 
         await context.Objectives.AddAsync(newObjective, cancellationToken);
 
         await context.SaveChangesAsync(cancellationToken);
 
-        return newObjective.ColumnId;
+        await transaction.CommitAsync(cancellationToken);
+
+        return newObjective.ObjectiveId;
     }
 }

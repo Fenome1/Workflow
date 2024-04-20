@@ -19,7 +19,7 @@ public class CreateBoardCommandHandler(
                 cancellationToken);
 
         if (!isProjectExists)
-            throw new NotFoundException(nameof(Project));
+            throw new NotFoundException(nameof(Project), request.ProjectId);
 
         var newBoard = mapper.Map<Board>(request);
 

@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Workflow.Api.Controllers.Base;
 using Workflow.Application.Features.Columns.Commands.Create;
 using Workflow.Application.Features.Columns.Commands.Delete;
-using Workflow.Application.Features.Columns.Commands.Move;
 using Workflow.Application.Features.Columns.Commands.Update;
 using Workflow.Application.Features.Columns.Queries.ByBoard;
 using Workflow.Application.ViewModels;
@@ -27,7 +26,7 @@ public class ColumnController : BaseController
         }
     }
 
-    [Authorize]
+    /*[Authorize]*/
     [HttpPost("Create")]
     public async Task<ActionResult<int>> Create([FromBody] CreateColumnCommand command)
     {
@@ -55,21 +54,7 @@ public class ColumnController : BaseController
         }
     }
 
-    [Authorize]
-    [HttpPut("Swap")]
-    public async Task<ActionResult<Unit>> Delete([FromBody] MoveColumnOrderCommand command)
-    {
-        try
-        {
-            return Ok(await Mediator.Send(command));
-        }
-        catch (Exception e)
-        {
-            return BadRequest($"{e.Message}");
-        }
-    }
-
-    [Authorize]
+    /*[Authorize]*/
     [HttpDelete("Delete/{columnId}")]
     public async Task<ActionResult<Unit>> Delete(int columnId)
     {

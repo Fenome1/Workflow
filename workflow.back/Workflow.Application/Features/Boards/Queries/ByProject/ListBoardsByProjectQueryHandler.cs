@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Workflow.Application.Common.Exceptions;
 using Workflow.Application.ViewModels;
+using Workflow.Core.Models;
 using Workflow.Persistense.Context;
 
 namespace Workflow.Application.Features.Boards.Queries.ByProject;
@@ -19,8 +20,8 @@ public class ListBoardsByProjectQueryHandler(
             .Where(p => p.ProjectId == request.ProjectId)
             .ToListAsync(cancellationToken);
 
-        if (boardsByProject is null)
-            throw new NotFoundException(nameof(boardsByProject));
+        if (boardsByProject is null || boardsByProject.Count < 1)
+            throw new NotFoundException(nameof(List<Board>));
 
         return mapper.Map<List<BoardViewModel>>(boardsByProject);
     }

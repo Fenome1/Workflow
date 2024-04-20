@@ -21,7 +21,7 @@ public sealed class CreateColumnCommandHandler(
                 cancellationToken);
 
         if (ownerBoard is null)
-            throw new NotFoundException(nameof(Board));
+            throw new NotFoundException(nameof(Board), request.BoardId);
 
         var newColumn = mapper.Map<Column>(request);
 

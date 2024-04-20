@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Workflow.Application.Common.Exceptions;
+using Workflow.Core.Models;
 using Workflow.Persistense.Context;
 
 namespace Workflow.Application.Features.Columns.Commands.Update;
@@ -12,7 +13,7 @@ public sealed class UpdateColumnCommandHandler(WorkflowDbContext context) : IReq
             .FindAsync(request.ColumnId);
 
         if (editingColumn is null)
-            throw new NotFoundException(editingColumn.GetType().ToString());
+            throw new NotFoundException(nameof(Column), request.ColumnId);
 
         if (!string.IsNullOrWhiteSpace(request.Name))
             editingColumn.Name = request.Name;

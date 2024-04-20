@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Workflow.Application.Common.Exceptions;
+using Workflow.Core.Models;
 using Workflow.Persistense.Context;
 
 namespace Workflow.Application.Features.Boards.Commands.Update;
@@ -12,7 +13,7 @@ public sealed class UpdateBoardCommandHandler(WorkflowDbContext context) : IRequ
             .FindAsync(request.BoardId);
 
         if (editingBoard is null)
-            throw new NotFoundException(nameof(editingBoard));
+            throw new NotFoundException(nameof(Board), request.BoardId);
 
         if (!string.IsNullOrWhiteSpace(request.Name))
             editingBoard.Name = request.Name;

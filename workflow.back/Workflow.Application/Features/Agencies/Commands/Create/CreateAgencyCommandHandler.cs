@@ -20,7 +20,7 @@ public sealed class CreateAgencyCommandHandler(
                 cancellationToken);
 
         if (!isUserExists)
-            throw new NotFoundException(typeof(User).ToString());
+            throw new NotFoundException(nameof(User), request.UserId);
 
         var newAgency = new Agency
         {

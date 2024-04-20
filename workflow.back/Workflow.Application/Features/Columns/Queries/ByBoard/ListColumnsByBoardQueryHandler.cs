@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Workflow.Application.Common.Exceptions;
 using Workflow.Application.ViewModels;
+using Workflow.Core.Models;
 using Workflow.Persistense.Context;
 
 namespace Workflow.Application.Features.Columns.Queries.ByBoard;
@@ -21,8 +22,8 @@ public sealed class ListColumnsByBoardQueryHandler(
             .OrderBy(c => c.Order)
             .ToListAsync(cancellationToken);
 
-        if (columnsByBoard is null)
-            throw new NotFoundException(nameof(columnsByBoard));
+        if (columnsByBoard is null || columnsByBoard.Count < 1)
+            throw new NotFoundException(nameof(List<Column>));
 
         return mapper.Map<List<ColumnViewModel>>(columnsByBoard);
     }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Workflow.Application.Common.Exceptions;
+using Workflow.Core.Models;
 using Workflow.Persistense.Context;
 
 namespace Workflow.Application.Features.Agencies.Commands.Update;
@@ -14,7 +15,7 @@ public sealed class UpdateAgencyCommandHandler(WorkflowDbContext context, IMappe
             .FindAsync(request.AgencyId);
 
         if (agency is null)
-            throw new NotFoundException(nameof(agency));
+            throw new NotFoundException(nameof(Agency), request.AgencyId);
 
         if (!string.IsNullOrWhiteSpace(request.Name))
             agency.Name = request.Name;
