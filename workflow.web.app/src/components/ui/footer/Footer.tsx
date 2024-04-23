@@ -1,9 +1,9 @@
 import './style.scss'
-import {Colors} from "../../../common/Colors.ts";
+import {AppColors} from "../../../common/AppColors.ts";
 
 const Footer = () => {
     return (
-        <footer className="footer" style={{background: Colors.Primary}}>
+        <footer className="footer" style={{background: AppColors.Primary}}>
             <span className="footer-text">Workflow © {new Date().getFullYear()}</span>
         </footer>
     );

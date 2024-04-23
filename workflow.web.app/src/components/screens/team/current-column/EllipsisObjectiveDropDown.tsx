@@ -9,9 +9,10 @@ import {IObjective} from "../../../../features/models/IObjective.ts";
 interface EllipsisObjectiveDropDownProps {
     objective: IObjective
     className?: string;
+    startEditing: () => void;
 }
 
-const EllipsisObjectiveDropDown: FC<EllipsisObjectiveDropDownProps> = ({className, objective}) => {
+const EllipsisObjectiveDropDown: FC<EllipsisObjectiveDropDownProps> = ({className, objective, startEditing}) => {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     const items: MenuProps['items'] = [
@@ -23,6 +24,7 @@ const EllipsisObjectiveDropDown: FC<EllipsisObjectiveDropDownProps> = ({classNam
                 </a>
             ),
             icon: <EditOutlined/>,
+            onClick: startEditing
         },
         {
             key: 'delete',

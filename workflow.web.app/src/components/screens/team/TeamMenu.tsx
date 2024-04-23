@@ -4,7 +4,7 @@ import {GlobalOutlined, SolutionOutlined, UserOutlined} from "@ant-design/icons"
 import {useAppDispatch, useTypedSelector} from "../../../store/hooks/hooks.ts";
 import AgencySelector from "./AgencySelector.tsx";
 import {selectProject} from "../../../store/slices/projectSlice.ts";
-import {Colors} from "../../../common/Colors.ts";
+import {AppColors} from "../../../common/AppColors.ts";
 import './style.scss'
 import {useGetProjectsByAgencyQuery} from "../../../store/apis/projectApi.ts";
 
@@ -30,7 +30,7 @@ const TeamMenu: FC = () => {
             <b className='team-menu-header'>Workflow</b>
             <Menu
                 className='team-menu-tabs'
-                style={{background: Colors.Primary}}
+                style={{background: AppColors.Primary}}
                 mode="inline"
                 defaultOpenKeys={['projects']}
                 theme='light'>

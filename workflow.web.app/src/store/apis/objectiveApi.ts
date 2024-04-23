@@ -1,6 +1,7 @@
 import {ApiTags, baseApi} from "./baseApi.ts";
 import {HttpMethod} from "../../common/HttpMetod.ts";
 import {IObjective} from "../../features/models/IObjective.ts";
+import {IUpdateObjectiveCommand} from "../../features/commands/objective/IUpdateObjectiveCommand.ts";
 
 export const objectiveApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -20,10 +21,21 @@ export const objectiveApi = baseApi.injectEndpoints({
                 {type: ApiTags.Objective},
             ]
         }),
+        updateObjective: builder.mutation<number, IUpdateObjectiveCommand>({
+            query: command => ({
+                url: `${ApiTags.Objective}/Update`,
+                method: HttpMethod.PUT,
+                body: command,
+            }),
+            invalidatesTags: () => [
+                { type: ApiTags.Objective },
+            ]
+        })
     }),
 });
 
 export const {
     useGetObjectivesByColumnQuery,
     useDeleteObjectiveMutation,
+    useUpdateObjectiveMutation,
 } = objectiveApi

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Workflow.Api.Controllers.Base;
 using Workflow.Application.Features.Objectives.Commands.Create;
 using Workflow.Application.Features.Objectives.Commands.Delete;
+using Workflow.Application.Features.Objectives.Commands.Update;
 using Workflow.Application.Features.Objectives.Queries.ByColumn;
 using Workflow.Application.ViewModels;
 
@@ -31,6 +32,20 @@ public class ObjectiveController : BaseController
         try
         {
             return Created(string.Empty, await Mediator.Send(command));
+        }
+        catch (Exception e)
+        {
+            return BadRequest($"{e.Message}");
+        }
+    }
+    
+    /*[Authorize]*/
+    [HttpPut("Update")]
+    public async Task<ActionResult<int>> Update([FromBody] UpdateObjectiveCommand command)
+    {
+        try
+        {
+            return Ok(await Mediator.Send(command));
         }
         catch (Exception e)
         {

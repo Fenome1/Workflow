@@ -1,4 +1,4 @@
-export enum Colors {
+export enum AppColors {
     Primary = '#ffffff',
     Secondary = '#6593cf',
     Thirdly = '#c8f5ff',

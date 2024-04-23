@@ -1,10 +1,10 @@
 import RegisterForm from "./RegisterForm.tsx";
 import FooteredPage from "../../../ui/footer/FooteredPage.tsx";
-import {Colors} from "../../../../common/Colors.ts";
+import {AppColors} from "../../../../common/AppColors.ts";
 
 const RegisterPage = () => {
     return (
-        <div style={{background: Colors.Primary}}>
+        <div style={{background: AppColors.Primary}}>
             <FooteredPage>
                 <RegisterForm/>
             </FooteredPage>
