@@ -28,7 +28,7 @@ export const objectiveApi = baseApi.injectEndpoints({
                 body: command,
             }),
             invalidatesTags: () => [
-                { type: ApiTags.Objective },
+                {type: ApiTags.Objective},
             ]
         })
     }),

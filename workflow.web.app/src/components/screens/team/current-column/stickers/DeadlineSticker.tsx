@@ -1,5 +1,5 @@
-import { FC } from 'react';
-import { CalendarOutlined } from "@ant-design/icons";
+import {FC} from 'react';
+import {CalendarOutlined} from "@ant-design/icons";
 import DeadlineColors from "../../../../../common/DeadlineColors.ts";
 
 interface DeadlineStickerProps {
@@ -18,7 +18,7 @@ const selectDeadlineColor = (differenceInDays: number): string => {
     }
 };
 
-const DeadlineSticker: FC<DeadlineStickerProps> = ({ deadline }) => {
+const DeadlineSticker: FC<DeadlineStickerProps> = ({deadline}) => {
     const formattedDate = new Date(deadline);
     const currentDate = new Date();
 
