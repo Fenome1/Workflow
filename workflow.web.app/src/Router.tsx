@@ -12,6 +12,7 @@ export const router = createBrowserRouter(
             <Route index path='login' element={<LoginPage/>}/>
 
             <Route path='team' element={<Team/>}/>
+
             <Route path='current-board' element={<CurrentBoard/>}/>
 
             <Route path="*" element={<Navigate to="/login" replace={true}/>}/>

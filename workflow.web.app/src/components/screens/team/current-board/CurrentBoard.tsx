@@ -5,6 +5,7 @@ import './style.scss'
 import {Button} from "antd";
 import {useNavigate} from "react-router-dom";
 import CreateColumn from "./create/CreateColumn.tsx";
+import {LeftOutlined} from "@ant-design/icons";
 
 const CurrentBoard = () => {
     const navigate = useNavigate();
@@ -18,7 +19,8 @@ const CurrentBoard = () => {
     return (
         <div className='board-column-container'>
             <div className='board-column-header-container'>
-                <Button className='board-column-button' onClick={toTeam}>Вернуться</Button>
+                <Button icon={<LeftOutlined/>} size='large' shape='round' className='board-column-button'
+                        onClick={toTeam}>Вернуться</Button>
                 <b className='board-column-header'>Доступные колонки</b>
             </div>
             <div className='board-columns'>

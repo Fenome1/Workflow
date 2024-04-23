@@ -1,0 +1,130 @@
+.objective-card {
+  flex-direction: column;
+  margin: 10px 0 10px 0;
+  border-radius: 10px;
+  transition: all 0.5ms ease;
+  min-height: 100px;
+  box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.2), 0 5px 10px 0 rgba(0, 0, 0, 0.01);
+
+  &:first-child {
+    margin: 5px 0 10px 0;
+  }
+
+  &:last-child {
+    margin: 10px 0 5px 0;
+  }
+
+  .objective-card-container {
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+
+    .objective-card-container-head {
+      display: flex;
+
+      .objective-card-status-icon {
+        margin-right: 5px;
+        align-self: self-start;
+        cursor: pointer;
+      }
+
+      .objective-card-name-container {
+        flex-grow: 1;
+        align-items: start;
+
+        .objective-card-name {
+          margin-right: 5px;
+        }
+
+        .objective-card-name-edit-container {
+          display: inline-block;
+
+          .objective-card-name-edit-icon {
+            color: gray;
+            cursor: pointer;
+            transition: all ease-in-out 50ms;
+            margin-right: 5px;
+
+            &:hover {
+              color: #1677ff;
+            }
+
+          }
+        }
+      }
+
+      .objective-card-dropdown {
+        justify-self: end;
+        min-width: 17px;
+        min-height: 17px;
+      }
+    }
+
+    .objective-card-container-footer {
+      display: flex;
+      flex-grow: 1;
+      margin: 5px 0 5px 20px;
+      align-items: end;
+
+      .objective-card-content-stickers {
+        display: flex;
+        flex-grow: 1;
+        flex-wrap: wrap;
+        gap: 10px;
+
+        .objective-sticker {
+          font-size: 14px;
+          display: flex;
+          background-color: gainsboro;
+          padding: 10px;
+          border-radius: 10px;
+        }
+
+        .objective-card-sticker-add-container {
+          align-self: center;
+
+          .objective-card-sticker-add-icon {
+            color: gray;
+            cursor: pointer;
+            transition: all ease-in-out 50ms;
+            margin-right: 5px;
+
+            &:hover {
+              color: #1677ff;
+            }
+          }
+        }
+      }
+
+      .objective-card-users {
+        display: flex;
+
+        .objective-card-users-add-container {
+          align-self: end;
+
+          .objective-card-users-add-icon {
+            color: gray;
+            cursor: pointer;
+            transition: all ease-in-out 50ms;
+
+            &:hover {
+              color: #1677ff;
+            }
+          }
+        }
+      }
+
+      .objective-card-existed-users-container {
+        cursor: pointer;
+        transition: all ease-in-out 50ms;
+
+        .objective-card-existed-users-icon {
+          &:hover {
+            color: #1677ff;
+          }
+        }
+      }
+    }
+  }
+}

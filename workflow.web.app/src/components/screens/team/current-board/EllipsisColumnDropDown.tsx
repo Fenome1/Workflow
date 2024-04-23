@@ -1,6 +1,6 @@
 import {Dropdown, MenuProps} from "antd";
 import {IoEllipsisVertical} from "react-icons/io5";
-import "./style.scss"
+import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
 
 const items: MenuProps['items'] = [
     {
@@ -10,6 +10,7 @@ const items: MenuProps['items'] = [
                 Переименовать
             </a>
         ),
+        icon: <EditOutlined/>
     },
     {
         key: 'delete',
@@ -19,6 +20,7 @@ const items: MenuProps['items'] = [
                 Удалить
             </a>
         ),
+        icon: <DeleteOutlined/>
     },
 ];
 
