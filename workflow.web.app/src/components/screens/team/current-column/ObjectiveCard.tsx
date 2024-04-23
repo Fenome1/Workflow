@@ -10,11 +10,11 @@ import {
     UserOutlined
 } from "@ant-design/icons";
 import {FaUserGroup} from "react-icons/fa6";
-import PrioritySticker from "./stickers/PrioritySticker.tsx";
 import {useUpdateObjectiveMutation} from "../../../../store/apis/objectiveApi.ts";
 import {IUpdateObjectiveCommand} from "../../../../features/commands/objective/IUpdateObjectiveCommand.ts";
 import {Input} from "antd";
-import DeadlineSticker from "./stickers/DeadlineSticker.tsx";
+import DeadlineSticker from "./stickers/deadline/DeadlineSticker.tsx";
+import PrioritySticker from "./stickers/priority/PrioritySticker.tsx";
 
 interface IObjectiveCardProps {
     objective: IObjective
@@ -103,7 +103,8 @@ const ObjectiveCard: FC<IObjectiveCardProps> = ({objective}) => {
                 <div className='objective-card-container-footer'>
                     <div className='objective-card-content-stickers'>
                         {objective.priority &&
-                            <PrioritySticker priority={objective.priority}/>}
+                            <PrioritySticker objective={objective}/>
+                        }
                         {objective.deadline &&
                             <DeadlineSticker deadline={objective.deadline}/>
                         }

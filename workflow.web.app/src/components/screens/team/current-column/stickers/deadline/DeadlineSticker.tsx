@@ -1,6 +1,6 @@
 import {FC} from 'react';
 import {CalendarOutlined} from "@ant-design/icons";
-import DeadlineColors from "../../../../../common/DeadlineColors.ts";
+import DeadlineColors from "../../../../../../common/DeadlineColors.ts";
 
 interface DeadlineStickerProps {
     deadline: string;

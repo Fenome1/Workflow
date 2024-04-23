@@ -1,16 +1,16 @@
 import {FC} from 'react';
-import {IPriority} from "../../../../../features/models/IPriority.ts";
-import {Priorities} from "../../../../../common/Priorities.ts";
+import {IPriority} from "../../../../../../features/models/IPriority.ts";
+import {Priorities} from "../../../../../../common/Priorities.ts";
 import {RocketOutlined} from "@ant-design/icons";
-import {PriorityColors} from "../../../../../common/PriorityColors.ts";
+import {PriorityColors} from "../../../../../../common/PriorityColors.ts";
 import {IoSnowOutline} from "react-icons/io5";
 import {PiCellSignalMediumFill} from "react-icons/pi";
 
 interface PriorityStickerProps {
-    priority: IPriority
+    priority: IPriority | null
 }
 
-const PrioritySticker: FC<PriorityStickerProps> = ({priority}) => {
+const PriorityStickerContent: FC<PriorityStickerProps> = ({priority}) => {
     const getColor = (priorityId: number): string => {
         switch (priorityId) {
             case Priorities.High:
@@ -25,6 +25,7 @@ const PrioritySticker: FC<PriorityStickerProps> = ({priority}) => {
     };
 
     return (
+        priority &&
         <div className='objective-sticker' style={{
             backgroundColor: getColor(priority.priorityId)
         }}>
@@ -42,4 +43,4 @@ const PrioritySticker: FC<PriorityStickerProps> = ({priority}) => {
     );
 };
 
-export default PrioritySticker;
+export default PriorityStickerContent;

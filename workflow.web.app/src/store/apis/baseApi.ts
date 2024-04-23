@@ -9,6 +9,7 @@ export enum ApiTags {
     Board = 'Board',
     Column = "Column",
     Objective = 'Objective',
+    Priority = 'Priority',
 }
 
 const baseQuery = fetchBaseQuery({
