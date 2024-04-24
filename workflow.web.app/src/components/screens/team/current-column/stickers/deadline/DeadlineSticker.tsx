@@ -1,40 +1,19 @@
-import {FC} from 'react';
-import {CalendarOutlined} from "@ant-design/icons";
-import DeadlineColors from "../../../../../../common/DeadlineColors.ts";
+import DeadlineStickerContent from "./DeadlineStickerContent.tsx";
+import {FC} from "react";
+import {IObjective} from "../../../../../../features/models/IObjective.ts";
+import DeadlineDropDown from "./DeadlineDropDown.tsx";
 
 interface DeadlineStickerProps {
-    deadline: string;
+    objective: IObjective
 }
 
-const selectDeadlineColor = (differenceInDays: number): string => {
-    if (differenceInDays <= 0) {
-        return DeadlineColors.Overdue;
-    } else if (differenceInDays <= 1) {
-        return DeadlineColors.Tomorrow;
-    } else if (differenceInDays <= 7) {
-        return DeadlineColors.OnThisWeek;
-    } else {
-        return DeadlineColors.Far;
-    }
-};
-
-const DeadlineSticker: FC<DeadlineStickerProps> = ({deadline}) => {
-    const formattedDate = new Date(deadline);
-    const currentDate = new Date();
-
-    const differenceInDays = Math.ceil((formattedDate.getTime() - currentDate.getTime()) / (1000 * 3600 * 24));
-    const color = selectDeadlineColor(differenceInDays);
-
-    const formattedDateString = formattedDate.toLocaleDateString('ru-RU', {
-        month: 'short',
-        day: 'numeric',
-    });
-
+const DeadlineSticker: FC<DeadlineStickerProps> = ({objective}) => {
     return (
-        <div className="objective-sticker" style={{background: color}}>
-            <CalendarOutlined className="objective-sticker-icon"/>
-            {formattedDateString}
-        </div>
+        <DeadlineDropDown objective={objective}>
+            <div>
+                <DeadlineStickerContent deadline={objective.deadline!}/>
+            </div>
+        </DeadlineDropDown>
     );
 };
 

@@ -13,8 +13,9 @@ import {FaUserGroup} from "react-icons/fa6";
 import {useUpdateObjectiveMutation} from "../../../../store/apis/objectiveApi.ts";
 import {IUpdateObjectiveCommand} from "../../../../features/commands/objective/IUpdateObjectiveCommand.ts";
 import {Input} from "antd";
-import DeadlineSticker from "./stickers/deadline/DeadlineSticker.tsx";
+import DeadlineStickerContent from "./stickers/deadline/DeadlineStickerContent.tsx";
 import PrioritySticker from "./stickers/priority/PrioritySticker.tsx";
+import DeadlineSticker from "./stickers/deadline/DeadlineSticker.tsx";
 
 interface IObjectiveCardProps {
     objective: IObjective
@@ -82,9 +83,9 @@ const ObjectiveCard: FC<IObjectiveCardProps> = ({objective}) => {
                                 onChange={handleInputChange}
                                 onBlur={finishEditing}
                                 variant='borderless'
-                                onKeyDown={(e) => {
+                                onKeyDown={async (e) => {
                                     if (e.key === 'Enter') {
-                                        finishEditing();
+                                        await finishEditing();
                                     }
                                 }}
                                 autoFocus
@@ -106,7 +107,7 @@ const ObjectiveCard: FC<IObjectiveCardProps> = ({objective}) => {
                             <PrioritySticker objective={objective}/>
                         }
                         {objective.deadline &&
-                            <DeadlineSticker deadline={objective.deadline}/>
+                            <DeadlineSticker objective={objective}/>
                         }
                         {hovered &&
                             <div className='objective-card-sticker-add-container'>

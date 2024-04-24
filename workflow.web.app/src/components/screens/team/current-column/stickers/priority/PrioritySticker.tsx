@@ -11,7 +11,7 @@ const PrioritySticker: FC<PriorityStickerProps> = ({objective}) => {
     return (
         <PrioritiesDropDown objective={objective}>
             <div>
-                <PriorityStickerContent priority={objective.priority}/>
+                <PriorityStickerContent priority={objective.priority!}/>
             </div>
         </PrioritiesDropDown>
     );

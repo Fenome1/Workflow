@@ -7,7 +7,7 @@ import {IoSnowOutline} from "react-icons/io5";
 import {PiCellSignalMediumFill} from "react-icons/pi";
 
 interface PriorityStickerProps {
-    priority: IPriority | null
+    priority: IPriority
 }
 
 const PriorityStickerContent: FC<PriorityStickerProps> = ({priority}) => {
@@ -25,7 +25,6 @@ const PriorityStickerContent: FC<PriorityStickerProps> = ({priority}) => {
     };
 
     return (
-        priority &&
         <div className='objective-sticker' style={{
             backgroundColor: getColor(priority.priorityId)
         }}>

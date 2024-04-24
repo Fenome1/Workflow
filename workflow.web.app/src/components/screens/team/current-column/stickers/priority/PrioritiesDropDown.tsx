@@ -1,7 +1,6 @@
 import {Dropdown, MenuProps, message} from "antd";
 import {FC} from "react";
 import {useGetPriorityQuery} from "../../../../../../store/apis/priorityApi.ts";
-import {DeleteOutlined} from "@ant-design/icons";
 import {ItemType} from "antd/es/menu/hooks/useItems";
 import {useUpdateObjectiveMutation} from "../../../../../../store/apis/objectiveApi.ts";
 import {IUpdateObjectiveCommand} from "../../../../../../features/commands/objective/IUpdateObjectiveCommand.ts";
@@ -26,7 +25,6 @@ const PrioritiesDropDown: FC<PrioritiesDropDownProps> = ({children, objective}) 
         key: 0,
         label: "Открепить",
         danger: true,
-        icon: <DeleteOutlined/>,
         onClick: () => updatePriority(0)
     };
 
