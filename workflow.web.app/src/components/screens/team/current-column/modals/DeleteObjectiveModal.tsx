@@ -1,35 +1,31 @@
 import {FC} from 'react';
 import {Modal} from "antd";
 import {useDeleteObjectiveMutation} from "../../../../../store/apis/objectiveApi.ts";
+import {IDialog} from "../../../../../features/models/IDialog.ts";
 
 interface DeleteObjectiveModalProps {
-    showModal: boolean;
-    objectiveId: number;
-    onClose: () => void;
+    objectiveId: number
+    dialog: IDialog
 }
 
-const DeleteObjectiveModal: FC<DeleteObjectiveModalProps> = ({showModal, objectiveId, onClose}) => {
+const DeleteObjectiveModal: FC<DeleteObjectiveModalProps> = ({objectiveId, dialog}) => {
     const [deleteObjective] = useDeleteObjectiveMutation();
 
     const handleOk = async () => {
         try {
             await deleteObjective(objectiveId);
-            onClose();
+            dialog.close
         } catch (error) {
-            console.error('Error deleting objective:', error);
+            console.error('Ошибка при удалении задачи:', error);
         }
-    };
-
-    const handleCancel = () => {
-        onClose();
     };
 
     return (
         <Modal
-            open={showModal}
+            open={dialog.open}
             title="Подтверждение"
             onOk={handleOk}
-            onCancel={handleCancel}
+            onCancel={dialog.close}
             okText='Ок'
             cancelText='Отмена'
             okType='danger'
@@ -39,8 +35,7 @@ const DeleteObjectiveModal: FC<DeleteObjectiveModalProps> = ({showModal, objecti
                     <OkBtn/>
                     <CancelBtn/>
                 </>
-            )}
-        >
+            )}>
             Хотите удалить задачу?
         </Modal>
     );

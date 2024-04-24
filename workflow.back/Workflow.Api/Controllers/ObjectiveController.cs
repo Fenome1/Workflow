@@ -38,7 +38,7 @@ public class ObjectiveController : BaseController
             return BadRequest($"{e.Message}");
         }
     }
-    
+
     /*[Authorize]*/
     [HttpPut("Update")]
     public async Task<ActionResult<int>> Update([FromBody] UpdateObjectiveCommand command)

@@ -15,7 +15,7 @@ public sealed class ListPrioritiesQueryHandler(WorkflowDbContext context, IMappe
     {
         var priorities = await context.Priorities
             .AsNoTrackingWithIdentityResolution()
-            .ToListAsync(cancellationToken: cancellationToken);
+            .ToListAsync(cancellationToken);
 
         if (priorities is null || !priorities.Any())
             throw new NotFoundException(nameof(List<Priority>));

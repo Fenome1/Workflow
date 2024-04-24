@@ -13,9 +13,11 @@ import {FaUserGroup} from "react-icons/fa6";
 import {useUpdateObjectiveMutation} from "../../../../store/apis/objectiveApi.ts";
 import {IUpdateObjectiveCommand} from "../../../../features/commands/objective/IUpdateObjectiveCommand.ts";
 import {Input} from "antd";
-import DeadlineStickerContent from "./stickers/deadline/DeadlineStickerContent.tsx";
 import PrioritySticker from "./stickers/priority/PrioritySticker.tsx";
 import DeadlineSticker from "./stickers/deadline/DeadlineSticker.tsx";
+import AddStickerPopup from "./stickers/sticker-add/AddStickerPopup.tsx";
+import {useDialog} from "../../../../hok/useDialog.ts";
+import AssignmentChangeModal from "./modals/AssignmentChangeModal.tsx";
 
 interface IObjectiveCardProps {
     objective: IObjective
@@ -27,6 +29,9 @@ const ObjectiveCard: FC<IObjectiveCardProps> = ({objective}) => {
 
     const [editing, setEditing] = useState(false);
     const [editedName, setEditedName] = useState(objective.name);
+
+    const addStickerPopup = useDialog()
+    const assignmentChangeModal = useDialog()
 
     const updateStatus = async () => {
 
@@ -109,13 +114,14 @@ const ObjectiveCard: FC<IObjectiveCardProps> = ({objective}) => {
                         {objective.deadline &&
                             <DeadlineSticker objective={objective}/>
                         }
-                        {hovered &&
-                            <div className='objective-card-sticker-add-container'>
-                                <PlusCircleOutlined className='objective-card-sticker-add-icon'/>
-                            </div>
-                        }
+                        <div className='objective-card-sticker-add-container'>
+                            {hovered &&
+                                <PlusCircleOutlined className='objective-card-sticker-add-icon'
+                                                    onClick={addStickerPopup.show}/>}
+                            <AddStickerPopup objective={objective} dialog={addStickerPopup}/>
+                        </div>
                     </div>
-                    <div className='objective-card-users'>
+                    <div className='objective-card-users' onClick={assignmentChangeModal.show}>
                         {hovered && objective.users && objective.users?.length < 1 &&
                             <div className='objective-card-users-add-container'>
                                 <UserOutlined className='objective-card-users-add-icon'/>
@@ -129,6 +135,7 @@ const ObjectiveCard: FC<IObjectiveCardProps> = ({objective}) => {
                     </div>
                 </div>
             </div>
+            <AssignmentChangeModal dialog={assignmentChangeModal} objective={objective}></AssignmentChangeModal>
         </div>
     );
 };

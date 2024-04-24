@@ -1,10 +1,11 @@
-import React, {FC, useState} from 'react';
+import React, {FC} from 'react';
 import {IObjective} from "../../../../../../features/models/IObjective.ts";
 import {Dropdown, MenuProps} from "antd";
 import DeadlinePicker from "./DeadlinePicker.tsx";
 import './style.scss'
 import {IUpdateObjectiveCommand} from "../../../../../../features/commands/objective/IUpdateObjectiveCommand.ts";
 import {useUpdateObjectiveMutation} from "../../../../../../store/apis/objectiveApi.ts";
+import {useDialog} from "../../../../../../hok/useDialog.ts";
 
 interface DeadlineDatePickerProps {
     children: React.ReactNode
@@ -13,7 +14,7 @@ interface DeadlineDatePickerProps {
 
 const DeadlineDropDown: FC<DeadlineDatePickerProps> = ({children, objective}) => {
     const [updateObjective] = useUpdateObjectiveMutation();
-    const [visible, setVisible] = useState(false);
+    const deadlinePickerPopup = useDialog()
 
     const resetDeadline = async () => {
         const updateData: IUpdateObjectiveCommand = {
@@ -26,7 +27,7 @@ const DeadlineDropDown: FC<DeadlineDatePickerProps> = ({children, objective}) =>
 
     const handleMenuClick = async (key: string) => {
         if (key === 'change') {
-            setVisible(true);
+            deadlinePickerPopup.show();
         } else if (key === 'reset') {
             await resetDeadline()
         }
@@ -47,10 +48,10 @@ const DeadlineDropDown: FC<DeadlineDatePickerProps> = ({children, objective}) =>
 
     return (
         <div>
-            <Dropdown menu={{items}} trigger={['click']} open={visible ? false : undefined}>
+            <Dropdown menu={{items}} trigger={['click']} open={deadlinePickerPopup.open ? false : undefined}>
                 {children}
             </Dropdown>
-            <DeadlinePicker objective={objective} open={visible} setOpen={setVisible} handleReset={resetDeadline} />
+            <DeadlinePicker objective={objective} dialog={deadlinePickerPopup}/>
         </div>
     );
 };

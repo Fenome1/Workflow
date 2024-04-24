@@ -7,12 +7,26 @@ using Workflow.Application.Features.Users.Commands.Login;
 using Workflow.Application.Features.Users.Commands.Logout;
 using Workflow.Application.Features.Users.Commands.Refresh;
 using Workflow.Application.Features.Users.Commands.Update;
+using Workflow.Application.Features.Users.Queries.ByAgency;
 using Workflow.Application.ViewModels;
 
 namespace Workflow.Api.Controllers;
 
 public class UserController : BaseController
 {
+    [HttpGet("Agencies/{agencyId}")]
+    public async Task<ActionResult<List<UserViewModel>>> GetByAgency(int agencyId)
+    {
+        try
+        {
+            return Ok(await Mediator.Send(new ListUsersByAgencyQuery(agencyId)));
+        }
+        catch (Exception e)
+        {
+            return BadRequest($"{e.Message}");
+        }
+    }
+
     [AllowAnonymous]
     [HttpPost("Register")]
     public async Task<ActionResult<int>> Register([FromBody] CreateUserCommand command)

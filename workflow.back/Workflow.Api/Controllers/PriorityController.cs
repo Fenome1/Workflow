@@ -8,7 +8,7 @@ namespace Workflow.Api.Controllers;
 public class PriorityController : BaseController
 {
     /*[Authorize]*/
-    [HttpGet()]
+    [HttpGet]
     public async Task<ActionResult<List<ObjectiveViewModel>>> Get()
     {
         try

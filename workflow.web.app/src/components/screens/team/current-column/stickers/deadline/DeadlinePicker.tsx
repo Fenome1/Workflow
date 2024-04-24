@@ -1,36 +1,50 @@
-import {Button, Calendar, Popover} from "antd";
+import {Button, Calendar, message, Popover} from "antd";
 import {FC, useState} from "react";
 import {IObjective} from "../../../../../../features/models/IObjective.ts";
 import {useUpdateObjectiveMutation} from "../../../../../../store/apis/objectiveApi.ts";
 import {IUpdateObjectiveCommand} from "../../../../../../features/commands/objective/IUpdateObjectiveCommand.ts";
 import {Dayjs} from "dayjs";
+import {IDialog} from "../../../../../../features/models/IDialog.ts";
 
 interface DeadlinePickerProps {
-    open: boolean;
-    setOpen: (visible: boolean) => void;
-    objective: IObjective;
-    handleReset: () => Promise<void>;
+    objective: IObjective
+    dialog: IDialog
 }
 
-const DeadlinePicker: FC<DeadlinePickerProps> = ({open, setOpen, objective, handleReset}) => {
+const DeadlinePicker: FC<DeadlinePickerProps> = ({objective, dialog}) => {
     const [updateObjective] = useUpdateObjectiveMutation();
-    const [selectedDate, setSelectedDate] = useState<string | null>(objective.deadline!);
+    const [selectedDate, setSelectedDate] = useState<string | null>(objective.deadline);
 
     const handleSave = async () => {
         if (selectedDate !== null) {
+            if (selectedDate === objective.deadline) {
+                message.info("Дата уже выбрана")
+                return
+            }
+
             const updatedObjective: IUpdateObjectiveCommand =
                 {objectiveId: objective.objectiveId, deadline: selectedDate};
+
             await updateObjective(updatedObjective);
         }
-        setOpen(false);
+        dialog.close();
+    };
+
+    const handleReset = async () => {
+        const updateData: IUpdateObjectiveCommand = {
+            objectiveId: objective.objectiveId,
+            isDeadlineReset: true,
+        };
+
+        await updateObjective(updateData);
     };
 
     const onDateSelect = (date: Dayjs) => {
         setSelectedDate(date.format('YYYY-MM-DD'))
     };
 
-    const handleOpenChange = (newOpen: boolean) => {
-        setOpen(newOpen);
+    const handleOpenChange = () => {
+        dialog.close();
     };
 
     return (
@@ -38,7 +52,7 @@ const DeadlinePicker: FC<DeadlinePickerProps> = ({open, setOpen, objective, hand
             className="deadline-picker"
             placement="bottomRight"
             arrow={false}
-            open={open}
+            open={dialog.open}
             onOpenChange={handleOpenChange}
             content={
                 <div className="deadline-picker-container">
@@ -47,7 +61,7 @@ const DeadlinePicker: FC<DeadlinePickerProps> = ({open, setOpen, objective, hand
                         <Button type="primary" onClick={handleSave}>
                             Сохранить
                         </Button>
-                        <Button danger onClick={handleReset}>
+                        <Button danger type='link' onClick={handleReset}>
                             Открепить
                         </Button>
                     </div>

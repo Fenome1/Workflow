@@ -1,9 +1,10 @@
 import {Dropdown, MenuProps} from "antd";
 import {IoEllipsisVertical} from "react-icons/io5";
 import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
-import {FC, useState} from "react";
+import {FC} from "react";
 import DeleteObjectiveModal from "./modals/DeleteObjectiveModal.tsx";
 import {IObjective} from "../../../../features/models/IObjective.ts";
+import {useDialog} from "../../../../hok/useDialog.ts";
 
 
 interface EllipsisObjectiveDropDownProps {
@@ -13,7 +14,7 @@ interface EllipsisObjectiveDropDownProps {
 }
 
 const EllipsisObjectiveDropDown: FC<EllipsisObjectiveDropDownProps> = ({className, objective, startEditing}) => {
-    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const deleteObjectiveModal = useDialog()
 
     const items: MenuProps['items'] = [
         {
@@ -35,7 +36,7 @@ const EllipsisObjectiveDropDown: FC<EllipsisObjectiveDropDownProps> = ({classNam
                 </a>
             ),
             icon: <DeleteOutlined/>,
-            onClick: () => setShowDeleteModal(true),
+            onClick: deleteObjectiveModal.show,
         },
     ];
 
@@ -45,8 +46,7 @@ const EllipsisObjectiveDropDown: FC<EllipsisObjectiveDropDownProps> = ({classNam
             <Dropdown menu={{items}} trigger={['hover']} className={className}>
                 <IoEllipsisVertical size={'15px'} className='ellipsis-vertical'/>
             </Dropdown>
-            <DeleteObjectiveModal showModal={showDeleteModal} objectiveId={objective.objectiveId}
-                                  onClose={() => setShowDeleteModal(false)}/>
+            <DeleteObjectiveModal dialog={deleteObjectiveModal} objectiveId={objective.objectiveId}/>
         </>
     );
 };

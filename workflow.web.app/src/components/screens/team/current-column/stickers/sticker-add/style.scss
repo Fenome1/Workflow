@@ -1,0 +1,15 @@
+.stickers-add-popup-container {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 5px;
+  padding: 10px;
+
+  .stickers-add-popup-title {
+    align-self: center;
+  }
+}
+
+.stickers-add-button {
+  width: 100%;
+}

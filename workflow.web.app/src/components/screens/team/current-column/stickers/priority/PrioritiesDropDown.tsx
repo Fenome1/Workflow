@@ -23,10 +23,10 @@ const PrioritiesDropDown: FC<PrioritiesDropDownProps> = ({children, objective}) 
 
     const deleteOption: ItemType = {
         key: 0,
-        label: "Открепить",
+        label: "Нет",
         danger: true,
         onClick: () => updatePriority(0)
-    };
+    }
 
     items?.push(deleteOption)
 
