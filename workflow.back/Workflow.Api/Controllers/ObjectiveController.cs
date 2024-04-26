@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Workflow.Api.Controllers.Base;
+using Workflow.Application.Features.Objectives.Commands.Assignify;
 using Workflow.Application.Features.Objectives.Commands.Create;
 using Workflow.Application.Features.Objectives.Commands.Delete;
 using Workflow.Application.Features.Objectives.Commands.Update;
@@ -42,6 +43,19 @@ public class ObjectiveController : BaseController
     /*[Authorize]*/
     [HttpPut("Update")]
     public async Task<ActionResult<int>> Update([FromBody] UpdateObjectiveCommand command)
+    {
+        try
+        {
+            return Ok(await Mediator.Send(command));
+        }
+        catch (Exception e)
+        {
+            return BadRequest($"{e.Message}");
+        }
+    }
+
+    [HttpPut("User/Assignify")]
+    public async Task<ActionResult<Unit>> Assignify([FromBody] AssignifyUserToObjectiveCommand command)
     {
         try
         {

@@ -10,9 +10,16 @@ import {IRefreshUserCommand} from "../../features/commands/user/IRefreshUserComm
 import {baseQuery} from "../fetchBaseQueryWithReauth.ts";
 import {RootState} from "../store.ts";
 import {FetchBaseQueryError} from "@reduxjs/toolkit/query";
+import {IUser} from "../../features/models/IUser.ts";
 
 export const userApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
+        getUsersByAgency: builder.query<IUser[], number>({
+            query: query => ({
+                url: `${ApiTags.User}/Agencies/${query}`,
+                method: HttpMethod.GET,
+            })
+        }),
         regiserUser: builder.mutation<number, IRegisterUserCommand>({
             query: command => ({
                 url: `${ApiTags.User}/Register`,
@@ -94,5 +101,5 @@ export const {
     useRegiserUserMutation,
     useLoginUserMutation,
     useLogoutMutation,
-    useRefreshMutation
+    useGetUsersByAgencyQuery
 } = userApi;

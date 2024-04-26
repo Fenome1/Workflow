@@ -10,7 +10,7 @@ namespace Workflow.Api.Controllers;
 
 public class BoardController : BaseController
 {
-    [Authorize]
+    /*[Authorize]*/
     [HttpGet("Project/{projectId}")]
     public async Task<ActionResult<int>> GetByAgencyId(int projectId)
     {

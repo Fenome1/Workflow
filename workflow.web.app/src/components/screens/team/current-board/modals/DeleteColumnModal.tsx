@@ -1,23 +1,19 @@
 import {FC} from 'react';
-import {Modal} from "antd";
-import {useDeleteObjectiveMutation} from "../../../../../store/apis/objectiveApi.ts";
 import {IDialog} from "../../../../../features/models/IDialog.ts";
+import {useDeleteColumnMutation} from "../../../../../store/apis/columnApi.ts";
+import {Modal} from "antd";
 
-interface DeleteObjectiveModalProps {
-    objectiveId: number
+interface DeleteColumnModalProps {
+    columnId: number
     dialog: IDialog
 }
 
-const DeleteObjectiveModal: FC<DeleteObjectiveModalProps> = ({objectiveId, dialog}) => {
-    const [deleteObjective] = useDeleteObjectiveMutation();
+const DeleteColumnModal: FC<DeleteColumnModalProps> = ({columnId, dialog}) => {
+    const [deleteColumn] = useDeleteColumnMutation()
 
     const handleOk = async () => {
-        try {
-            await deleteObjective(objectiveId);
-            dialog.close()
-        } catch (error) {
-            console.error('Ошибка при удалении задачи:', error);
-        }
+        await deleteColumn(columnId);
+        dialog.close()
     };
 
     return (
@@ -36,9 +32,9 @@ const DeleteObjectiveModal: FC<DeleteObjectiveModalProps> = ({objectiveId, dialo
                     <CancelBtn/>
                 </>
             )}>
-            Хотите удалить задачу?
+            Хотите удалить колонку?
         </Modal>
     );
 };
 
-export default DeleteObjectiveModal;
+export default DeleteColumnModal;

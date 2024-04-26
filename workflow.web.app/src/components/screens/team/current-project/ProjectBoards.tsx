@@ -21,6 +21,7 @@ const ProjectBoards: FC = () => {
                     {boards && boards.map((board: IBoard) => (
                         <BoardCard key={board.boardId} board={board}></BoardCard>
                     ))}
+                    <button>Создать доску</button>
                 </Row>
             </div>
         </div>

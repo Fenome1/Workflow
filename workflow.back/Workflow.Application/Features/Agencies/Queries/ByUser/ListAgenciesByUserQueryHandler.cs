@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Workflow.Application.Common.Exceptions;
 using Workflow.Application.ViewModels;
 using Workflow.Persistense.Context;
 
@@ -19,9 +18,6 @@ public sealed class ListAgenciesByUserQueryHandler(WorkflowDbContext context, IM
             .Where(a => a.OwnerId == request.UserId ||
                         a.Users.Any(u => u.UserId == request.UserId))
             .ToListAsync(cancellationToken);
-
-        if (userAgencies is null || userAgencies.Count < 1)
-            throw new NotFoundException(nameof(List<AgencyViewModel>));
 
         var agenciesViewModel = mapper.Map<List<AgencyViewModel>>(userAgencies);
 

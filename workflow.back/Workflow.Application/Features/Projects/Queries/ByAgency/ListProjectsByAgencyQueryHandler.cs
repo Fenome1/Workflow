@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Workflow.Application.Common.Exceptions;
 using Workflow.Application.ViewModels;
 using Workflow.Persistense.Context;
 
@@ -18,9 +17,6 @@ public sealed class ListProjectsByAgencyQueryHandler(
             .AsNoTrackingWithIdentityResolution()
             .Where(p => p.AgencyId == request.AgencyId)
             .ToListAsync(cancellationToken);
-
-        if (projectsByAgencies is null)
-            throw new NotFoundException(nameof(projectsByAgencies));
 
         return mapper.Map<List<ProjectViewModel>>(projectsByAgencies);
     }

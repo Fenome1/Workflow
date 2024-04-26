@@ -1,5 +1,5 @@
 import {IObjective} from "../../../../features/models/IObjective.ts";
-import React, {FC, useState} from "react";
+import {FC, useState} from "react";
 import './style.scss'
 import EllipsisObjectiveDropDown from "./EllipsisObjectiveDropDown.tsx";
 import {
@@ -10,14 +10,14 @@ import {
     UserOutlined
 } from "@ant-design/icons";
 import {FaUserGroup} from "react-icons/fa6";
-import {useUpdateObjectiveMutation} from "../../../../store/apis/objectiveApi.ts";
 import {IUpdateObjectiveCommand} from "../../../../features/commands/objective/IUpdateObjectiveCommand.ts";
 import {Input} from "antd";
 import PrioritySticker from "./stickers/priority/PrioritySticker.tsx";
 import DeadlineSticker from "./stickers/deadline/DeadlineSticker.tsx";
 import AddStickerPopup from "./stickers/sticker-add/AddStickerPopup.tsx";
 import {useDialog} from "../../../../hok/useDialog.ts";
-import AssignmentChangeModal from "./modals/AssignmentChangeModal.tsx";
+import AssignmentChangeModal from "./modals/Assignment/AssignmentChangeModal.tsx";
+import {useUpdateObjectiveMutation} from "../../../../store/apis/objectiveApi.ts";
 
 interface IObjectiveCardProps {
     objective: IObjective
@@ -25,13 +25,14 @@ interface IObjectiveCardProps {
 
 const ObjectiveCard: FC<IObjectiveCardProps> = ({objective}) => {
     const [updateObjective] = useUpdateObjectiveMutation();
+
     const [hovered, setHovered] = useState(false);
 
-    const [editing, setEditing] = useState(false);
-    const [editedName, setEditedName] = useState(objective.name);
-
+    const editingDialog = useDialog()
     const addStickerPopup = useDialog()
     const assignmentChangeModal = useDialog()
+
+    const [editedName, setEditedName] = useState(objective.name);
 
     const updateStatus = async () => {
 
@@ -44,14 +45,10 @@ const ObjectiveCard: FC<IObjectiveCardProps> = ({objective}) => {
         await updateObjective(updateStatusCommand)
     }
 
-    const startEditing = () => {
-        setEditing(true);
-    };
-
-    const finishEditing = async () => {
+    const updateTitle = async () => {
 
         if (editedName === objective.name) {
-            setEditing(false);
+            editingDialog.close();
             return;
         }
 
@@ -61,15 +58,11 @@ const ObjectiveCard: FC<IObjectiveCardProps> = ({objective}) => {
         };
 
         await updateObjective(updateNameCommand);
-        setEditing(false);
-    };
-
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setEditedName(event.target.value);
+        editingDialog.close();
     };
 
     return (
-        <div className='objective-card' style={{opacity: objective.status ? (hovered ? 1 : 0.6) : 1}}
+        <div className='objective-card' style={{opacity: objective.status ? (hovered ? 1 : 0.7) : 1}}
              onMouseEnter={() => setHovered(true)}
              onMouseLeave={() => setHovered(false)}>
 
@@ -79,18 +72,18 @@ const ObjectiveCard: FC<IObjectiveCardProps> = ({objective}) => {
                          style={{color: objective.status ? "forestgreen" : 'gray'}} onClick={updateStatus}>
                         {objective.status ? <CheckCircleFilled/> : <CheckCircleOutlined/>}</div>
                     <div className='objective-card-name-container'>
-                        {editing ? (
+                        {editingDialog.open ? (
                             <Input
                                 className='objective-card-name'
                                 placeholder='Имя'
                                 type="text"
                                 value={editedName}
-                                onChange={handleInputChange}
-                                onBlur={finishEditing}
+                                onChange={(event) => setEditedName(event.target.value)}
+                                onBlur={updateTitle}
                                 variant='borderless'
                                 onKeyDown={async (e) => {
                                     if (e.key === 'Enter') {
-                                        await finishEditing();
+                                        await updateTitle();
                                     }
                                 }}
                                 autoFocus
@@ -98,12 +91,12 @@ const ObjectiveCard: FC<IObjectiveCardProps> = ({objective}) => {
                         ) : (
                             <span className='objective-card-name'>{objective.name}</span>
                         )}
-                        {hovered && !editing &&
+                        {hovered && !editingDialog.open &&
                             <div className='objective-card-name-edit-container'>
-                                <EditOutlined className='objective-card-name-edit-icon' onClick={startEditing}/>
+                                <EditOutlined className='objective-card-name-edit-icon' onClick={editingDialog.show}/>
                             </div>}
                     </div>
-                    <EllipsisObjectiveDropDown startEditing={startEditing} objective={objective}
+                    <EllipsisObjectiveDropDown startEditing={editingDialog.show} objectiveId={objective.objectiveId}
                                                className='objective-card-dropdown'/>
                 </div>
                 <div className='objective-card-container-footer'>

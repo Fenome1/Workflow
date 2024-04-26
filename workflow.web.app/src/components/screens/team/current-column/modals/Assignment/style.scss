@@ -1,0 +1,19 @@
+.executors-modal-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-size: 16px;
+
+  .executors-modal-search {
+
+  }
+
+  .executors-modal-users-list {
+    overflow: auto;
+  }
+}
+
+.executor-item {
+  display: flex;
+  gap: 5px;
+}

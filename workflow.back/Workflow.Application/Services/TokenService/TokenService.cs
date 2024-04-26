@@ -21,7 +21,7 @@ public class TokenService(IOptions<JwtOptions> options) : ITokenService
             ValidateIssuer = false,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey)),
-            ValidateLifetime = false
+            ValidateLifetime = true
         };
         var tokenHandler = new JwtSecurityTokenHandler();
         var principal = tokenHandler.ValidateToken(accessToken, tokenValidationParameters, out var securityToken);
@@ -48,7 +48,7 @@ public class TokenService(IOptions<JwtOptions> options) : ITokenService
             _options.Issuer,
             _options.Audience,
             claims,
-            expires: DateTime.Now.AddMinutes(_options.ExpiresMinutes),
+            expires: DateTime.Now.AddDays(_options.ExpiresMinutes),
             signingCredentials: credentials
         );
 

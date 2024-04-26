@@ -3,17 +3,15 @@ import {IoEllipsisVertical} from "react-icons/io5";
 import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
 import {FC} from "react";
 import DeleteObjectiveModal from "./modals/DeleteObjectiveModal.tsx";
-import {IObjective} from "../../../../features/models/IObjective.ts";
 import {useDialog} from "../../../../hok/useDialog.ts";
 
-
 interface EllipsisObjectiveDropDownProps {
-    objective: IObjective
+    objectiveId: number
     className?: string;
     startEditing: () => void;
 }
 
-const EllipsisObjectiveDropDown: FC<EllipsisObjectiveDropDownProps> = ({className, objective, startEditing}) => {
+const EllipsisObjectiveDropDown: FC<EllipsisObjectiveDropDownProps> = ({className, objectiveId, startEditing}) => {
     const deleteObjectiveModal = useDialog()
 
     const items: MenuProps['items'] = [
@@ -46,7 +44,7 @@ const EllipsisObjectiveDropDown: FC<EllipsisObjectiveDropDownProps> = ({classNam
             <Dropdown menu={{items}} trigger={['hover']} className={className}>
                 <IoEllipsisVertical size={'15px'} className='ellipsis-vertical'/>
             </Dropdown>
-            <DeleteObjectiveModal dialog={deleteObjectiveModal} objectiveId={objective.objectiveId}/>
+            <DeleteObjectiveModal dialog={deleteObjectiveModal} objectiveId={objectiveId}/>
         </>
     );
 };

@@ -46,6 +46,7 @@ export const fetchQueryWithReauth: BaseQueryFn<
                 }
 
                 result = await baseQuery(args, api, extraOptions)
+
             } finally {
                 await release()
             }

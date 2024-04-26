@@ -4,7 +4,7 @@ import ColumnCard from "./ColumnCard.tsx";
 import './style.scss'
 import {Button} from "antd";
 import {useNavigate} from "react-router-dom";
-import CreateColumn from "./create/CreateColumn.tsx";
+import CreateColumnButton from "./create-column/CreateColumnButton.tsx";
 import {LeftOutlined} from "@ant-design/icons";
 
 const CurrentBoard = () => {
@@ -27,7 +27,7 @@ const CurrentBoard = () => {
                 {columns && columns?.map((column) => (
                     <ColumnCard key={column.columnId} column={column}/>
                 ))}
-                <CreateColumn/>
+                <CreateColumnButton boardId={selectedBoardId ?? 0}/>
             </div>
         </div>
     );
