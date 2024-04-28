@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Workflow.Application.Common.Mappings;
-using Column = Workflow.Core.Models.Column;
+using Workflow.Core.Models;
 
 namespace Workflow.Application.Features.Columns.Commands.Create;
 

@@ -15,8 +15,9 @@ public sealed class UpdateBoardCommandHandler(WorkflowDbContext context) : IRequ
         if (editingBoard is null)
             throw new NotFoundException(nameof(Board), request.BoardId);
 
-        if (!string.IsNullOrWhiteSpace(request.Name))
-            editingBoard.Name = request.Name;
+        editingBoard.Name = request.Name;
+
+        editingBoard.Description = request.Description;
 
         await context.SaveChangesAsync(cancellationToken);
 

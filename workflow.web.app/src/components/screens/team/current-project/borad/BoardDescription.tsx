@@ -1,5 +1,5 @@
 import {FC} from 'react';
-import {IBoard} from "../../../../features/models/IBoard.ts";
+import {IBoard} from "../../../../../features/models/IBoard.ts";
 import BoardDescriptionCount from "./BoardDescriptionCount.tsx";
 
 interface BoardDescriptionProps {
@@ -9,9 +9,8 @@ interface BoardDescriptionProps {
 const BoardDescription: FC<BoardDescriptionProps> = ({board}) => {
     return (
         <div className='board-description-container'>
-            {!board.description && <div className='board-description-text'>
+            {board.description && <div className='board-description-text'>
                 {board.description}
-                Типа описаниеТипа описаниеТипа описаниеТипа описаниеТипа описание
             </div>}
 
             <div className='board-description-count-container'>

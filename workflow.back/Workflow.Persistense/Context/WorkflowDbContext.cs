@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using Workflow.Core.Models;
 
 namespace Workflow.Persistense.Context;
@@ -16,6 +18,8 @@ public partial class WorkflowDbContext : DbContext
 
     public virtual DbSet<Agency> Agencies { get; set; }
 
+    public virtual DbSet<BackgroundImage> BackgroundImages { get; set; }
+
     public virtual DbSet<Board> Boards { get; set; }
 
     public virtual DbSet<Column> Columns { get; set; }
@@ -31,15 +35,14 @@ public partial class WorkflowDbContext : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https: //go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer(
-            "Server=localhost;Database=Workflow;User id=sa;Password=P@ssw0rd;trustservercertificate=true");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=localhost;Database=Workflow;User id=sa;Password=P@ssw0rd;trustservercertificate=true");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Agency>(entity =>
         {
-            entity.Property(e => e.Description).HasMaxLength(255);
+            entity.Property(e => e.Description).HasMaxLength(250);
             entity.Property(e => e.Name).HasMaxLength(50);
 
             entity.HasOne(d => d.Owner).WithMany(p => p.AgenciesNavigation)
@@ -63,8 +66,18 @@ public partial class WorkflowDbContext : DbContext
                     });
         });
 
+        modelBuilder.Entity<BackgroundImage>(entity =>
+        {
+            entity.HasKey(e => e.ImageId);
+
+            entity.HasOne(d => d.Agency).WithMany(p => p.BackgroundImages)
+                .HasForeignKey(d => d.AgencyId)
+                .HasConstraintName("FK_BackgroundImages_Agencies");
+        });
+
         modelBuilder.Entity<Board>(entity =>
         {
+            entity.Property(e => e.Description).HasMaxLength(250);
             entity.Property(e => e.Name).HasMaxLength(25);
 
             entity.HasOne(d => d.Project).WithMany(p => p.Boards)

@@ -1,6 +1,7 @@
 .project-boards-container {
+  display: flex;
+  flex-direction: column;
   padding: 20px 20px 20px 50px;
-  flex-grow: 1;
 
   .project-boards-header {
     display: flex;
@@ -10,19 +11,42 @@
   }
 
   .project-boards {
+    flex-grow: 1;
     padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-content: start;
 
     .board-card {
-      margin: 10px 10px 10px 10px;
+      display: flex;
+      flex-direction: column;
+      min-width: 240px;
+      min-height: 150px;
+      max-width: 250px;
+      max-height: 400px;
       border: solid 1px gainsboro;
+
+      .board-card-header {
+        display: flex;
+        flex-direction: row;
+        align-items: start;
+
+        .board-card-title {
+          font-size: 16pt;
+          font-weight: 550;
+          flex-grow: 1;
+        }
+      }
 
       .board-description-container {
         display: flex;
         flex-direction: column;
         gap: 10px;
+        margin-top: 10px;
 
         .board-description-text {
-
+          overflow: auto;
         }
 
         .board-description-count-container {
@@ -31,9 +55,9 @@
         }
 
         .board-description-count {
+          align-self: flex-end;
+          display: flex;
           padding: 5px 5px 5px 5px;
-          justify-content: center;
-          align-items: center;
           border-radius: 11px;
           font-size: 14px;
           box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
@@ -41,17 +65,31 @@
           .description-count-title {
             display: inline-block;
             margin-right: 2px;
+            font-weight: 550;
           }
 
           .description-count-value {
-
+            font-weight: 550;
           }
         }
       }
     }
 
-    .board-card:first-child {
-      margin-left: 0;
+    .create-board-button-container {
+      display: flex;
+      flex-direction: row;
+      align-self: start;
+      justify-content: center;
+      align-items: center;
+
+      border: gainsboro 1px solid;
+      border-radius: 10px;
+      padding: 2px 5px 2px 5px;
+      min-width: 150px;
+
+      .create-board-button {
+        padding: 0;
+      }
     }
   }
 }

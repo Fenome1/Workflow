@@ -6,6 +6,7 @@ import {Button} from "antd";
 import {useNavigate} from "react-router-dom";
 import CreateColumnButton from "./create-column/CreateColumnButton.tsx";
 import {LeftOutlined} from "@ant-design/icons";
+import {AppColors} from "../../../../common/AppColors.ts";
 
 const CurrentBoard = () => {
     const navigate = useNavigate();
@@ -17,7 +18,7 @@ const CurrentBoard = () => {
         {skip: selectedBoardId === null});
 
     return (
-        <div className='board-column-container'>
+        <div className='board-column-container' style={{background: AppColors.Primary}}>
             <div className='board-column-header-container'>
                 <Button icon={<LeftOutlined/>} size='large' shape='round' className='board-column-button'
                         onClick={toTeam}>Вернуться</Button>

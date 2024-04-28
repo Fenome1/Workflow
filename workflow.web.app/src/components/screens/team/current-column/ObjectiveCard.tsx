@@ -18,6 +18,7 @@ import AddStickerPopup from "./stickers/sticker-add/AddStickerPopup.tsx";
 import {useDialog} from "../../../../hok/useDialog.ts";
 import AssignmentChangeModal from "./modals/Assignment/AssignmentChangeModal.tsx";
 import {useUpdateObjectiveMutation} from "../../../../store/apis/objectiveApi.ts";
+import {AppColors} from "../../../../common/AppColors.ts";
 
 interface IObjectiveCardProps {
     objective: IObjective
@@ -62,7 +63,8 @@ const ObjectiveCard: FC<IObjectiveCardProps> = ({objective}) => {
     };
 
     return (
-        <div className='objective-card' style={{opacity: objective.status ? (hovered ? 1 : 0.7) : 1}}
+        <div className='objective-card'
+             style={{opacity: objective.status ? (hovered ? 1 : 0.7) : 1, background: AppColors.Secondary}}
              onMouseEnter={() => setHovered(true)}
              onMouseLeave={() => setHovered(false)}>
 
