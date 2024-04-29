@@ -11,7 +11,6 @@ import {useDialog} from "../../../../hok/useDialog.ts";
 import CreateObjectiveCard from "./create-objective/CreateObjectiveCard.tsx";
 import {IUpdateColumnCommand} from "../../../../features/commands/column/IUpdateColumnCommand.ts";
 import {useUpdateColumnMutation} from "../../../../store/apis/columnApi.ts";
-import {AppColors} from "../../../../common/AppColors.ts";
 
 interface IColumnCardProps {
     column: IColumn
@@ -43,7 +42,7 @@ const ColumnCard: FC<IColumnCardProps> = ({column}) => {
     };
 
     return (
-        <div className='column-card' style={{background: AppColors.Secondary}}>
+        <div className='column-card'>
             <div className='column-card-header'>
                 <div className='column-card-header-title'>
                     {editingDialog.open ? (

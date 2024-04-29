@@ -1,6 +1,6 @@
 import {IDialog} from "../../../../../../features/models/IDialog.ts";
 import {IBoard} from "../../../../../../features/models/IBoard.ts";
-import {Form, FormProps, Input, Modal} from "antd";
+import {Form, FormProps, Input, message, Modal} from "antd";
 import TextArea from "antd/es/input/TextArea";
 import {FC} from "react";
 import {useUpdateBoardMutation} from "../../../../../../store/apis/boardApi.ts";
@@ -20,6 +20,10 @@ const UpdateBoardModal: FC<CreateBoardModalProps> = ({dialog, board}) => {
     }
 
     const onFinish: FormProps['onFinish'] = async (command: IUpdateBoardCommand) => {
+        if(command.name === board.name && command.description === board.description){
+            message.info("Не удалось обновить доску, измените имя или описание")
+            return
+        }
         command.boardId = board.boardId
         await updateBoard(command)
         onClose()

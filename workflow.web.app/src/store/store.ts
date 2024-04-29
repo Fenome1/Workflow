@@ -9,6 +9,7 @@ import {AnyAction, SignalAction, SignalDispatch} from "redux-signalr";
 import agencySlice from "./slices/agencySlice.ts";
 import projectSlice from "./slices/projectSlice.ts";
 import boardSlice from "./slices/boardSlice.ts";
+import menuSlice from "./slices/menuSlice.ts";
 
 const rootReducer = combineReducers({
     [baseApi.reducerPath]: baseApi.reducer,
@@ -16,12 +17,13 @@ const rootReducer = combineReducers({
     agency: agencySlice,
     project: projectSlice,
     board: boardSlice,
+    menu: menuSlice,
 })
 
 const persistedReducer = persistReducer({
     key: "root",
     storage,
-    whitelist: ["user", "agency", "project", "board"],
+    whitelist: ["user", "agency", "project", "board", "menu"],
 }, rootReducer);
 
 export const setupStore = () => {
