@@ -48,7 +48,7 @@ export const userApi = baseApi.injectEndpoints({
                     await dispatch(login(data));
 
                     const {user} = data || {};
-                    const welcomeMessage = user?.firstName ? `Добро пожаловать, ${user.firstName}!` : "Добро пожаловать!";
+                    const welcomeMessage = user?.name ? `Добро пожаловать, ${user.name}!` : "Добро пожаловать!";
 
                     message.success(welcomeMessage, 3);
 

@@ -7,7 +7,6 @@ public record UserViewModel : IMapWith<User>
 {
     public required int UserId { get; set; }
     public required string Email { get; set; }
-    public string? FirstName { get; set; }
-    public string? SecondName { get; set; }
-    public string? MiddleName { get; set; }
+    public string? Login { get; set; }
+    public byte[]? AvatarImage { get; set; }
 }

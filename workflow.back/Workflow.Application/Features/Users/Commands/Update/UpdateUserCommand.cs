@@ -9,7 +9,6 @@ public record UpdateUserCommand : IRequest<UserViewModel>, IMapWith<User>
 {
     public required int UserId { get; set; }
     public string? Email { get; set; }
-    public string? FirstName { get; set; }
-    public string? SecondName { get; set; }
-    public string? MiddleName { get; set; }
+    public string? Name { get; set; }
+    public byte[]? AvatarImage { get; set; }
 }

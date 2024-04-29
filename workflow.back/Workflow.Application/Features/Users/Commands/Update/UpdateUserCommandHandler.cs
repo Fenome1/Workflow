@@ -30,10 +30,11 @@ public sealed class UpdateUserCommandHandler(IMapper mapper, WorkflowDbContext c
 
             user.Email = request.Email;
         }
+        
+        if (!string.IsNullOrWhiteSpace(user.Name))
+            user.Name = request.Name;
 
-        user.FirstName = request.FirstName;
-        user.SecondName = request.SecondName;
-        user.MiddleName = request.MiddleName;
+        user.AvatarImage = request.AvatarImage;
 
         context.Users.Update(user);
         await context.SaveChangesAsync(cancellationToken);
