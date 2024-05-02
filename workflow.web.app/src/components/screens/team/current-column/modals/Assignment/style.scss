@@ -9,11 +9,15 @@
   }
 
   .executors-modal-users-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     overflow: auto;
   }
 }
 
 .executor-item {
+  align-items: center;
   display: flex;
-  gap: 5px;
+  gap: 10px;
 }

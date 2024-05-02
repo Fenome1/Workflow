@@ -5,7 +5,6 @@ import userSlice from "./slices/userSlice.ts";
 import storage from "redux-persist/es/storage";
 import {FLUSH, persistReducer, persistStore} from "redux-persist";
 import {PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE} from "redux-persist/es/constants";
-import {AnyAction, SignalAction, SignalDispatch} from "redux-signalr";
 import agencySlice from "./slices/agencySlice.ts";
 import projectSlice from "./slices/projectSlice.ts";
 import boardSlice from "./slices/boardSlice.ts";
@@ -44,13 +43,10 @@ export type RootState = ReturnType<typeof rootReducer>
 export type AppStore = ReturnType<typeof setupStore>
 export type AppDispatch = AppStore['dispatch']
 
-export type Action<ReturnValue = void> = SignalAction<
-    ReturnValue,
-    RootState,
-    AnyAction
->
-
-export type Dispatch<Action extends AnyAction = AnyAction> = SignalDispatch<
-    RootState,
-    Action
->
+export const resetAndCleanStore = async () => {
+    try {
+        await persistor.purge();
+    } catch (error) {
+        console.log(error)
+    }
+};

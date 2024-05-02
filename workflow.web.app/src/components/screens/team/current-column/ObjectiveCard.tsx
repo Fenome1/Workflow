@@ -9,9 +9,8 @@ import {
     PlusCircleOutlined,
     UserOutlined
 } from "@ant-design/icons";
-import {FaUserGroup} from "react-icons/fa6";
 import {IUpdateObjectiveCommand} from "../../../../features/commands/objective/IUpdateObjectiveCommand.ts";
-import {Input} from "antd";
+import {Avatar, Input} from "antd";
 import PrioritySticker from "./stickers/priority/PrioritySticker.tsx";
 import DeadlineSticker from "./stickers/deadline/DeadlineSticker.tsx";
 import AddStickerPopup from "./stickers/sticker-add/AddStickerPopup.tsx";
@@ -19,6 +18,7 @@ import {useDialog} from "../../../../hok/useDialog.ts";
 import AssignmentChangeModal from "./modals/Assignment/AssignmentChangeModal.tsx";
 import {useUpdateObjectiveMutation} from "../../../../store/apis/objectiveApi.ts";
 import {AppColors} from "../../../../common/AppColors.ts";
+import AvatarItem from "../../../ui/AvatarItem.tsx";
 
 interface IObjectiveCardProps {
     objective: IObjective
@@ -124,7 +124,11 @@ const ObjectiveCard: FC<IObjectiveCardProps> = ({objective}) => {
                         }
                         {objective.users && objective.users.length > 0 &&
                             <div className='objective-card-existed-users-container'>
-                                <FaUserGroup className='objective-card-existed-users-icon'/>
+                                <Avatar.Group maxCount={2}>
+                                    {objective.users?.map((user) => (
+                                        <AvatarItem user={user}/>
+                                    ))}
+                                </Avatar.Group>
                             </div>
                         }
                     </div>

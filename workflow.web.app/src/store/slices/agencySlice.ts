@@ -1,4 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {PURGE} from "redux-persist/es/constants";
 
 interface IAgencyState {
     selectedAgencyId: number | null;
@@ -15,7 +16,10 @@ const agencySlice = createSlice({
         selectAgency(state, action: PayloadAction<number | null>) {
             state.selectedAgencyId = action.payload;
         },
-    }
+    },
+    extraReducers: (builder) => {
+        builder.addCase(PURGE, () => initialState);
+    },
 });
 
 export const {selectAgency} = agencySlice.actions;

@@ -1,0 +1,139 @@
+import React, {FC, useRef, useState} from 'react';
+import {Button, Input, InputRef, Spin} from "antd";
+import {LogoutOutlined} from "@ant-design/icons";
+import {useLogoutMutation, useUpdateUserMutation} from "../../../../store/apis/userApi.ts";
+import {ILogoutUserCommand} from "../../../../features/commands/user/ILogoutUserCommand.ts";
+import {useTypedSelector} from "../../../../store/hooks/hooks.ts";
+import {IUpdateUserCommand} from "../../../../features/commands/user/IUpdateUserCommand.ts";
+import AvatarItem from "../../../ui/AvatarItem.tsx";
+
+const ProfileDashboard: FC = () => {
+    const userState = useTypedSelector(state => state?.user);
+    const currentUser = userState?.user;
+    const [userName, setUserName] = useState(currentUser?.name);
+
+    const fileInputRef = useRef<HTMLInputElement>(null)
+    const nameInputRef = useRef<InputRef>(null)
+
+    const [avatarLoading, setAvatarLoading] = useState<boolean>(false);
+
+    const [logout] = useLogoutMutation();
+    const [updateUser] = useUpdateUserMutation();
+
+
+    const handleLogout = async () => {
+        if (!userState.refreshToken || !userState.accessToken) return;
+
+        const command: ILogoutUserCommand = {
+            refreshToken: userState!.refreshToken,
+            accessToken: userState!.accessToken
+        };
+        await logout(command);
+    };
+
+    const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (!currentUser) return;
+        const file = event.target.files?.[0];
+        if (!file) return;
+        setAvatarLoading(true);
+
+        const reader = new FileReader();
+        reader.readAsArrayBuffer(file);
+        reader.onload = handleFileLoad;
+        reader.onerror = handleFileError;
+    };
+
+    const handleFileLoad = (event: ProgressEvent<FileReader>) => {
+        if (!currentUser) return
+
+        const arrayBuffer = event.target?.result as ArrayBuffer;
+        const base64String = btoa(new Uint8Array(arrayBuffer)
+            .reduce((data, byte) => data + String.fromCharCode(byte), ''));
+
+        const command: IUpdateUserCommand = {
+            userId: currentUser.userId,
+            avatarImage: base64String
+        };
+
+        updateUser(command).finally(() => setAvatarLoading(false));
+    };
+
+    const handleFileError = (event: ProgressEvent<FileReader>) => {
+        console.error('Error reading file:', event.target?.error);
+        setAvatarLoading(false);
+    };
+
+    const handleImageDelete = async () => {
+        if (!currentUser) return;
+        setAvatarLoading(true);
+        const command: IUpdateUserCommand = {
+            userId: currentUser.userId,
+            isAvatarImageReset: true,
+        };
+        await updateUser(command).finally(() => setAvatarLoading(false));
+    };
+
+    const handleUploadButtonClick = () => {
+        fileInputRef.current?.click();
+    };
+
+    const handleEnterKeyPress = async (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            await handleSaveNameClick()
+            if (nameInputRef.current)
+                nameInputRef.current.blur()
+        }
+    }
+
+    const handleSaveNameClick = async () => {
+        if (!currentUser || !userName || userName === currentUser?.name) return;
+
+        const command: IUpdateUserCommand = {
+            userId: currentUser.userId,
+            name: userName
+        };
+
+        await updateUser(command);
+    };
+
+    return (
+        <div className="profile-dashboard-container">
+            <div className='profile-dashboard-header'>
+                <span className='profile-dashboard-title'>Профиль</span>
+                <Button type='link' onClick={handleLogout} icon={<LogoutOutlined/>}
+                        className='profile-dashboard-logout'>Выход</Button>
+            </div>
+            <div className='profile-dashboard-avatar-container'>
+                {avatarLoading ?
+                    <Spin style={{width: '75px'}}/> :
+                    <AvatarItem user={currentUser} className='profile-dashboard-avatar'/>
+                }
+                <div className='profile-dashboard-avatar-buttons'>
+                    <Button type='link' className='profile-dashboard-avatar-upload' onClick={handleUploadButtonClick}>Загрузить
+                        фото</Button>
+                    <input type="file" onChange={handleImageChange} style={{display: 'none'}} ref={fileInputRef}/>
+                    {currentUser?.avatarImage &&
+                        <Button type='link' className='profile-dashboard-avatar-delete' onClick={handleImageDelete}>Удалить
+                            фото</Button>
+                    }
+                </div>
+            </div>
+            <div className='profile-dashboard-login'>
+                <Input className='profile-dashboard-login-input'
+                       value={userName}
+                       ref={nameInputRef}
+                       onKeyDown={handleEnterKeyPress}
+                       onChange={(event) => setUserName(event.target.value)}
+                />
+                {currentUser?.name !== userName &&
+                    <div className='profile-dashboard-login-buttons'>
+                        <Button type='link' onClick={() => setUserName(currentUser?.name)}>Отмена</Button>
+                        <Button type='link' onClick={handleSaveNameClick}>Сохранить</Button>
+                    </div>
+                }
+            </div>
+        </div>
+    );
+};
+
+export default ProfileDashboard;

@@ -13,7 +13,6 @@ const ProjectBoards: FC = () => {
         skip: selectedProjectIdRedux === null
     });
 
-
     return (
         <div className='project-boards-container'>
             <b className='project-boards-header'>Доступные доски</b>

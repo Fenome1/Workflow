@@ -8,6 +8,7 @@ import {
     IAssignifyUserToObjectiveCommand
 } from "../../../../../../features/commands/objective/IAssignifyUserToObjectiveCommand.ts";
 import {AssignifyType} from "../../../../../../common/AssignifyType.ts";
+import AvatarItem from "../../../../../ui/AvatarItem.tsx";
 
 interface AssignmentUserItemProps {
     user: IUser
@@ -29,10 +30,12 @@ const AssignmentUserItem: FC<AssignmentUserItemProps> = ({user, objective}) => {
 
         await updateAssignifyUserToObjective(updateAssinifyCommand);
     }
+
     return (
         <div className='executor-item' key={user.userId}>
             <Checkbox checked={isChecked()} onClick={updateHandle}></Checkbox>
-            {user.email}
+            <AvatarItem user={user}/>
+            {user.name}
         </div>
     );
 };

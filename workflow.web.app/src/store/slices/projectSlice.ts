@@ -1,4 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {PURGE} from "redux-persist/es/constants";
 
 interface IProjectState {
     selectedProjectId: number | null;
@@ -15,7 +16,10 @@ const projectSlice = createSlice({
         selectProject(state, action: PayloadAction<number | null>) {
             state.selectedProjectId = action.payload;
         },
-    }
+    },
+    extraReducers: (builder) => {
+        builder.addCase(PURGE, () => initialState);
+    },
 });
 
 export const {selectProject} = projectSlice.actions;

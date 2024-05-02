@@ -1,5 +1,6 @@
 import {IUser} from "../../features/models/IUser.ts";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {PURGE} from "redux-persist/es/constants";
 
 interface IUserState {
     accessToken: string | null
@@ -17,7 +18,6 @@ const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        logout: () => initialState,
         login: (state, action: PayloadAction<IUserState>) => {
             state.user = action.payload.user;
             state.accessToken = action.payload.accessToken;
@@ -26,8 +26,11 @@ const userSlice = createSlice({
         updateUser: (state, action: PayloadAction<IUser>) => {
             state.user = action.payload
         }
-    }
+    },
+    extraReducers: (builder) => {
+        builder.addCase(PURGE, () => initialState);
+    },
 });
 
-export const {logout, login, updateUser} = userSlice.actions
+export const {login, updateUser} = userSlice.actions
 export default userSlice.reducer

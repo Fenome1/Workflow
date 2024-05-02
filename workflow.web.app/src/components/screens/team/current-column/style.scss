@@ -128,6 +128,10 @@
       }
 
       .objective-card-existed-users-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
         cursor: pointer;
         transition: all ease-in-out 50ms;
 

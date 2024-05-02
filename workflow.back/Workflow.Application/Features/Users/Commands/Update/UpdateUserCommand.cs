@@ -11,4 +11,5 @@ public record UpdateUserCommand : IRequest<UserViewModel>, IMapWith<User>
     public string? Email { get; set; }
     public string? Name { get; set; }
     public byte[]? AvatarImage { get; set; }
+    public bool? IsAvatarImageReset { get; set; } = false;
 }

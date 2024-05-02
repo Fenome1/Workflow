@@ -22,6 +22,10 @@ public sealed class CreateUserCommandHandler(
             throw new Exception("Пользователь с таким логином уже существует");
 
         var user = mapper.Map<User>(request);
+        
+        var userName = user.Email.Split('@').First();
+        user.Name = userName;
+        
         user.Password = passwordHasher.Hash(request.Password);
 
         await context.Users.AddAsync(user, cancellationToken);

@@ -6,10 +6,10 @@
   flex-grow: 1;
 
   .profile-dashboard-container {
+    width: 500px;
     padding: 25px;
     border-radius: 11px;
     min-height: 100px;
-    width: 25%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
     .profile-dashboard-header {
@@ -27,9 +27,9 @@
 
     .profile-dashboard-avatar-container {
       display: flex;
-      align-items: center;
       padding-top: 10px;
       padding-bottom: 10px;
+      align-items: center;
 
       .profile-dashboard-avatar {
         width: 75px;
@@ -40,6 +40,16 @@
         display: flex;
         flex-direction: column;
         align-items: start;
+
+        .profile-dashboard-avatar-upload {
+        }
+
+        .profile-dashboard-avatar-delete {
+          color: red;
+          &:hover {
+            color: gray;
+          }
+        }
       }
     }
 
@@ -48,7 +58,7 @@
       display: flex;
 
       .profile-dashboard-login-input {
-
+        max-width: 200px;
       }
 
       .profile-dashboard-login-buttons {
@@ -59,6 +69,7 @@
 
   .agencies-dashboard-container {
     @extend .profile-dashboard-container;
-    width: 50%;
+    width: 800px;
+
   }
 }

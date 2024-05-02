@@ -9,7 +9,7 @@ import './style.scss'
 const AgencySelector: FC = () => {
     const dispatch = useAppDispatch();
     const {user} = useTypedSelector((state) => state.user);
-    const {data: agencies} = useGetAgencyByUserQuery(user!.userId, {skip: user === null});
+    const {data: agencies} = useGetAgencyByUserQuery(user?.userId ?? 0, {skip: user === null});
 
     const selectedAgencyIdRedux = useTypedSelector((state) => state.agency?.selectedAgencyId);
 

@@ -1,4 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {PURGE} from "redux-persist/es/constants";
 
 interface IBoardState {
     selectedBoardId: number | null;
@@ -15,7 +16,10 @@ const boardSlice = createSlice({
         selectBoard(state, action: PayloadAction<number | null>) {
             state.selectedBoardId = action.payload;
         },
-    }
+    },
+    extraReducers: (builder) => {
+        builder.addCase(PURGE, () => initialState);
+    },
 });
 
 export const {selectBoard} = boardSlice.actions;

@@ -4,13 +4,14 @@ import {IRegisterUserCommand} from "../../features/commands/user/IRegisterUserCo
 import {message} from "antd";
 import {ILoginUserCommand} from "../../features/commands/user/ILoginUserCommand.ts";
 import {ILoginUserResponse} from "../../features/reasponces/ILoginUserResponse.ts";
-import {login, logout} from "../slices/userSlice.ts";
+import {login, updateUser} from "../slices/userSlice.ts";
 import {ILogoutUserCommand} from "../../features/commands/user/ILogoutUserCommand.ts";
 import {IRefreshUserCommand} from "../../features/commands/user/IRefreshUserCommand.ts";
 import {baseQuery} from "../fetchBaseQueryWithReauth.ts";
-import {RootState} from "../store.ts";
+import {resetAndCleanStore, RootState} from "../store.ts";
 import {FetchBaseQueryError} from "@reduxjs/toolkit/query";
 import {IUser} from "../../features/models/IUser.ts";
+import {IUpdateUserCommand} from "../../features/commands/user/IUpdateUserCommand.ts";
 
 export const userApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -19,6 +20,27 @@ export const userApi = baseApi.injectEndpoints({
                 url: `${ApiTags.User}/Agencies/${query}`,
                 method: HttpMethod.GET,
             })
+        }),
+        updateUser: builder.mutation<IUser, IUpdateUserCommand>({
+            query: command => ({
+                url: `${ApiTags.User}/Update`,
+                method: HttpMethod.PUT,
+                body: command
+            }),
+            async onQueryStarted(_, {dispatch, queryFulfilled}) {
+                const {data} = await queryFulfilled
+                try {
+                    await queryFulfilled
+                    dispatch(updateUser(data))
+                    message.success("Профиль успешно обновлен", 2)
+                } catch (error) {
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-expect-error
+                    const errorMessage = error.error?.data || "Произошла ошибка";
+                    message.error(errorMessage, 3);
+                }
+            },
+            invalidatesTags: [{type: ApiTags.User}],
         }),
         regiserUser: builder.mutation<number, IRegisterUserCommand>({
             query: command => ({
@@ -64,8 +86,8 @@ export const userApi = baseApi.injectEndpoints({
                 method: HttpMethod.POST,
                 body: command,
             }),
-            async onQueryStarted(_, {dispatch, queryFulfilled}) {
-                dispatch(logout())
+            async onQueryStarted(_, {queryFulfilled}) {
+                await resetAndCleanStore()
                 try {
                     await queryFulfilled
                 } catch (error) {
@@ -99,6 +121,7 @@ export const userApi = baseApi.injectEndpoints({
 
 export const {
     useRegiserUserMutation,
+    useUpdateUserMutation,
     useLoginUserMutation,
     useLogoutMutation,
     useGetUsersByAgencyQuery
