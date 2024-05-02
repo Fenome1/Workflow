@@ -8,16 +8,21 @@ import Profile from "./profile/Profile.tsx";
 
 const Team = () => {
     const selectedMenuItem = useTypedSelector(state => state.menu?.selectedMenuItem);
+    const selectedAgencyId = useTypedSelector((state) => state.agency?.selectedAgencyId);
+    const selectedProjectId = useTypedSelector((state) => state.project?.selectedProjectId);
+    const userState = useTypedSelector(state => state.user);
 
     return (
         <div className='team-page' style={{background: AppColors.Primary}}>
-            <TeamMenu/>
+            <TeamMenu selectedAgencyId={selectedAgencyId}
+                      selectedProjectId={selectedProjectId}
+                      currentUser={userState.user}/>
             {selectedMenuItem && selectedMenuItem === TeamMenuItem.Profile &&
-            <Profile/>}
+                <Profile userState={userState}/>}
             {selectedMenuItem && selectedMenuItem === TeamMenuItem.Objectives &&
                 <div>Задачи</div>}
             {selectedMenuItem && selectedMenuItem === TeamMenuItem.Projects &&
-                <ProjectBoards/>}
+                <ProjectBoards selectedProjectId={selectedProjectId}/>}
         </div>
     );
 };

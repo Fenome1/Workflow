@@ -3,12 +3,15 @@ import {Button, Input, InputRef, Spin} from "antd";
 import {LogoutOutlined} from "@ant-design/icons";
 import {useLogoutMutation, useUpdateUserMutation} from "../../../../store/apis/userApi.ts";
 import {ILogoutUserCommand} from "../../../../features/commands/user/ILogoutUserCommand.ts";
-import {useTypedSelector} from "../../../../store/hooks/hooks.ts";
 import {IUpdateUserCommand} from "../../../../features/commands/user/IUpdateUserCommand.ts";
 import AvatarItem from "../../../ui/AvatarItem.tsx";
+import {IUserState} from "../../../../store/slices/userSlice.ts";
 
-const ProfileDashboard: FC = () => {
-    const userState = useTypedSelector(state => state?.user);
+interface ProfileDashboardProps {
+    userState: IUserState,
+}
+
+const ProfileDashboard: FC<ProfileDashboardProps> = ({userState}) => {
     const currentUser = userState?.user;
     const [userName, setUserName] = useState(currentUser?.name);
 

@@ -1,16 +1,17 @@
 import {FC} from 'react';
 import {useGetBoardsByProjectQuery} from "../../../../store/apis/boardApi.ts";
-import {useTypedSelector} from "../../../../store/hooks/hooks.ts";
 import {IBoard} from "../../../../features/models/IBoard.ts";
 import BoardCard from "./borad/BoardCard.tsx";
 import './style.scss'
 import CreateBoardButton from "./borad/CreateBoardButton.tsx";
 
-const ProjectBoards: FC = () => {
-    const selectedProjectIdRedux = useTypedSelector((state) => state.project?.selectedProjectId);
+interface ProjectBoardsProps {
+    selectedProjectId: number | null
+}
 
-    const {data: boards} = useGetBoardsByProjectQuery(selectedProjectIdRedux || 0, {
-        skip: selectedProjectIdRedux === null
+const ProjectBoards: FC<ProjectBoardsProps> = ({selectedProjectId}) => {
+    const {data: boards} = useGetBoardsByProjectQuery(selectedProjectId || 0, {
+        skip: selectedProjectId === null
     });
 
     return (
@@ -20,7 +21,7 @@ const ProjectBoards: FC = () => {
                 {boards && boards.map((board: IBoard) => (
                     <BoardCard key={board.boardId} board={board}></BoardCard>
                 ))}
-                <CreateBoardButton projectId={selectedProjectIdRedux ?? 0}/>
+                <CreateBoardButton projectId={selectedProjectId ?? 0}/>
             </div>
         </div>
     );

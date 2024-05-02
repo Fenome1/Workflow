@@ -126,7 +126,7 @@ const ObjectiveCard: FC<IObjectiveCardProps> = ({objective}) => {
                             <div className='objective-card-existed-users-container'>
                                 <Avatar.Group maxCount={2}>
                                     {objective.users?.map((user) => (
-                                        <AvatarItem user={user}/>
+                                        <AvatarItem key={user.userId} user={user}/>
                                     ))}
                                 </Avatar.Group>
                             </div>

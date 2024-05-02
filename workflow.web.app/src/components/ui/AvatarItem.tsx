@@ -12,7 +12,8 @@ const AvatarItem: FC<AvatarProps> = ({user, className}) => {
     return (
         user?.avatarImage ?
             <Avatar className={className} style={{background: "gray"}} src={base64ToImage(user.avatarImage)}/>
-            : <Avatar className={className} style={{background: "gray"}} children={user?.name?.toString()?.substring(0, 4)}/>
+            : <Avatar className={className} style={{background: "gray"}}
+                      children={user?.name?.toString()?.substring(0, 4)}/>
     );
 };
 

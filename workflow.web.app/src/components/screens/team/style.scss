@@ -4,6 +4,7 @@
   min-height: 100vh;
 
   .team-menu {
+    font-size: 14pt;
     min-width: 250px;
     max-width: 250px;
     display: flex;
@@ -21,12 +22,23 @@
     }
 
     .team-menu-tabs {
+      font-size: 12pt;
       border-inline: 0;
       flex-grow: 1;
       border-bottom: 1pt gainsboro solid;
 
       .team-menu-profile {
         height: 50px;
+
+        .team-menu-profile-img {
+          width: 20px;
+          height: 20px;
+        }
+      }
+
+      .menu-icon {
+        width: 20px;
+        height: 20px;
       }
     }
 
@@ -43,3 +55,5 @@
     }
   }
 }
+
+

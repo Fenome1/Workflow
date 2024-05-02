@@ -5,11 +5,15 @@ import {useGetAgencyByUserQuery} from "../../../store/apis/agencyApi.ts";
 import {selectAgency} from "../../../store/slices/agencySlice.ts";
 import {selectProject} from "../../../store/slices/projectSlice.ts";
 import './style.scss'
+import {IUser} from "../../../features/models/IUser.ts";
 
-const AgencySelector: FC = () => {
+interface AgencySelectorProps {
+    currentUser: IUser | null
+}
+
+const AgencySelector: FC<AgencySelectorProps> = ({currentUser}) => {
     const dispatch = useAppDispatch();
-    const {user} = useTypedSelector((state) => state.user);
-    const {data: agencies} = useGetAgencyByUserQuery(user?.userId ?? 0, {skip: user === null});
+    const {data: agencies} = useGetAgencyByUserQuery(currentUser?.userId ?? 0, {skip: currentUser === null});
 
     const selectedAgencyIdRedux = useTypedSelector((state) => state.agency?.selectedAgencyId);
 

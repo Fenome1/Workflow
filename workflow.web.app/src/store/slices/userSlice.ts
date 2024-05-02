@@ -2,7 +2,7 @@ import {IUser} from "../../features/models/IUser.ts";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {PURGE} from "redux-persist/es/constants";
 
-interface IUserState {
+export interface IUserState {
     accessToken: string | null
     refreshToken: string | null
     user: IUser | null

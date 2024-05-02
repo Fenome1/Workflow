@@ -20,7 +20,7 @@ const UpdateBoardModal: FC<CreateBoardModalProps> = ({dialog, board}) => {
     }
 
     const onFinish: FormProps['onFinish'] = async (command: IUpdateBoardCommand) => {
-        if(command.name === board.name && command.description === board.description){
+        if (command.name === board.name && command.description === board.description) {
             message.info("Не удалось обновить доску, измените имя или описание")
             return
         }
