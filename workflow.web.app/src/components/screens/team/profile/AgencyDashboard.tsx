@@ -2,13 +2,20 @@ import {FC} from "react";
 import {useGetAgencyByUserQuery} from "../../../../store/apis/agencyApi.ts";
 import {IUser} from "../../../../features/models/IUser.ts";
 import AgencyDashboardItem from "./AgencyDashboardItem.tsx";
+import {Button} from "antd";
+import {PlusOutlined} from "@ant-design/icons";
+import {useDialog} from "../../../../hok/useDialog.ts";
+import CreateAgencyModal from "./modals/CreateAgencyModal.tsx";
 
 interface AgencyDashboardProfile {
     currentUser: IUser | null
 }
 
 const AgencyDashboard: FC<AgencyDashboardProfile> = ({currentUser}) => {
+
     const {data: agencies} = useGetAgencyByUserQuery(currentUser?.userId ?? 0, {skip: currentUser === null});
+
+    const createAgencyDialog = useDialog()
 
     return (
         <div className="agencies-dashboard-container">
@@ -21,6 +28,11 @@ const AgencyDashboard: FC<AgencyDashboardProfile> = ({currentUser}) => {
                         <AgencyDashboardItem key={agency.agencyId} agency={agency} currentUser={currentUser}/>)
                 }
             </div>
+            <Button type='link'
+                    icon={<PlusOutlined/>}
+                    className='agency-create-button'
+                    onClick={createAgencyDialog.show}>Создать агентство</Button>
+            <CreateAgencyModal dialog={createAgencyDialog} userId={currentUser?.userId}/>
         </div>
     );
 };

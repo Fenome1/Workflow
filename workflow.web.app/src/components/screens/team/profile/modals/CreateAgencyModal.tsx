@@ -1,17 +1,18 @@
-import {FC} from 'react';
-import {IDialog} from "../../../../../../features/models/IDialog.ts";
 import {Form, FormProps, Input, Modal} from "antd";
-import {ICreateBoardCommand} from "../../../../../../features/commands/board/ICreateBoardCommand.ts";
-import {useCreateBoardMutation} from "../../../../../../store/apis/boardApi.ts";
+import {IDialog} from "../../../../../features/models/IDialog.ts";
+import {FC} from "react";
 import TextArea from "antd/es/input/TextArea";
+import {useCreateAgencyMutation} from "../../../../../store/apis/agencyApi.ts";
+import {ICreateAgencyCommand} from "../../../../../features/commands/agency/ICreateAgencyCommand.ts";
 
-interface CreateBoardModalProps {
+interface CreateAgencyModalProps {
     dialog: IDialog
-    projectId: number
+    userId?: number
 }
 
-const CreateBoardModal: FC<CreateBoardModalProps> = ({dialog, projectId}) => {
-    const [createBoard] = useCreateBoardMutation()
+const CreateAgencyModal: FC<CreateAgencyModalProps> = ({dialog, userId}) => {
+    const [createBoard] = useCreateAgencyMutation()
+
     const [form] = Form.useForm();
 
     const onClose = () => {
@@ -19,8 +20,11 @@ const CreateBoardModal: FC<CreateBoardModalProps> = ({dialog, projectId}) => {
         dialog.close()
     }
 
-    const onFinish: FormProps['onFinish'] = async (command: ICreateBoardCommand) => {
-        command.projectId = projectId
+    const onFinish: FormProps['onFinish'] = async (command: ICreateAgencyCommand) => {
+        if (!userId)
+            return
+
+        command.userId = userId
         await createBoard(command)
         onClose()
     };
@@ -28,7 +32,7 @@ const CreateBoardModal: FC<CreateBoardModalProps> = ({dialog, projectId}) => {
     return (
         <Modal
             open={dialog.open}
-            title="Создать доску"
+            title="Создать агентство"
             okText="Сохранить"
             cancelText="Отмена"
             onCancel={onClose}
@@ -47,18 +51,18 @@ const CreateBoardModal: FC<CreateBoardModalProps> = ({dialog, projectId}) => {
                   onFinish={onFinish}>
                 <Form.Item
                     name='name'
-                    label="Название доски"
-                    rules={[{required: true, message: 'Введите название доски'}]}>
-                    <Input placeholder='Название доски...' showCount maxLength={25}/>
+                    label="Название агентства"
+                    rules={[{required: true, message: 'Введите название нового агентства'}]}>
+                    <Input placeholder='Название агентства...' showCount maxLength={50}/>
                 </Form.Item>
                 <Form.Item
                     name='description'
                     label="Описание">
-                    <TextArea placeholder='Описание доски...' showCount maxLength={250}/>
+                    <TextArea placeholder='Описание агентства...' showCount maxLength={250}/>
                 </Form.Item>
             </Form>
         </Modal>
     );
 };
 
-export default CreateBoardModal;
+export default CreateAgencyModal;

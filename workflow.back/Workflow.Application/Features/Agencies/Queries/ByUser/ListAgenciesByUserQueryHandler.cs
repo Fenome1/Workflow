@@ -17,6 +17,7 @@ public sealed class ListAgenciesByUserQueryHandler(WorkflowDbContext context, IM
             .Include(a => a.Users)
             .Where(a => a.OwnerId == request.UserId ||
                         a.Users.Any(u => u.UserId == request.UserId))
+            .OrderBy(a => a.OwnerId)
             .ToListAsync(cancellationToken);
 
         var agenciesViewModel = mapper.Map<List<AgencyViewModel>>(userAgencies);

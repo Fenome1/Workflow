@@ -32,7 +32,7 @@ const UpdateBoardModal: FC<CreateBoardModalProps> = ({dialog, board}) => {
     return (
         <Modal
             open={dialog.open}
-            title="Создать новую доску"
+            title="Изменить доску"
             okText="Сохранить"
             cancelText="Отмена"
             onCancel={onClose}

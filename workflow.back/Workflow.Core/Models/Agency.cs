@@ -1,6 +1,6 @@
 ﻿namespace Workflow.Core.Models;
 
-public partial class Agency
+public class Agency
 {
     public int AgencyId { get; set; }
 

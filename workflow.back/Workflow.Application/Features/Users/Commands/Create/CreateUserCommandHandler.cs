@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Workflow.Application.Common.Interfaces;
-using Workflow.Application.Features.Agencies.Commands.Create;
+using Workflow.Application.Features.Agencies.Commands.CreateDefault;
 using Workflow.Core.Models;
 using Workflow.Persistense.Context;
 
@@ -22,16 +22,16 @@ public sealed class CreateUserCommandHandler(
             throw new Exception("Пользователь с таким логином уже существует");
 
         var user = mapper.Map<User>(request);
-        
+
         var userName = user.Email.Split('@').First();
         user.Name = userName;
-        
+
         user.Password = passwordHasher.Hash(request.Password);
 
         await context.Users.AddAsync(user, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
 
-        await mediator.Send(new CreateAgencyCommand(user.UserId),
+        await mediator.Send(new CreateDefaultAgencyCommand(user.UserId),
             cancellationToken);
 
         return user.UserId;

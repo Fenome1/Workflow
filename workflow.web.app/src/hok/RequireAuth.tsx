@@ -11,7 +11,7 @@ const RequireAuth: FC<RequireAuthProps> = ({children}) => {
     const user = useTypedSelector(state => state.user?.user)
 
     if (!user) {
-        return <Navigate to='/auth' state={{form: location}}/>
+        return <Navigate to='/login' state={{form: location}}/>
     }
 
     return children

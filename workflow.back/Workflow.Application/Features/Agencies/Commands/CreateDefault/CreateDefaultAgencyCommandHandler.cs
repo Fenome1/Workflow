@@ -4,13 +4,14 @@ using Workflow.Application.Common.Exceptions;
 using Workflow.Core.Models;
 using Workflow.Persistense.Context;
 
-namespace Workflow.Application.Features.Agencies.Commands.Create;
+namespace Workflow.Application.Features.Agencies.Commands.CreateDefault;
 
-public class CreateAgencyCommandHandler(
+public sealed class CreateDefaultAgencyCommandHandler(
     WorkflowDbContext context,
-    IMediator mediator) : IRequestHandler<CreateAgencyCommand, int>
+    IMediator mediator)
+    : IRequestHandler<CreateDefaultAgencyCommand, int>
 {
-    public async Task<int> Handle(CreateAgencyCommand request, CancellationToken cancellationToken)
+    public async Task<int> Handle(CreateDefaultAgencyCommand request, CancellationToken cancellationToken)
     {
         var isUserExists = await context.Users
             .AsNoTrackingWithIdentityResolution()
@@ -23,8 +24,7 @@ public class CreateAgencyCommandHandler(
         var newAgency = new Agency
         {
             OwnerId = request.UserId,
-            Name = request.Name,
-            Description = request.Description
+            Name = "Моё агентство"
         };
 
         await context.AddAsync(newAgency, cancellationToken);

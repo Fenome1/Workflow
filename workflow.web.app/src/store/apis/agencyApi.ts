@@ -1,8 +1,8 @@
 import {ApiTags, baseApi} from "./baseApi.ts";
 import {HttpMethod} from "../../common/HttpMetod.ts";
-import {message} from "antd";
 import {IAgency} from "../../features/models/IAgency.ts";
 import {IUpdateAgencyCommand} from "../../features/commands/agency/IUpdateAgencyCommand.ts";
+import {ICreateAgencyCommand} from "../../features/commands/agency/ICreateAgencyCommand.ts";
 
 export const agencyApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -11,28 +11,37 @@ export const agencyApi = baseApi.injectEndpoints({
                 url: `${ApiTags.Agency}/User/${query}`,
                 method: HttpMethod.GET,
             }),
-            providesTags: [{type: ApiTags.Agency}]
+            providesTags: [{type: ApiTags.User}],
         }),
-        updateAgency: builder.mutation<IUpdateAgencyCommand, number>({
+        createAgency: builder.mutation<number, ICreateAgencyCommand>({
+            query: command => ({
+                url: `${ApiTags.Agency}/Create`,
+                method: HttpMethod.POST,
+                body: command
+            }),
+            invalidatesTags: [{type: ApiTags.User}]
+        }),
+        updateAgency: builder.mutation<number, IUpdateAgencyCommand>({
             query: command => ({
                 url: `${ApiTags.Agency}/Update`,
                 method: HttpMethod.PUT,
                 body: command
             }),
-            async onQueryStarted(_, {queryFulfilled}) {
-                try {
-                    await queryFulfilled
-                } catch (error) {
-                    const errorMessage = error.error?.data || "Произошла ошибка";
-                    message.error(errorMessage, 3)
-                }
-            },
             invalidatesTags: [{type: ApiTags.User}]
-        })
+        }),
+        deleteAgency: builder.mutation<number, number>({
+            query: id => ({
+                url: `${ApiTags.Agency}/Delete/${id}`,
+                method: HttpMethod.DELETE,
+            }),
+            invalidatesTags: [{type: ApiTags.User}]
+        }),
     }),
 });
 
 export const {
     useGetAgencyByUserQuery,
+    useCreateAgencyMutation,
     useUpdateAgencyMutation,
+    useDeleteAgencyMutation
 } = agencyApi

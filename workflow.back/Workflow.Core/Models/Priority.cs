@@ -1,6 +1,6 @@
 ﻿namespace Workflow.Core.Models;
 
-public partial class Priority
+public class Priority
 {
     public int PriorityId { get; set; }
 

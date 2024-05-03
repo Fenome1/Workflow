@@ -9,9 +9,9 @@ export const router = createBrowserRouter(
     createRoutesFromElements([
         <Route>
             <Route path='reg' element={<RegisterPage/>}/>
-            <Route index path='login' element={<LoginPage/>}/>
+            <Route path='login' element={<LoginPage/>}/>
 
-            <Route path='team' element={<RequireAuth>
+            <Route index path='team' element={<RequireAuth>
                 <Team/>
             </RequireAuth>}/>
 
@@ -19,7 +19,7 @@ export const router = createBrowserRouter(
                 <CurrentBoard/>
             </RequireAuth>}/>
 
-            <Route path="*" element={<Navigate to="/login" replace={true}/>}/>
+            <Route path="*" element={<Navigate to="/team" replace={true}/>}/>
         </Route>
     ])
 )

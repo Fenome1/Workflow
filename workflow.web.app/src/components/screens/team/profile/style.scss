@@ -76,7 +76,6 @@
 
   .agencies-dashboard-container {
     @extend .profile-dashboard-container;
-    width: 800px;
 
     .agencies-dashboard-header {
       margin-bottom: 10px;
@@ -88,15 +87,16 @@
     }
 
     .agency-dashboard-content {
+      overflow: auto;
+      max-height: 50vh;
       padding: 10px 0 10px 0;
       display: flex;
       flex-direction: column;
       gap: 10px;
 
       .agency-dashboard-container {
+        padding: 0 10px 0 0;
         display: flex;
-        align-items: center;
-        gap: 10px;
         transition: all ease-in-out 0.2s;
         border-radius: 11px;
 
@@ -105,6 +105,8 @@
         }
 
         .agency-dashboard-header {
+          display: flex;
+          flex-grow: 1;
           font-size: 14pt;
           padding: 10px 10px 10px 10px;
 
@@ -118,11 +120,28 @@
         }
 
         .agency-dashboard-buttons {
+          display: flex;
+          gap: 10px;
 
+          .agency-dashboard-button {
+            transition: all ease-in-out 0.1s;
+
+            &:hover {
+              color: #1677ff;
+            }
+          }
+
+          .agency-dashboard-button-delete {
+            @extend .agency-dashboard-button;
+            color: red;
+          }
         }
 
-
       }
+    }
+
+    .agency-create-button {
+      padding: 10px 10px 10px 10px;
     }
 
   }

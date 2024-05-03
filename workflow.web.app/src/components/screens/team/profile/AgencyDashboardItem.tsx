@@ -1,7 +1,9 @@
 import {IAgency} from "../../../../features/models/IAgency.ts";
 import {FC} from "react";
 import {IUser} from "../../../../features/models/IUser.ts";
-import {EditOutlined, ProductOutlined} from "@ant-design/icons";
+import {DeleteOutlined, EditOutlined, ProductFilled, ProductOutlined} from "@ant-design/icons";
+import {useDialog} from "../../../../hok/useDialog.ts";
+import DeleteAgencyModal from "./modals/DeleteAgencyModal.tsx";
 
 interface AgencyDashboardItemProps {
     agency: IAgency
@@ -10,16 +12,22 @@ interface AgencyDashboardItemProps {
 
 const AgencyDashboardItem: FC<AgencyDashboardItemProps> = ({agency, currentUser}) => {
 
+    const isOwnedAgency = currentUser?.userId === agency.ownerId;
+
+    const deleteAgencyDialog = useDialog()
+
     return (
         <div className='agency-dashboard-container'>
             <div className='agency-dashboard-header'>
-                <ProductOutlined className='agency-dashboard-icon'/>
+                {isOwnedAgency ? <ProductFilled className='agency-dashboard-icon'/> :
+                    <ProductOutlined className='agency-dashboard-icon'/>}
                 <span className='agency-dashboard-name'>{agency.name}</span>
-                {currentUser?.userId === agency.ownerId && <span> (Владелец)</span>}
             </div>
-            <div className='agency-dashboard-buttons'>
-                <EditOutlined/>
-            </div>
+            {isOwnedAgency && <div className='agency-dashboard-buttons'>
+                <EditOutlined className='agency-dashboard-button'/>
+                <DeleteOutlined className='agency-dashboard-button-delete' onClick={deleteAgencyDialog.show}/>
+            </div>}
+            <DeleteAgencyModal agencyId={agency.agencyId} dialog={deleteAgencyDialog}/>
         </div>
     );
 };

@@ -1,6 +1,6 @@
 ﻿namespace Workflow.Core.Models;
 
-public partial class BackgroundImage
+public class BackgroundImage
 {
     public int ImageId { get; set; }
 
