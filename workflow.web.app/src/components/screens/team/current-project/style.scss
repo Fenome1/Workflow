@@ -11,17 +11,17 @@
   }
 
   .project-boards {
+    display: flex;
     flex-grow: 1;
     padding: 20px;
-    display: flex;
     flex-wrap: wrap;
-    gap: 20px;
     align-content: start;
+    gap: 20px;
 
     .board-card {
       display: flex;
       flex-direction: column;
-      min-width: 240px;
+      min-width: 250px;
       min-height: 150px;
       max-width: 250px;
       max-height: 250px;

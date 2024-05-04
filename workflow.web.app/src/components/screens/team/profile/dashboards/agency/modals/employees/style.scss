@@ -1,0 +1,40 @@
+.employee-list {
+  padding: 10px 0 10px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  .employee-item-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .employee-item-main {
+      flex-grow: 1;
+
+      .employee-item-avatar {
+        margin-right: 5px;
+      }
+
+      .employee-item-name {
+        margin-right: 5px;
+
+      }
+
+      .employee-item-attachment {
+        margin-right: 5px;
+        flex-grow: 1;
+      }
+    }
+
+
+    .employee-item-buttons {
+    }
+  }
+
+  .employee-invite-button {
+    align-self: start;
+    font-size: 11pt;
+  }
+}
+

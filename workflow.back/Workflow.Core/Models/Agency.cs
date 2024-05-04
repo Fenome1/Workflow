@@ -10,7 +10,7 @@ public class Agency
 
     public int OwnerId { get; set; }
 
-    public virtual ICollection<BackgroundImage> BackgroundImages { get; set; } = new List<BackgroundImage>();
+    public virtual ICollection<AgencyInvitation> AgencyInvitations { get; set; } = new List<AgencyInvitation>();
 
     public virtual User Owner { get; set; } = null!;
 

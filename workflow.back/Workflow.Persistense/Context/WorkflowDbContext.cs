@@ -16,11 +16,13 @@ public partial class WorkflowDbContext : DbContext
 
     public virtual DbSet<Agency> Agencies { get; set; }
 
-    public virtual DbSet<BackgroundImage> BackgroundImages { get; set; }
+    public virtual DbSet<AgencyInvitation> AgencyInvitations { get; set; }
 
     public virtual DbSet<Board> Boards { get; set; }
 
     public virtual DbSet<Column> Columns { get; set; }
+
+    public virtual DbSet<InvitationStatus> InvitationStatuses { get; set; }
 
     public virtual DbSet<Objective> Objectives { get; set; }
 
@@ -65,13 +67,24 @@ public partial class WorkflowDbContext : DbContext
                     });
         });
 
-        modelBuilder.Entity<BackgroundImage>(entity =>
+        modelBuilder.Entity<AgencyInvitation>(entity =>
         {
-            entity.HasKey(e => e.ImageId);
+            entity.HasKey(e => e.InvitationId);
 
-            entity.HasOne(d => d.Agency).WithMany(p => p.BackgroundImages)
+            entity.Property(e => e.InvitationId).ValueGeneratedNever();
+            entity.Property(e => e.InvitationStatusId).HasDefaultValue(1);
+
+            entity.HasOne(d => d.Agency).WithMany(p => p.AgencyInvitations)
                 .HasForeignKey(d => d.AgencyId)
-                .HasConstraintName("FK_BackgroundImages_Agencies");
+                .HasConstraintName("FK_AgencyInvitations_Agencies");
+
+            entity.HasOne(d => d.InvitationStatus).WithMany(p => p.AgencyInvitations)
+                .HasForeignKey(d => d.InvitationStatusId)
+                .HasConstraintName("FK_AgencyInvitations_InvitationStatuses");
+
+            entity.HasOne(d => d.User).WithMany(p => p.AgencyInvitations)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK_AgencyInvitations_Users");
         });
 
         modelBuilder.Entity<Board>(entity =>
@@ -91,6 +104,12 @@ public partial class WorkflowDbContext : DbContext
             entity.HasOne(d => d.Board).WithMany(p => p.Columns)
                 .HasForeignKey(d => d.BoardId)
                 .HasConstraintName("FK_Columns_Boards");
+        });
+
+        modelBuilder.Entity<InvitationStatus>(entity =>
+        {
+            entity.Property(e => e.InvitationStatusId).ValueGeneratedNever();
+            entity.Property(e => e.Name).HasMaxLength(50);
         });
 
         modelBuilder.Entity<Objective>(entity =>
@@ -126,7 +145,7 @@ public partial class WorkflowDbContext : DbContext
 
         modelBuilder.Entity<Priority>(entity =>
         {
-            entity.ToTable("Priority");
+            entity.HasKey(e => e.PriorityId).HasName("PK_Priority");
 
             entity.Property(e => e.PriorityId).ValueGeneratedNever();
             entity.Property(e => e.Name).HasMaxLength(50);

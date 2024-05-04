@@ -14,6 +14,8 @@ public class User
 
     public virtual ICollection<Agency> AgenciesNavigation { get; set; } = new List<Agency>();
 
+    public virtual ICollection<AgencyInvitation> AgencyInvitations { get; set; } = new List<AgencyInvitation>();
+
     public virtual RefreshToken? RefreshToken { get; set; }
 
     public virtual ICollection<Agency> Agencies { get; set; } = new List<Agency>();

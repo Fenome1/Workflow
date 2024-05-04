@@ -1,6 +1,6 @@
 import {FC, useEffect, useState} from 'react';
-import {Menu, MenuProps} from "antd";
-import {GlobalOutlined, SolutionOutlined} from "@ant-design/icons";
+import {Dropdown, Menu, MenuProps} from "antd";
+import {DeleteOutlined, EditOutlined, GlobalOutlined, PlusOutlined, SolutionOutlined} from "@ant-design/icons";
 import {useAppDispatch} from "../../../store/hooks/hooks.ts";
 import AgencySelector from "./AgencySelector.tsx";
 import {selectProject} from "../../../store/slices/projectSlice.ts";
@@ -11,6 +11,8 @@ import {selectMenuItem} from "../../../store/slices/menuSlice.ts";
 import {TeamMenuItem} from "../../../common/TeamMenuItem.ts";
 import AvatarItem from "../../ui/AvatarItem.tsx";
 import {IUser} from "../../../features/models/IUser.ts";
+import {useDialog} from "../../../hok/useDialog.ts";
+import CreateProjectModal from "./modals/CreateProjectModal.tsx";
 
 interface TeamMenuProps {
     selectedAgencyId: number | null
@@ -19,7 +21,10 @@ interface TeamMenuProps {
 }
 
 const TeamMenu: FC<TeamMenuProps> = ({selectedAgencyId, selectedProjectId, currentUser}) => {
+    const createProjectDialog = useDialog()
+
     const dispatch = useAppDispatch();
+
     const [selectedKey, setSelectedKey] = useState<string>("projects");
 
     const {data: projects} = useGetProjectsByAgencyQuery(selectedAgencyId || 0,
@@ -52,6 +57,29 @@ const TeamMenu: FC<TeamMenuProps> = ({selectedAgencyId, selectedProjectId, curre
         setSelectedKey(selectInfo.key)
     };
 
+    const projectsItems: MenuProps['items'] = [
+        {
+            label: 'Добавить',
+            key: '0',
+            icon: <PlusOutlined/>,
+            onClick: createProjectDialog.show
+        }
+    ];
+
+    const currentProjectItems: MenuProps['items'] = [
+        {
+            label: 'Изменить',
+            key: '0',
+            icon: <EditOutlined/>,
+        },
+        {
+            label: 'Удалить',
+            key: '1',
+            icon: <DeleteOutlined/>,
+            danger: true,
+        }
+    ];
+
     return (
         <div className='team-menu'>
             <b className='team-menu-header'>Workflow</b>
@@ -73,11 +101,19 @@ const TeamMenu: FC<TeamMenuProps> = ({selectedAgencyId, selectedProjectId, curre
                            icon={<SolutionOutlined className='menu-icon'/>}>
                     Мои задачи
                 </Menu.Item>
-                <Menu.SubMenu key="projects" className='team-menu-projects'
-                              icon={<GlobalOutlined className='menu-icon'/>} title="Проекты">
+                <Menu.SubMenu key="projects"
+                              className='team-menu-projects'
+                              icon={<GlobalOutlined className='menu-icon'/>}
+                              title={
+                                  <Dropdown menu={{items: projectsItems}} trigger={['contextMenu']}>
+                                      <span>Проекты</span>
+                                  </Dropdown>
+                              }>
                     {projects && projects?.map((project) => (
                         <Menu.Item key={project.projectId}>
-                            <span>{project.name}</span>
+                            <Dropdown menu={{items: currentProjectItems}} trigger={['contextMenu']}>
+                                <span>{project.name}</span>
+                            </Dropdown>
                         </Menu.Item>
                     ))}
                 </Menu.SubMenu>
@@ -86,6 +122,7 @@ const TeamMenu: FC<TeamMenuProps> = ({selectedAgencyId, selectedProjectId, curre
                 <span className='agency-selector-header'>Выбранное агентство</span>
                 <AgencySelector currentUser={currentUser}/>
             </div>
+            <CreateProjectModal dialog={createProjectDialog} agencyId={selectedAgencyId}/>
         </div>
     );
 };

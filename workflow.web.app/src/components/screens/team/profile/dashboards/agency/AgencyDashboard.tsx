@@ -1,10 +1,10 @@
 import {FC} from "react";
-import {useGetAgencyByUserQuery} from "../../../../store/apis/agencyApi.ts";
-import {IUser} from "../../../../features/models/IUser.ts";
+import {useGetAgencyByUserQuery} from "../../../../../../store/apis/agencyApi.ts";
+import {IUser} from "../../../../../../features/models/IUser.ts";
 import AgencyDashboardItem from "./AgencyDashboardItem.tsx";
 import {Button} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
-import {useDialog} from "../../../../hok/useDialog.ts";
+import {useDialog} from "../../../../../../hok/useDialog.ts";
 import CreateAgencyModal from "./modals/CreateAgencyModal.tsx";
 
 interface AgencyDashboardProfile {

@@ -1,9 +1,9 @@
 import {Form, FormProps, Input, Modal} from "antd";
-import {IDialog} from "../../../../../features/models/IDialog.ts";
+import {IDialog} from "../../../../../../../features/models/IDialog.ts";
 import {FC} from "react";
 import TextArea from "antd/es/input/TextArea";
-import {useCreateAgencyMutation} from "../../../../../store/apis/agencyApi.ts";
-import {ICreateAgencyCommand} from "../../../../../features/commands/agency/ICreateAgencyCommand.ts";
+import {useCreateAgencyMutation} from "../../../../../../../store/apis/agencyApi.ts";
+import {ICreateAgencyCommand} from "../../../../../../../features/commands/agency/ICreateAgencyCommand.ts";
 
 interface CreateAgencyModalProps {
     dialog: IDialog
@@ -31,6 +31,7 @@ const CreateAgencyModal: FC<CreateAgencyModalProps> = ({dialog, userId}) => {
 
     return (
         <Modal
+            centered
             open={dialog.open}
             title="Создать агентство"
             okText="Сохранить"

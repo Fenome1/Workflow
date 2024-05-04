@@ -1,7 +1,7 @@
-import './style.scss'
+import '../style.scss'
 import ProfileDashboard from "./ProfileDashboard.tsx";
-import AgencyDashboard from "./AgencyDashboard.tsx";
-import {IUserState} from "../../../../store/slices/userSlice.ts";
+import AgencyDashboard from "../agency/AgencyDashboard.tsx";
+import {IUserState} from "../../../../../../store/slices/userSlice.ts";
 import {FC} from "react";
 
 interface ProfileProps {

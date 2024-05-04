@@ -1,8 +1,7 @@
-import {IDialog} from "../../../../../features/models/IDialog.ts";
+import {IDialog} from "../../../../../../../features/models/IDialog.ts";
 import {FC} from "react";
 import {Modal} from "antd";
-import {useDeleteAgencyMutation} from "../../../../../store/apis/agencyApi.ts";
-
+import {useDeleteAgencyMutation} from "../../../../../../../store/apis/agencyApi.ts";
 
 interface DeleteAgencyModalProps {
     agencyId: number
@@ -31,7 +30,7 @@ const DeleteAgencyModal: FC<DeleteAgencyModalProps> = ({dialog, agencyId}) => {
             okText='Ок'
             cancelText='Отмена'
             okType='danger'
-            centered={true}
+            centered
             footer={(_, {OkBtn, CancelBtn}) => (
                 <>
                     <OkBtn/>
