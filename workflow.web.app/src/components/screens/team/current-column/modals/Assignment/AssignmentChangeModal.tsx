@@ -1,12 +1,11 @@
 import {IDialog} from "../../../../../../features/models/IDialog.ts";
-import {Input, Modal} from "antd";
+import {Empty, Input, Modal} from "antd";
 import {FC, useState} from "react";
 import {IObjective} from "../../../../../../features/models/IObjective.ts";
 import {useGetUsersByAgencyQuery} from "../../../../../../store/apis/userApi.ts";
 import {useTypedSelector} from "../../../../../../store/hooks/hooks.ts";
 import './style.scss'
 import AssignmentUserItem from "./AssignmentUserItem.tsx";
-import NotFound from "../../../../../ui/not-found/NotFound.tsx";
 
 interface AssignmentChangeModalProps {
     objective: IObjective
@@ -46,7 +45,7 @@ const AssignmentChangeModal: FC<AssignmentChangeModalProps> = ({dialog, objectiv
                             <AssignmentUserItem key={user.userId} user={user} objective={objective}/>
                         ))
                     ) : (
-                        <NotFound description='Исполнители не найдены...'/>
+                        <Empty description='Исполнители не найдены...'/>
                     )}
                 </div>
             </div>

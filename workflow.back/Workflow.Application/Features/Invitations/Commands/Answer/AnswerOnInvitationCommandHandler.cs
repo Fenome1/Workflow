@@ -5,25 +5,25 @@ using Workflow.Application.Common.Enums;
 using Workflow.Application.Common.Exceptions;
 using Workflow.Core.Models;
 using Workflow.Persistense.Context;
-using InvitationStatus = Workflow.Core.Models.InvitationStatus;
 
-namespace Workflow.Application.Features.AgencyInvitations.Commands.Answer;
+namespace Workflow.Application.Features.Invitations.Commands.Answer;
 
 public sealed class AnswerOnInvitationCommandHandler(WorkflowDbContext context)
     : IRequestHandler<AnswerOnInvitationCommand, Unit>
 {
     public async Task<Unit> Handle(AnswerOnInvitationCommand request, CancellationToken cancellationToken)
     {
-        var invitation = await context.AgencyInvitations
+        var invitation = await context.Invitations
             .Include(i => i.Agency)
             .Include(i => i.User)
-            .FirstOrDefaultAsync(i => i.InvitationId == request.AgencyInvitationId,
+            .FirstOrDefaultAsync(i => i.InvitationId == request.InvitationId,
                 cancellationToken);
 
         if (invitation is null)
-        {
-            throw new NotFoundException($"Приглашение с ID {request.AgencyInvitationId} не найдено.");
-        }
+            throw new NotFoundException(nameof(Invitation), request.InvitationId);
+
+        if (invitation.InvitationStatusId != (int)InvitationStatuses.Expectation)
+            throw new Exception("Приглашение не действительно");
 
         switch (request.AnswerType)
         {

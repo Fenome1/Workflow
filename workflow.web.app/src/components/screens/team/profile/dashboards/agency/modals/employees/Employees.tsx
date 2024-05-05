@@ -27,7 +27,7 @@ const Employees: FC<EmployeesProps> = ({agency, currentUserId}) => {
                         onClick={inviteEmployeeDialog.show}>Пригласить
                     сотрудника</Button>
             </div>
-            <InviteEmployeeModal dialog={inviteEmployeeDialog}/>
+            <InviteEmployeeModal dialog={inviteEmployeeDialog} agency={agency}/>
         </>
     );
 };

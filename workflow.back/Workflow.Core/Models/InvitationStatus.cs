@@ -6,5 +6,5 @@ public class InvitationStatus
 
     public string Name { get; set; } = null!;
 
-    public virtual ICollection<AgencyInvitation> AgencyInvitations { get; set; } = new List<AgencyInvitation>();
+    public virtual ICollection<Invitation> Invitations { get; set; } = new List<Invitation>();
 }

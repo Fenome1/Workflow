@@ -16,11 +16,11 @@ public partial class WorkflowDbContext : DbContext
 
     public virtual DbSet<Agency> Agencies { get; set; }
 
-    public virtual DbSet<AgencyInvitation> AgencyInvitations { get; set; }
-
     public virtual DbSet<Board> Boards { get; set; }
 
     public virtual DbSet<Column> Columns { get; set; }
+
+    public virtual DbSet<Invitation> Invitations { get; set; }
 
     public virtual DbSet<InvitationStatus> InvitationStatuses { get; set; }
 
@@ -67,26 +67,6 @@ public partial class WorkflowDbContext : DbContext
                     });
         });
 
-        modelBuilder.Entity<AgencyInvitation>(entity =>
-        {
-            entity.HasKey(e => e.InvitationId);
-
-            entity.Property(e => e.InvitationId).ValueGeneratedNever();
-            entity.Property(e => e.InvitationStatusId).HasDefaultValue(1);
-
-            entity.HasOne(d => d.Agency).WithMany(p => p.AgencyInvitations)
-                .HasForeignKey(d => d.AgencyId)
-                .HasConstraintName("FK_AgencyInvitations_Agencies");
-
-            entity.HasOne(d => d.InvitationStatus).WithMany(p => p.AgencyInvitations)
-                .HasForeignKey(d => d.InvitationStatusId)
-                .HasConstraintName("FK_AgencyInvitations_InvitationStatuses");
-
-            entity.HasOne(d => d.User).WithMany(p => p.AgencyInvitations)
-                .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK_AgencyInvitations_Users");
-        });
-
         modelBuilder.Entity<Board>(entity =>
         {
             entity.Property(e => e.Description).HasMaxLength(250);
@@ -104,6 +84,25 @@ public partial class WorkflowDbContext : DbContext
             entity.HasOne(d => d.Board).WithMany(p => p.Columns)
                 .HasForeignKey(d => d.BoardId)
                 .HasConstraintName("FK_Columns_Boards");
+        });
+
+        modelBuilder.Entity<Invitation>(entity =>
+        {
+            entity.HasKey(e => e.InvitationId).HasName("PK_AgencyInvitations");
+
+            entity.Property(e => e.InvitationStatusId).HasDefaultValue(1);
+
+            entity.HasOne(d => d.Agency).WithMany(p => p.Invitations)
+                .HasForeignKey(d => d.AgencyId)
+                .HasConstraintName("FK_AgencyInvitations_Agencies");
+
+            entity.HasOne(d => d.InvitationStatus).WithMany(p => p.Invitations)
+                .HasForeignKey(d => d.InvitationStatusId)
+                .HasConstraintName("FK_AgencyInvitations_InvitationStatuses");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Invitations)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK_AgencyInvitations_Users");
         });
 
         modelBuilder.Entity<InvitationStatus>(entity =>

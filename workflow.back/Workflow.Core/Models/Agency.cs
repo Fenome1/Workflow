@@ -10,7 +10,7 @@ public class Agency
 
     public int OwnerId { get; set; }
 
-    public virtual ICollection<AgencyInvitation> AgencyInvitations { get; set; } = new List<AgencyInvitation>();
+    public virtual ICollection<Invitation> Invitations { get; set; } = new List<Invitation>();
 
     public virtual User Owner { get; set; } = null!;
 

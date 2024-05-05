@@ -10,6 +10,7 @@ export enum ApiTags {
     Column = "Column",
     Objective = 'Objective',
     Priority = 'Priority',
+    Invitation = "Invitation"
 }
 
 const baseQuery = fetchBaseQuery({
