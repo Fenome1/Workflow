@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Workflow.Api.Controllers.Base;
 using Workflow.Application.Features.Agencies.Commands.Create;
 using Workflow.Application.Features.Agencies.Commands.Delete;
+using Workflow.Application.Features.Agencies.Commands.FireUser;
 using Workflow.Application.Features.Agencies.Commands.Update;
 using Workflow.Application.Features.Agencies.Queries.ByUser;
 using Workflow.Application.ViewModels;
@@ -61,6 +62,19 @@ public class AgencyController : BaseController
         try
         {
             return Ok(await Mediator.Send(new DeleteAgencyCommand(agencyId)));
+        }
+        catch (Exception e)
+        {
+            return BadRequest($"{e.Message}");
+        }
+    }
+    
+    [HttpDelete("Fire")]
+    public async Task<ActionResult<Unit>> Delete([FromBody] FireUserFromAgencyCommand command)
+    {
+        try
+        {
+            return Ok(await Mediator.Send(command));
         }
         catch (Exception e)
         {

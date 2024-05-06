@@ -19,7 +19,8 @@ export const userApi = baseApi.injectEndpoints({
             query: query => ({
                 url: `${ApiTags.User}/Agencies/${query}`,
                 method: HttpMethod.GET,
-            })
+            }),
+            providesTags: [{type: ApiTags.User}],
         }),
         updateUser: builder.mutation<IUser, IUpdateUserCommand>({
             query: command => ({

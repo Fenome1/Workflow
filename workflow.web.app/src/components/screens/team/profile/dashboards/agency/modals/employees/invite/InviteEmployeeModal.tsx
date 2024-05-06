@@ -1,13 +1,14 @@
 import {IDialog} from "../../../../../../../../../features/models/IDialog.ts";
 import {Button, Form, FormProps, Input, Modal, Space, Table, TableColumnsType, Tabs, Tag} from "antd";
-import React, {FC} from "react";
+import {FC} from "react";
 import TabPane from "antd/es/tabs/TabPane";
 import {CloseOutlined, MailOutlined, UsergroupAddOutlined} from "@ant-design/icons";
 import {
     ISendInvitationCommand
 } from "../../../../../../../../../features/commands/invitation/ISendInvitationCommand.ts";
 import {
-    useGetAgencyInvitationsQuery, useRecallInvitationMutation,
+    useGetAgencyInvitationsQuery,
+    useRecallInvitationMutation,
     useSendInvitationMutation
 } from "../../../../../../../../../store/apis/invitationApi.ts";
 import {IAgency} from "../../../../../../../../../features/models/IAgency.ts";

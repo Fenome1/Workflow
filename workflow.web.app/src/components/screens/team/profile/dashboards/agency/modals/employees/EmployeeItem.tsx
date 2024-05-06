@@ -4,6 +4,10 @@ import AvatarItem from "../../../../../../../ui/AvatarItem.tsx";
 import {Button} from "antd";
 import './style.scss'
 import {IAgency} from "../../../../../../../../features/models/IAgency.ts";
+import {useFireUserFromAgencyMutation} from "../../../../../../../../store/apis/agencyApi.ts";
+import {
+    IFireUserFormAgencyCommand
+} from "../../../../../../../../features/commands/agency/IFireUserFormAgencyCommand.ts";
 
 interface EmployeeItemProps {
     employee: IUser
@@ -12,8 +16,18 @@ interface EmployeeItemProps {
 }
 
 const EmployeeItem: FC<EmployeeItemProps> = ({employee, currentUserId, agency}) => {
-
+    const [fireUserFormAgency] = useFireUserFromAgencyMutation()
     const isCurrentUser = employee.userId === currentUserId
+
+    const handleFireUser = async () => {
+
+        const command: IFireUserFormAgencyCommand = {
+            agencyId: agency.agencyId,
+            userId: employee.userId
+        }
+
+        await fireUserFormAgency(command)
+    }
 
     return (
         <div className='employee-item-container'>
@@ -25,7 +39,7 @@ const EmployeeItem: FC<EmployeeItemProps> = ({employee, currentUserId, agency}) 
             </div>
             {(!isCurrentUser) &&
                 <div className='employee-item-buttons'>
-                    <Button danger>Удалить сотрудника</Button>
+                    <Button danger onClick={handleFireUser}>Удалить сотрудника</Button>
                 </div>
             }
         </div>

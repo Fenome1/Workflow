@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Workflow.Application.Common.Enums;
+using Workflow.Application.Common.Exceptions;
 using Workflow.Core.Models;
 using Workflow.Persistense.Context;
 
@@ -28,6 +29,9 @@ public class SendInvitationCommandHandler(
             .AsNoTrackingWithIdentityResolution()
             .FirstOrDefaultAsync(a => a.AgencyId == request.AgencyId,
                 cancellationToken);
+        
+        if (agency is null)
+            throw new NotFoundException(nameof(Agency), request.AgencyId);
 
         var userInAgency = agency?.Users?
             .Any(u => u.UserId == user.UserId);
