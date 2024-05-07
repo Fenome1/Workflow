@@ -7,12 +7,12 @@ import DeleteAgencyModal from "./modals/DeleteAgencyModal.tsx";
 import UpdateAgencyModal from "./modals/UpdateAgencyModal.tsx";
 import SettingsAgencyModal from "./modals/SettingsAgencyModal.tsx";
 
-interface AgencyDashboardItemProps {
+interface AgencyItemProps {
     agency: IAgency
     currentUser: IUser | null
 }
 
-const AgencyDashboardItem: FC<AgencyDashboardItemProps> = ({agency, currentUser}) => {
+const AgencyItem: FC<AgencyItemProps> = ({agency, currentUser}) => {
 
     const isOwnedAgency = currentUser?.userId === agency.ownerId;
 
@@ -49,4 +49,4 @@ const AgencyDashboardItem: FC<AgencyDashboardItemProps> = ({agency, currentUser}
     );
 };
 
-export default AgencyDashboardItem;
+export default AgencyItem;

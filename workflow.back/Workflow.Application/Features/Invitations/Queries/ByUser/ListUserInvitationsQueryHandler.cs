@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Workflow.Application.Common.Enums;
 using Workflow.Application.Common.Exceptions;
 using Workflow.Application.ViewModels;
 using Workflow.Core.Models;
@@ -27,7 +28,9 @@ public class ListUserInvitationsQueryHandler(
             .AsNoTrackingWithIdentityResolution()
             .Include(i => i.InvitationStatus)
             .Include(i => i.Agency)
-            .Where(i => i.UserId == request.UserId)
+            .ThenInclude(a => a.Owner)
+            .Where(i => i.UserId == request.UserId && 
+                        i.InvitationStatusId == (int) InvitationStatuses.Expectation)
             .Select(invitation => mapper.Map<InvitationViewModel>(invitation))
             .ToListAsync(cancellationToken);
 

@@ -44,7 +44,7 @@ export const invitationApi = baseApi.injectEndpoints({
                 method: HttpMethod.PUT,
                 body: command
             }),
-            invalidatesTags: [{type: ApiTags.Invitation}]
+            invalidatesTags: [{type: ApiTags.Invitation}, {type: ApiTags.User}]
         }),
         recallInvitation: builder.mutation<number, number>({
             query: id => ({

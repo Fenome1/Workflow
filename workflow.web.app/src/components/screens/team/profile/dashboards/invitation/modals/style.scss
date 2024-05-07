@@ -1,0 +1,26 @@
+.invitation-item-modal {
+  margin: 20px 0;
+
+  .invitation-item-description {
+    font-size: 12pt;
+    margin-bottom: 20px;
+  }
+
+  .invitation-owner-container {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+
+    .invitation-owner-title {
+      font-weight: bold;
+      font-size: 12pt;
+      margin-right: 5px;
+    }
+
+    .invitation-owner-content {
+      display: flex;
+      align-items: center;
+      gap:5px;
+    }
+  }
+}

@@ -5,6 +5,17 @@
   padding: 20px;
   flex-grow: 1;
 
+  .dashboard-header {
+    display: flex;
+    align-items: center;
+    font-size: 16pt;
+    margin-bottom: 10px;
+
+    .dashboard-title {
+      flex: 1;
+    }
+  }
+
   .profile-dashboard-container {
     width: 500px;
     padding: 25px;
@@ -12,19 +23,8 @@
     min-height: 100px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
-    .profile-dashboard-header {
-      display: flex;
-      align-items: center;
-      font-size: 16pt;
-      margin-bottom: 10px;
-
-      .profile-dashboard-title {
-        flex: 1;
-      }
-
-      .profile-dashboard-logout {
-        font-size: 12pt;
-      }
+    .profile-dashboard-logout {
+      font-size: 12pt;
     }
 
     .profile-dashboard-avatar-container {
@@ -76,15 +76,6 @@
 
   .agencies-dashboard-container {
     @extend .profile-dashboard-container;
-
-    .agencies-dashboard-header {
-      margin-bottom: 10px;
-      font-size: 16pt;
-
-      .agencies-dashboard-header-title {
-
-      }
-    }
 
     .agency-dashboard-content {
       overflow: auto;
@@ -144,6 +135,46 @@
       padding: 10px 10px 10px 10px;
     }
 
+  }
+
+  .invitation-dashboard-container {
+    @extend .profile-dashboard-container;
+    width: 600px;
+
+    .dashboard-header-count {
+      margin-left: 10px;
+    }
+
+    .invitation-dashboard-content {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex-grow: 1;
+      height: 100%;
+
+      .invitation-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-radius: 11px;
+        padding: 10px;
+        transition: all ease-in-out 0.2s;
+
+        &:hover {
+          background-color: #E4E7EB;
+        }
+
+        .invitation-item-title {
+          flex: 1;
+          font-size: 12pt;
+
+        }
+        .invitation-item-buttons {
+          display: flex;
+          gap: 10px;
+        }
+      }
+    }
   }
 }
 

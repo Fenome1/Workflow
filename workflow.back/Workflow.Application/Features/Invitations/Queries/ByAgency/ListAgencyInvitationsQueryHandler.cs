@@ -25,8 +25,10 @@ public class ListAgencyInvitationsQueryHandler(
 
         var invitations = await context.Invitations
             .AsNoTrackingWithIdentityResolution()
-            .Include(i => i.InvitationStatus)
+            .Include(i => i.Agency)
+            .ThenInclude(a => a.Owner)
             .Include(i => i.User)
+            .Include(i => i.InvitationStatus)
             .Where(i => i.AgencyId == request.AgencyId)
             .Select(u => mapper.Map<InvitationViewModel>(u))
             .ToListAsync(cancellationToken);

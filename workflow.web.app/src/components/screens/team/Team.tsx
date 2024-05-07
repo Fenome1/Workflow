@@ -4,7 +4,7 @@ import './style.scss'
 import {useTypedSelector} from "../../../store/hooks/hooks.ts";
 import {TeamMenuItem} from "../../../common/TeamMenuItem.ts";
 import ProjectBoards from "./current-project/ProjectBoards.tsx";
-import Profile from "./profile/dashboards/profile/Profile.tsx";
+import Profile from "./profile/Profile.tsx";
 
 const Team = () => {
     const selectedMenuItem = useTypedSelector(state => state.menu?.selectedMenuItem);
