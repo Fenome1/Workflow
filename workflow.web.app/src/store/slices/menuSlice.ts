@@ -3,18 +3,18 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {PURGE} from "redux-persist/es/constants";
 
 interface IMenuState {
-    selectedMenuItem: TeamMenuItem | null;
+    selectedMenuItem: TeamMenuItem;
 }
 
 const initialState: IMenuState = {
-    selectedMenuItem: null,
+    selectedMenuItem: TeamMenuItem.Projects,
 }
 
 const menuSlice = createSlice({
     name: 'menu',
     initialState,
     reducers: {
-        selectMenuItem(state, action: PayloadAction<TeamMenuItem | null>) {
+        selectMenuItem(state, action: PayloadAction<TeamMenuItem>) {
             state.selectedMenuItem = action.payload;
         },
     },

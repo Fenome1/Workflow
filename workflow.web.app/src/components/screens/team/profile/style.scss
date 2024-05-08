@@ -79,7 +79,7 @@
 
     .agency-dashboard-content {
       overflow: auto;
-      max-height: 50vh;
+      max-height: 25vh;
       padding: 10px 0 10px 0;
       display: flex;
       flex-direction: column;
@@ -125,6 +125,10 @@
           .agency-dashboard-button-delete {
             @extend .agency-dashboard-button;
             color: red;
+
+            &:hover {
+              color: #ff4d4f;
+            }
           }
         }
 
@@ -169,6 +173,7 @@
           font-size: 12pt;
 
         }
+
         .invitation-item-buttons {
           display: flex;
           gap: 10px;

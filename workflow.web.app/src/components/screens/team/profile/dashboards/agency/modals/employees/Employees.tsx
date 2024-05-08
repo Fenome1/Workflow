@@ -20,7 +20,11 @@ const Employees: FC<EmployeesProps> = ({agency, currentUserId}) => {
     return (
         <>
             <div className='employee-list'>
-                {users?.map((user) => (<EmployeeItem currentUserId={currentUserId} employee={user} agency={agency}/>))}
+                {users?.map((user) => (<EmployeeItem
+                    key={user.userId}
+                    currentUserId={currentUserId}
+                    employee={user}
+                    agency={agency}/>))}
                 <Button className='employee-invite-button'
                         icon={<AiOutlineUserAdd/>}
                         type='link'

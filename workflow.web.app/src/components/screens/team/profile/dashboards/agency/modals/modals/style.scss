@@ -1,0 +1,22 @@
+.agency-delete-modal {
+  .agency-delete-modal-header {
+    font-size: 13pt;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .agency-delete-modal-content {
+    display: flex;
+    flex-direction: column;
+
+    .agency-delete-modal-attention {
+      color: #f5222d;
+      font-weight: bold;
+    }
+
+    .agency-delete-modal-description {
+      margin-top: 10px;
+      font-size: 16px;
+    }
+  }
+}

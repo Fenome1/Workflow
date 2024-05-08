@@ -1,7 +1,7 @@
 import {FC, useEffect, useState} from 'react';
-import {Dropdown, Menu, MenuProps} from "antd";
-import {DeleteOutlined, EditOutlined, GlobalOutlined, PlusOutlined, SolutionOutlined} from "@ant-design/icons";
-import {useAppDispatch} from "../../../store/hooks/hooks.ts";
+import {Menu, MenuProps} from "antd";
+import {FolderOutlined, GlobalOutlined, SolutionOutlined} from "@ant-design/icons";
+import {useAppDispatch, useTypedSelector} from "../../../store/hooks/hooks.ts";
 import AgencySelector from "./AgencySelector.tsx";
 import {selectProject} from "../../../store/slices/projectSlice.ts";
 import {AppColors} from "../../../common/AppColors.ts";
@@ -27,58 +27,45 @@ const TeamMenu: FC<TeamMenuProps> = ({selectedAgencyId, selectedProjectId, curre
 
     const [selectedKey, setSelectedKey] = useState<string>("projects");
 
+    const selectedMenuItem = useTypedSelector((state) => state.menu.selectedMenuItem)
+
     const {data: projects} = useGetProjectsByAgencyQuery(selectedAgencyId || 0,
         {skip: selectedAgencyId === null});
 
-    useEffect(() => {
-        const setSelectedProjectAsync = async () => {
-            if (selectedProjectId === null && projects && projects.length > 0) {
-                await dispatch(selectProject(projects[0]?.projectId));
-                setSelectedKey(projects[0]?.projectId.toString())
-            } else {
-                setSelectedKey(selectedProjectId!.toString())
-            }
-            dispatch(selectMenuItem(TeamMenuItem.Projects))
-        };
-        setSelectedProjectAsync();
-    }, [dispatch, projects, selectedAgencyId]);
+    const setSelectedProjectAsync = async () => {
+        if (selectedProjectId === null && projects && projects.length > 0) {
+            await dispatch(selectProject(projects[0]?.projectId));
+            setSelectedKey(projects[0]?.projectId.toString())
+        } else {
+            setSelectedKey(selectedProjectId!.toString())
+        }
+        await dispatch(selectMenuItem(TeamMenuItem.Projects))
+    };
 
-    const onSelect: MenuProps['onSelect'] = (selectInfo) => {
+    useEffect(() => {
+        if (selectedMenuItem !== TeamMenuItem.Projects)
+            return
+
+        setSelectedProjectAsync()
+    }, [projects]);
+
+    useEffect(() => {
+        setSelectedProjectAsync()
+    }, [selectedAgencyId]);
+
+    const onSelect: MenuProps['onSelect'] = async (selectInfo) => {
         if (selectInfo.keyPath[1] === 'projects') {
-            dispatch(selectProject(Number(selectInfo.key)))
+            await dispatch(selectProject(Number(selectInfo.key)))
             dispatch(selectMenuItem(TeamMenuItem.Projects))
         }
         if (selectInfo.key === 'profile') {
-            dispatch(selectMenuItem(TeamMenuItem.Profile))
+            await dispatch(selectMenuItem(TeamMenuItem.Profile))
         }
         if (selectInfo.key === 'objectives') {
-            dispatch(selectMenuItem(TeamMenuItem.Objectives))
+            await dispatch(selectMenuItem(TeamMenuItem.Objectives))
         }
         setSelectedKey(selectInfo.key)
     };
-
-    const projectsItems: MenuProps['items'] = [
-        {
-            label: 'Добавить',
-            key: '0',
-            icon: <PlusOutlined/>,
-            onClick: createProjectDialog.show
-        }
-    ];
-
-    const currentProjectItems: MenuProps['items'] = [
-        {
-            label: 'Изменить',
-            key: '0',
-            icon: <EditOutlined/>,
-        },
-        {
-            label: 'Удалить',
-            key: '1',
-            icon: <DeleteOutlined/>,
-            danger: true,
-        }
-    ];
 
     return (
         <div className='team-menu'>
@@ -104,16 +91,11 @@ const TeamMenu: FC<TeamMenuProps> = ({selectedAgencyId, selectedProjectId, curre
                 <Menu.SubMenu key="projects"
                               className='team-menu-projects'
                               icon={<GlobalOutlined className='menu-icon'/>}
-                              title={
-                                  <Dropdown menu={{items: projectsItems}} trigger={['contextMenu']}>
-                                      <span>Проекты</span>
-                                  </Dropdown>
-                              }>
+                              title='Проекты'>
                     {projects && projects?.map((project) => (
                         <Menu.Item key={project.projectId}>
-                            <Dropdown menu={{items: currentProjectItems}} trigger={['contextMenu']}>
-                                <span>{project.name}</span>
-                            </Dropdown>
+                            <FolderOutlined/>
+                            <span>{project.name}</span>
                         </Menu.Item>
                     ))}
                 </Menu.SubMenu>

@@ -1,0 +1,45 @@
+.projects-tab-container {
+
+  .projects-tab-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 5px;
+    max-height: 250px;
+    overflow: auto;
+
+    .project-item {
+      display: flex;
+      padding: 10px;
+      border-radius: 11px;
+      transition: all ease-in-out 0.2s;
+      align-items: center;
+
+      &:hover {
+        background-color: #E4E7EB;
+      }
+
+      .project-name {
+        font-size: 13pt;
+        flex: 1;
+        padding: 0;
+      }
+
+      .project-actions {
+
+        .edit-project-button {
+          color: black;
+          transition: ease-in-out all 0.2s;
+
+          &:hover {
+            color: #1677ff;
+          }
+        }
+      }
+    }
+  }
+
+  .project-create-button {
+
+  }
+}

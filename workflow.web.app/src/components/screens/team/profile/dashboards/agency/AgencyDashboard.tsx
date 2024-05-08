@@ -5,7 +5,7 @@ import AgencyItem from "./AgencyItem.tsx";
 import {Button, Skeleton} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
 import {useDialog} from "../../../../../../hok/useDialog.ts";
-import CreateAgencyModal from "./modals/CreateAgencyModal.tsx";
+import CreateAgencyModal from "./modals/modals/CreateAgencyModal.tsx";
 
 interface AgencyDashboardProfile {
     currentUser: IUser | null
@@ -30,10 +30,10 @@ const AgencyDashboard: FC<AgencyDashboardProfile> = ({currentUser}) => {
                 }
             </div>
             {isLoading ? (<Skeleton.Button active shape={'round'} className='agency-create-button'/>)
-            : <Button type='link'
-                      icon={<PlusOutlined/>}
-                      className='agency-create-button'
-                      onClick={createAgencyDialog.show}>Создать агентство</Button>
+                : <Button type='link'
+                          icon={<PlusOutlined/>}
+                          className='agency-create-button'
+                          onClick={createAgencyDialog.show}>Создать агентство</Button>
             }
             <CreateAgencyModal dialog={createAgencyDialog} userId={currentUser?.userId}/>
         </div>

@@ -4,6 +4,7 @@ import {IAgency} from "../../features/models/IAgency.ts";
 import {IUpdateAgencyCommand} from "../../features/commands/agency/IUpdateAgencyCommand.ts";
 import {ICreateAgencyCommand} from "../../features/commands/agency/ICreateAgencyCommand.ts";
 import {IFireUserFormAgencyCommand} from "../../features/commands/agency/IFireUserFormAgencyCommand.ts";
+import {message} from "antd";
 
 export const agencyApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -35,7 +36,16 @@ export const agencyApi = baseApi.injectEndpoints({
                 url: `${ApiTags.Agency}/Delete/${id}`,
                 method: HttpMethod.DELETE,
             }),
-            invalidatesTags: [{type: ApiTags.User}]
+            async onQueryStarted(_, {queryFulfilled}) {
+                try {
+                    await queryFulfilled
+                    message.success(`Агентство успешно удалено`, 3)
+                } catch (error) {
+                    const errorMessage = error.error?.data || "Произошла ошибка";
+                    message.error(errorMessage, 3)
+                }
+            },
+            invalidatesTags: [{type: ApiTags.User}],
         }),
         fireUserFromAgency: builder.mutation<number, IFireUserFormAgencyCommand>({
             query: command => ({
@@ -43,7 +53,16 @@ export const agencyApi = baseApi.injectEndpoints({
                 method: HttpMethod.DELETE,
                 body: command
             }),
-            invalidatesTags: [{type: ApiTags.User}]
+            async onQueryStarted(_, {queryFulfilled}) {
+                try {
+                    await queryFulfilled
+                    message.success(`Сотрудник успешно удален из агентства`, 3)
+                } catch (error) {
+                    const errorMessage = error.error?.data || "Произошла ошибка";
+                    message.error(errorMessage, 3)
+                }
+            },
+            invalidatesTags: [{type: ApiTags.User}],
         })
     }),
 });

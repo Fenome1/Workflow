@@ -24,12 +24,8 @@ const AnswerInvitationModal: FC<AnswerInvitationModalProps> = ({invitation, answ
     const owner = invitation.owner
 
     const handleAnswerUser = async () => {
-        console.log(answerType)
-
         if (answerType === undefined)
             return
-
-        console.log(answerType)
 
         const command: IAnswerOnInvitationCommand = {
             invitationId: invitation.invitationId,

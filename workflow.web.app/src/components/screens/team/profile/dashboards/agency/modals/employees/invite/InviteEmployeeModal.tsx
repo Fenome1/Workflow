@@ -41,16 +41,16 @@ const InviteEmployeeModal: FC<InviteEmployeeModalProps> = ({dialog, agency}) => 
         {
             title: 'Email',
             dataIndex: 'user',
-            align:'start',
+            align: 'start',
             key: 'user',
             render: (_, value) => (
-                <div>{value.user.email}</div>
+                <div>{value.user?.email}</div>
             )
         },
         {
             title: 'Статус',
             dataIndex: 'status',
-            align:'center',
+            align: 'center',
             key: 'status',
             filters: [
                 {text: 'Ожидание', value: InvitationStatus.Expectation},
@@ -71,7 +71,7 @@ const InviteEmployeeModal: FC<InviteEmployeeModalProps> = ({dialog, agency}) => 
         },
         {
             title: 'Действие',
-            align:'center',
+            align: 'center',
             key: 'recall',
             render: (_, value) => (
                 <Space size="middle">
@@ -98,7 +98,7 @@ const InviteEmployeeModal: FC<InviteEmployeeModalProps> = ({dialog, agency}) => 
             title='Приглашение'
             footer={null}>
             <Tabs defaultActiveKey="1">
-                <TabPane icon={<UsergroupAddOutlined />} tab="Отправить приглашение" key="1">
+                <TabPane icon={<UsergroupAddOutlined/>} tab="Отправить приглашение" key="1">
                     <Form
                         className='agency-invite-form'
                         form={form}
@@ -112,11 +112,12 @@ const InviteEmployeeModal: FC<InviteEmployeeModalProps> = ({dialog, agency}) => 
                             <Input type='email' prefix={<MailOutlined/>} placeholder="Email сотрудника..."/>
                         </Form.Item>
                         <Form.Item>
-                            <Button className='agency-form-invite-button' type='primary' htmlType="submit">Отправить</Button>
+                            <Button className='agency-form-invite-button' type='primary'
+                                    htmlType="submit">Отправить</Button>
                         </Form.Item>
                     </Form>
                 </TabPane>
-                <TabPane icon={<PiUsersFourLight />} tab="Приглашенные пользователи" key="2">
+                <TabPane icon={<PiUsersFourLight/>} tab="Приглашенные пользователи" key="2">
                     <Table pagination={false} columns={columns} dataSource={invitedUsers}/>
                 </TabPane>
             </Tabs>

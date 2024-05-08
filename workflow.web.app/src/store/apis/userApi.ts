@@ -52,7 +52,7 @@ export const userApi = baseApi.injectEndpoints({
             async onQueryStarted(_, {queryFulfilled}) {
                 try {
                     await queryFulfilled
-                    message.success(`Вы успешно зарегистрированы!`, 3)
+                    message.success(`Вы успешно зарегистрированы`, 3)
                 } catch (error) {
                     const errorMessage = error.error?.data || "Произошла ошибка";
                     message.error(errorMessage, 3)
@@ -71,7 +71,7 @@ export const userApi = baseApi.injectEndpoints({
                     await dispatch(login(data));
 
                     const {user} = data || {};
-                    const welcomeMessage = user?.name ? `Добро пожаловать, ${user.name}!` : "Добро пожаловать!";
+                    const welcomeMessage = user?.name ? `Добро пожаловать, ${user.name}` : "Добро пожаловать";
 
                     message.success(welcomeMessage, 3);
 
