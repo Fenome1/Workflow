@@ -1,6 +1,6 @@
 ﻿namespace Workflow.Core.Models;
 
-public class Column
+public partial class Column
 {
     public int ColumnId { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿namespace Workflow.Core.Models;
 
-public class Project
+public partial class Project
 {
     public int ProjectId { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿namespace Workflow.Core.Models;
 
-public class RefreshToken
+public partial class RefreshToken
 {
     public int RefreshTokenId { get; set; }
 

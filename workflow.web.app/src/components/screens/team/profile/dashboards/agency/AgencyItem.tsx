@@ -6,6 +6,7 @@ import {useDialog} from "../../../../../../hok/useDialog.ts";
 import DeleteAgencyModal from "./modals/modals/DeleteAgencyModal.tsx";
 import UpdateAgencyModal from "./modals/UpdateAgencyModal.tsx";
 import SettingsAgencyModal from "./modals/SettingsAgencyModal.tsx";
+import LeaveButton from "./LeaveButton.tsx";
 
 interface AgencyItemProps {
     agency: IAgency
@@ -28,18 +29,25 @@ const AgencyItem: FC<AgencyItemProps> = ({agency, currentUser}) => {
                         <ProductOutlined className='agency-dashboard-icon'/>}
                     <span className='agency-dashboard-name'>{agency.name}</span>
                 </div>
-                {isOwnedAgency && <div className='agency-dashboard-buttons'>
-                    <EditOutlined className='agency-dashboard-button' onClick={(e) => {
-                        e.preventDefault()
-                        e.stopPropagation()
-                        updateAgencyDialog.show()
-                    }}/>
-                    <DeleteOutlined className='agency-dashboard-button-delete' onClick={(e) => {
-                        e.preventDefault()
-                        e.stopPropagation()
-                        deleteAgencyDialog.show()
-                    }}/>
-                </div>}
+                <div className='agency-dashboard-buttons'>
+                    {isOwnedAgency ?
+                        <>
+                            <EditOutlined className='agency-dashboard-button' onClick={(e) => {
+                                e.preventDefault()
+                                e.stopPropagation()
+                                updateAgencyDialog.show()
+                            }}/>
+                            <DeleteOutlined className='agency-dashboard-button-delete' onClick={(e) => {
+                                e.preventDefault()
+                                e.stopPropagation()
+                                deleteAgencyDialog.show()
+                            }}/>
+                        </> :
+                        <>
+                            <LeaveButton agency={agency} currentUser={currentUser}/>
+                        </>}
+                </div>
+
             </div>
             <DeleteAgencyModal agencyId={agency.agencyId} dialog={deleteAgencyDialog}/>
             <UpdateAgencyModal dialog={updateAgencyDialog} agency={agency}/>

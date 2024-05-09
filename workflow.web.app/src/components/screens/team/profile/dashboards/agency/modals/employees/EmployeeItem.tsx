@@ -9,6 +9,7 @@ import {useFireUserFromAgencyMutation} from "../../../../../../../../store/apis/
 import {
     IFireUserFormAgencyCommand
 } from "../../../../../../../../features/commands/agency/IFireUserFormAgencyCommand.ts";
+import {FireVariant} from "../../../../../../../../common/FireVariant.ts";
 
 interface EmployeeItemProps {
     employee: IUser
@@ -27,7 +28,8 @@ const EmployeeItem: FC<EmployeeItemProps> = ({employee, currentUserId, agency}) 
 
         const command: IFireUserFormAgencyCommand = {
             agencyId: agency.agencyId,
-            userId: employee.userId
+            userId: employee.userId,
+            fireVariant: FireVariant.Someone
         }
 
         await fireUserFormAgency(command)

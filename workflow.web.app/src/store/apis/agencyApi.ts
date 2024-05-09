@@ -5,6 +5,7 @@ import {IUpdateAgencyCommand} from "../../features/commands/agency/IUpdateAgency
 import {ICreateAgencyCommand} from "../../features/commands/agency/ICreateAgencyCommand.ts";
 import {IFireUserFormAgencyCommand} from "../../features/commands/agency/IFireUserFormAgencyCommand.ts";
 import {message} from "antd";
+import {FireVariant} from "../../common/FireVariant.ts";
 
 export const agencyApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -53,10 +54,14 @@ export const agencyApi = baseApi.injectEndpoints({
                 method: HttpMethod.DELETE,
                 body: command
             }),
-            async onQueryStarted(_, {queryFulfilled}) {
+            async onQueryStarted(command, {queryFulfilled}) {
                 try {
                     await queryFulfilled
-                    message.success(`Сотрудник успешно удален из агентства`, 3)
+                    const successMessage =
+                        command?.fireVariant === FireVariant.Someone ?
+                        "Сотрудник успешно удален из агентства" :
+                        "Вы успешно покинули агентство"
+                    message.success(successMessage, 3)
                 } catch (error) {
                     const errorMessage = error.error?.data || "Произошла ошибка";
                     message.error(errorMessage, 3)

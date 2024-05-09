@@ -103,7 +103,6 @@ export const userApi = baseApi.injectEndpoints({
                     method: HttpMethod.POST,
                     body: command,
                 }, api, extraOptions)
-
                 if (response.data) {
                     const result = response.data as ILoginUserResponse
                     await api.dispatch(login(result))
