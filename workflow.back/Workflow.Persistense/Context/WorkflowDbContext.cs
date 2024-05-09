@@ -115,7 +115,7 @@ public partial class WorkflowDbContext : DbContext
         {
             entity.HasKey(e => e.ObjectiveId).HasName("PK_Tasks");
 
-            entity.Property(e => e.Name).HasMaxLength(25);
+            entity.Property(e => e.Name).HasMaxLength(500);
 
             entity.HasOne(d => d.Column).WithMany(p => p.Objectives)
                 .HasForeignKey(d => d.ColumnId)

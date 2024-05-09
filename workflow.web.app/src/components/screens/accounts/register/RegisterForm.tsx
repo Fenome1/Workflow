@@ -1,72 +1,116 @@
-import "../style.scss"
-import {Button, Card, Form} from "react-bootstrap";
+import {Button, Form, FormProps, Input, message, Spin} from "antd";
 import {useNavigate} from "react-router-dom";
-import {useForm} from "react-hook-form";
-import {IRegisterData} from "./interfaces/IRegisterData.ts";
-import {useRegiserUserMutation} from "../../../../store/apis/userApi.ts";
-import {message} from "antd";
+import {useCallback} from "react";
+import {connection} from "../../../../store/signalRClient.ts";
 import {IRegisterUserCommand} from "../../../../features/commands/user/IRegisterUserCommand.ts";
+import {Card} from "react-bootstrap";
+import {useRegiserUserMutation} from "../../../../store/apis/userApi.ts";
+import {LockOutlined, UserOutlined} from "@ant-design/icons";
+import '../style.scss'
+
+type Fields = {
+    email: string
+    password: string
+    confirmPassword: string
+}
 
 const RegisterForm = () => {
-    const navigate = useNavigate()
-    const toLoginPage = () => navigate('/login')
+    const navigate = useNavigate();
+    const toLoginPage = () => navigate('/login');
 
-    const {register, reset, resetField, handleSubmit} = useForm<IRegisterData>();
+    const [registerUser, {isLoading}] = useRegiserUserMutation();
+    const [form] = Form.useForm();
 
-    const [registerUser] = useRegiserUserMutation()
-
-    const onSubmit = async (data: IRegisterData) => {
-
-        if (data.password !== data.confirmPassword) {
-            message.error("Пароли не совпадают", 5)
-            return
-        }
-        const registerCommand = {
-            email: data.email,
-            password: data.password
-        } as IRegisterUserCommand;
-
-        const result = await registerUser(registerCommand)
-
-        if ("data" in result && result.data) {
-            reset()
+    const onFinish: FormProps<Fields>['onFinish'] = async (values) => {
+        if (values.password !== values.confirmPassword) {
+            message.error("Пароли не совпадают", 5);
+            return;
         }
 
-        resetField("password")
-        resetField("confirmPassword")
-    }
+        const registerUserCommand: IRegisterUserCommand = {
+            email: values.email,
+            password: values.password
+        }
+
+        try {
+            const result = await registerUser(registerUserCommand);
+            if ("data" in result && result.data) {
+                form.resetFields();
+                startConnection();
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const startConnection = useCallback(() => {
+        connection
+            .start()
+            .then(() => console.log("Connection started"))
+            .catch((err) => console.error(err.toString()));
+    }, []);
 
     return (
         <div>
-            {/*<span>Workflow</span>*/}
-            <Card className="auth-card" onSubmit={handleSubmit(onSubmit)}>
+            <Card className="auth-card">
                 <Card.Body className="auth-card-body">
                     <b className='auth-header mb-4'>Регистрация</b>
-                    <Form className="d-grid gap-1">
-                        <Form.Group className='mb-2'>
-                            <Form.Label>Email</Form.Label>
-                            <Form.Control {...register("email")} required type="email" placeholder="E-mail.."/>
-                        </Form.Group>
+                    <Spin spinning={isLoading}>
+                        <Form
+                            name="registerForm"
+                            form={form}
+                            onFinish={onFinish}
+                            className="login-form">
+                            <Form.Item
+                                name="email"
+                                rules={[{required: true, message: 'Пожалуйста, введите ваш email!'}]}>
+                                <Input style={{fontSize: '1rem'}}
+                                       disabled={isLoading}
+                                       type='email'
+                                       placeholder="E-mail.."
+                                       prefix={<UserOutlined/>}/>
+                            </Form.Item>
 
-                        <Form.Group className='mb-2'>
-                            <Form.Label>Пароль</Form.Label>
-                            <Form.Control {...register("password")} required type="password" placeholder="Пароль"/>
-                        </Form.Group>
+                            <Form.Item
+                                name="password"
+                                rules={[{required: true, message: 'Пожалуйста, введите ваш пароль!'}]}>
+                                <Input.Password style={{fontSize: '1rem'}}
+                                                disabled={isLoading}
+                                                placeholder="Пароль"
+                                                prefix={<LockOutlined/>}/>
+                            </Form.Item>
 
-                        <Form.Group className='mb-4'>
-                            <Form.Label>Подтверждение</Form.Label>
-                            <Form.Control {...register("confirmPassword")} required type="password"
-                                          placeholder="Подтверить"/>
-                        </Form.Group>
+                            <Form.Item
+                                name="confirmPassword"
+                                dependencies={['password']}
+                                rules={[
+                                    {required: true, message: 'Пожалуйста, подтвердите ваш пароль!'},
+                                    ({getFieldValue}) => ({
+                                        validator(_, value) {
+                                            if (!value || getFieldValue('password') === value) {
+                                                return Promise.resolve();
+                                            }
+                                            return Promise.reject(new Error('Пароли не совпадают!'));
+                                        },
+                                    }),
+                                ]}
+                            >
+                                <Input.Password prefix={<LockOutlined/>}
+                                                disabled={isLoading}
+                                                style={{fontSize: '1rem'}}
+                                                placeholder="Подтвердите пароль"/>
+                            </Form.Item>
 
-                        <Button type="submit" className="login-button">
-                            Зарегистрироваться
-                        </Button>
+                            <Button type="primary" htmlType="submit" disabled={isLoading} className="login-button">
+                                Зарегистрироваться
+                            </Button>
 
-                        <Button variant="link" className="register-button" onClick={toLoginPage}>
-                            Уже есть аккаунт?
-                        </Button>
-                    </Form>
+                            <Button onClick={toLoginPage} type="link" disabled={isLoading} className="register-button">
+                                Уже есть аккаунт? Войдите сейчас!
+                            </Button>
+                        </Form>
+                    </Spin>
+
                 </Card.Body>
             </Card>
         </div>

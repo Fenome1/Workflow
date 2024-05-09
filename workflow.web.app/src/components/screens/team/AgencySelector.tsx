@@ -6,6 +6,7 @@ import {selectAgency} from "../../../store/slices/agencySlice.ts";
 import {selectProject} from "../../../store/slices/projectSlice.ts";
 import './style.scss'
 import {IUser} from "../../../features/models/IUser.ts";
+import SkeletonInput from "antd/es/skeleton/Input";
 
 interface AgencySelectorProps {
     currentUser: IUser | null
@@ -13,7 +14,7 @@ interface AgencySelectorProps {
 
 const AgencySelector: FC<AgencySelectorProps> = ({currentUser}) => {
     const dispatch = useAppDispatch();
-    const {data: agencies} = useGetAgencyByUserQuery(currentUser?.userId ?? 0, {skip: currentUser === null});
+    const {data: agencies, isLoading} = useGetAgencyByUserQuery(currentUser?.userId ?? 0, {skip: currentUser === null});
 
     const selectedAgencyIdRedux = useTypedSelector((state) => state.agency?.selectedAgencyId);
 
@@ -29,15 +30,17 @@ const AgencySelector: FC<AgencySelectorProps> = ({currentUser}) => {
     }, [dispatch, selectedAgencyIdRedux, agencies]);
 
     return (
-        <Form.Select value={selectedAgencyIdRedux || ''}
-                     onChange={(e) =>
-                         handleAgencyChange(parseInt(e.target.value))}>
-            {agencies?.map((agency) => (
-                <option key={agency.agencyId} value={agency.agencyId}>
-                    {agency.name}
-                </option>
-            ))}
-        </Form.Select>
+        <> {isLoading ? (<SkeletonInput active/>) :
+            <Form.Select value={selectedAgencyIdRedux || ''}
+                         onChange={(e) =>
+                             handleAgencyChange(parseInt(e.target.value))}>
+                {agencies?.map((agency) => (
+                    <option key={agency.agencyId} value={agency.agencyId}>
+                        {agency.name}
+                    </option>
+                ))}
+            </Form.Select>}
+        </>
     );
 };
 

@@ -1,31 +1,33 @@
-import "../style.scss"
-import {Button, Card, Form} from "react-bootstrap";
+import "../style.scss";
 import {useNavigate} from "react-router-dom";
-import {useForm} from "react-hook-form";
-import {ILoginUserCommand} from "../../../../features/commands/user/ILoginUserCommand.ts";
 import {useLoginUserMutation} from "../../../../store/apis/userApi.ts";
 import {useCallback} from "react";
 import {connection} from "../../../../store/signalRClient.ts";
+import {Button, Form, Input, Spin} from "antd";
+import {Card} from "react-bootstrap";
+import {LockOutlined, UserOutlined} from "@ant-design/icons";
+import {ILoginUserCommand} from "../../../../features/commands/user/ILoginUserCommand.ts";
 
 const LoginForm = () => {
-    const navigate = useNavigate()
-    const toRegisterPage = () => navigate('/reg')
-    const toTeamPage = () => navigate('/team')
+    const navigate = useNavigate();
+    const toRegisterPage = () => navigate("/reg");
+    const toTeamPage = () => navigate("/team");
 
-    const {register, reset, resetField, handleSubmit} = useForm<ILoginUserCommand>()
-    const [login] = useLoginUserMutation();
+    const [login, {isLoading}] = useLoginUserMutation();
+    const [form] = Form.useForm();
 
-    const onSubmit = async (data: ILoginUserCommand) => {
-        const result = await login(data)
-
-        if ("data" in result && result.data) {
-            reset()
-            startConnection()
-            toTeamPage()
+    const onFinish = async (values: ILoginUserCommand) => {
+        try {
+            const result = await login(values);
+            if ("data" in result && result.data) {
+                form.resetFields();
+                startConnection();
+                toTeamPage();
+            }
+        } catch (error) {
+            console.error(error);
         }
-
-        resetField("password")
-    }
+    };
 
     const startConnection = useCallback(() => {
         connection
@@ -36,28 +38,57 @@ const LoginForm = () => {
 
     return (
         <div>
-            <b>Workflow</b>
-            <Card className="auth-card" onSubmit={handleSubmit(onSubmit)}>
+            <Card className="auth-card">
                 <Card.Body className="auth-card-body">
-                    <b className='auth-header mb-4'>Авторизация</b>
-                    <Form className="login-form d-grid gap-1">
-                        <Form.Group className='mb-3'>
-                            <Form.Label>Email</Form.Label>
-                            <Form.Control {...register("email")} required type="email" placeholder="E-mail.."/>
-                        </Form.Group>
+                    <b className="auth-header mb-4">Авторизация</b>
+                    <Spin spinning={isLoading}>
+                        <Form
+                            name="loginForm"
+                            form={form}
+                            onFinish={onFinish}
+                            className="login-form"
+                        >
+                            <Form.Item
+                                name="email"
+                                rules={[
+                                    {required: true, message: "Пожалуйста, введите ваш email!"},
+                                ]}
+                            >
+                                <Input
+                                    style={{fontSize: "1rem"}}
+                                    type="email"
+                                    prefix={<UserOutlined/>}
+                                    placeholder="E-mail.."
+                                    disabled={isLoading}
+                                />
+                            </Form.Item>
 
-                        <Form.Group className='mb-4'>
-                            <Form.Label>Пароль</Form.Label>
-                            <Form.Control {...register("password")} required type="password" placeholder="Пароль"/>
-                        </Form.Group>
-                        <Button type="submit" className="login-button">
-                            Войти
-                        </Button>
-
-                        <Button onClick={toRegisterPage} variant="link" className="register-button">
-                            Регистрация
-                        </Button>
-                    </Form>
+                            <Form.Item
+                                name="password"
+                                rules={[
+                                    {required: true, message: "Пожалуйста, введите ваш пароль!"},
+                                ]}
+                            >
+                                <Input.Password
+                                    style={{fontSize: "1rem"}}
+                                    prefix={<LockOutlined/>}
+                                    placeholder="Пароль"
+                                    disabled={isLoading}
+                                />
+                            </Form.Item>
+                            <Button type="primary" htmlType="submit" className="login-button"
+                                    disabled={isLoading}>
+                                Войти
+                            </Button>
+                            <Button
+                                onClick={toRegisterPage}
+                                type="link"
+                                className="register-button"
+                                disabled={isLoading}>
+                                Зарегистрируйтесь сейчас!
+                            </Button>
+                        </Form>
+                    </Spin>
                 </Card.Body>
             </Card>
         </div>

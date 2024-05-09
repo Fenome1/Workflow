@@ -29,8 +29,8 @@ public class ListUserInvitationsQueryHandler(
             .Include(i => i.InvitationStatus)
             .Include(i => i.Agency)
             .ThenInclude(a => a.Owner)
-            .Where(i => i.UserId == request.UserId && 
-                        i.InvitationStatusId == (int) InvitationStatuses.Expectation)
+            .Where(i => i.UserId == request.UserId &&
+                        i.InvitationStatusId == (int)InvitationStatuses.Expectation)
             .Select(invitation => mapper.Map<InvitationViewModel>(invitation))
             .ToListAsync(cancellationToken);
 

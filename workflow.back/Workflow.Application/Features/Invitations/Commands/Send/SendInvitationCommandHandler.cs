@@ -29,7 +29,7 @@ public class SendInvitationCommandHandler(
             .AsNoTrackingWithIdentityResolution()
             .FirstOrDefaultAsync(a => a.AgencyId == request.AgencyId,
                 cancellationToken);
-        
+
         if (agency is null)
             throw new NotFoundException(nameof(Agency), request.AgencyId);
 

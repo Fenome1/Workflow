@@ -1,5 +1,5 @@
 import {FC, useEffect, useState} from 'react';
-import {Menu, MenuProps} from "antd";
+import {Menu, MenuProps, Skeleton} from "antd";
 import {FolderOutlined, GlobalOutlined, SolutionOutlined} from "@ant-design/icons";
 import {useAppDispatch, useTypedSelector} from "../../../store/hooks/hooks.ts";
 import AgencySelector from "./AgencySelector.tsx";
@@ -11,8 +11,6 @@ import {selectMenuItem} from "../../../store/slices/menuSlice.ts";
 import {TeamMenuItem} from "../../../common/TeamMenuItem.ts";
 import AvatarItem from "../../ui/AvatarItem.tsx";
 import {IUser} from "../../../features/models/IUser.ts";
-import {useDialog} from "../../../hok/useDialog.ts";
-import CreateProjectModal from "./modals/CreateProjectModal.tsx";
 
 interface TeamMenuProps {
     selectedAgencyId: number | null
@@ -21,15 +19,13 @@ interface TeamMenuProps {
 }
 
 const TeamMenu: FC<TeamMenuProps> = ({selectedAgencyId, selectedProjectId, currentUser}) => {
-    const createProjectDialog = useDialog()
-
     const dispatch = useAppDispatch();
 
     const [selectedKey, setSelectedKey] = useState<string>("projects");
 
     const selectedMenuItem = useTypedSelector((state) => state.menu.selectedMenuItem)
 
-    const {data: projects} = useGetProjectsByAgencyQuery(selectedAgencyId || 0,
+    const {data: projects, isLoading} = useGetProjectsByAgencyQuery(selectedAgencyId || 0,
         {skip: selectedAgencyId === null});
 
     const setSelectedProjectAsync = async () => {
@@ -70,41 +66,48 @@ const TeamMenu: FC<TeamMenuProps> = ({selectedAgencyId, selectedProjectId, curre
     return (
         <div className='team-menu'>
             <b className='team-menu-header'>Workflow</b>
-            <Menu
-                selectedKeys={[selectedKey]}
-                id='teamMenu'
-                className='team-menu-tabs'
-                style={{background: AppColors.Primary}}
-                mode="inline"
-                defaultOpenKeys={['projects']}
-                theme='light'
-                onSelect={onSelect}>
-                <Menu.Item className='team-menu-profile'
-                           key="profile"
-                           icon={<AvatarItem user={currentUser} className='team-menu-profile-img'/>}>
-                    <span>Мой профиль</span>
-                </Menu.Item>
-                <Menu.Item key="objectives" className='team-menu-objectives'
-                           icon={<SolutionOutlined className='menu-icon'/>}>
-                    Мои задачи
-                </Menu.Item>
-                <Menu.SubMenu key="projects"
-                              className='team-menu-projects'
-                              icon={<GlobalOutlined className='menu-icon'/>}
-                              title='Проекты'>
-                    {projects && projects?.map((project) => (
-                        <Menu.Item key={project.projectId}>
-                            <FolderOutlined/>
-                            <span>{project.name}</span>
-                        </Menu.Item>
-                    ))}
-                </Menu.SubMenu>
-            </Menu>
+            <Skeleton loading={isLoading} className='team-menu-tabs' active style={{padding: '20px'}}>
+                <Menu
+                    selectedKeys={[selectedKey]}
+                    id='teamMenu'
+                    className='team-menu-tabs'
+                    style={{background: AppColors.Primary}}
+                    mode="inline"
+                    defaultOpenKeys={['projects']}
+                    theme='light'
+                    onSelect={onSelect}>
+                    <Menu.Item className='team-menu-profile'
+                               key="profile"
+                               icon={<AvatarItem user={currentUser} className='team-menu-profile-img'/>}>
+                        <span>Мой профиль</span>
+                    </Menu.Item>
+                    <Menu.Item key="objectives" className='team-menu-objectives'
+                               icon={<SolutionOutlined className='menu-icon'/>}>
+                        Мои задачи
+                    </Menu.Item>
+                    <Menu.SubMenu key="projects"
+                                  className='team-menu-projects'
+                                  icon={<GlobalOutlined className='menu-icon'/>}
+                                  title='Проекты'>
+                        {projects && projects.length > 0 ? (
+                            projects.map((project) => (
+                                <Menu.Item key={project.projectId}>
+                                    <FolderOutlined/>
+                                    <span>{project.name}</span>
+                                </Menu.Item>
+                            ))
+                        ) : (
+                            <Menu.Item disabled>
+                                <span>Нет доступных проектов</span>
+                            </Menu.Item>
+                        )}
+                    </Menu.SubMenu>
+                </Menu>
+            </Skeleton>
             <div className='agency-selector'>
                 <span className='agency-selector-header'>Выбранное агентство</span>
                 <AgencySelector currentUser={currentUser}/>
             </div>
-            <CreateProjectModal dialog={createProjectDialog} agencyId={selectedAgencyId}/>
         </div>
     );
 };

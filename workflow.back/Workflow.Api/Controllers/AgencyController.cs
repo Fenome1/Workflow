@@ -68,7 +68,7 @@ public class AgencyController : BaseController
             return BadRequest($"{e.Message}");
         }
     }
-    
+
     [HttpDelete("Fire")]
     public async Task<ActionResult<Unit>> Delete([FromBody] FireUserFromAgencyCommand command)
     {

@@ -16,13 +16,24 @@
       font-size: 27pt;
     }
 
-    .login-button {
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+
+      .login-button {
+        font-size: 1rem;
+        height: 100%;
+        margin-bottom: 0.5rem;
+      }
+
+      .register-button {
+        height: 100%;
+        font-size: 10pt;
+      }
 
     }
 
-    .register-button {
-      font-size: 10pt;
-    }
   }
 }
 
@@ -32,3 +43,5 @@
     min-height: 0 !important;
   }
 }
+
+
