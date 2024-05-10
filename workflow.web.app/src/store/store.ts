@@ -1,4 +1,3 @@
-import {baseApi} from "./apis/baseApi.ts";
 import {combineReducers, configureStore} from "@reduxjs/toolkit";
 import {signal} from "./signalRClient.ts";
 import userSlice from "./slices/userSlice.ts";
@@ -9,6 +8,7 @@ import agencySlice from "./slices/agencySlice.ts";
 import projectSlice from "./slices/projectSlice.ts";
 import boardSlice from "./slices/boardSlice.ts";
 import menuSlice from "./slices/menuSlice.ts";
+import {baseApi} from "./apis";
 
 const rootReducer = combineReducers({
     [baseApi.reducerPath]: baseApi.reducer,

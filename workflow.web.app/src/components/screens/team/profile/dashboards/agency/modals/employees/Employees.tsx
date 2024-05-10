@@ -1,5 +1,5 @@
 import {FC} from 'react';
-import {useGetUsersByAgencyQuery} from "../../../../../../../../store/apis/userApi.ts";
+import {useGetUsersByAgencyQuery} from "../../../../../../../../store/apis/user/userApi.ts";
 import EmployeeItem from "./EmployeeItem.tsx";
 import './style.scss'
 import {IAgency} from "../../../../../../../../features/models/IAgency.ts";

@@ -1,5 +1,5 @@
 import {FC} from "react";
-import {useGetAgencyByUserQuery} from "../../../../../../store/apis/agencyApi.ts";
+import {useGetAgencyByUserQuery} from "../../../../../../store/apis/agency/agencyApi.ts";
 import {IUser} from "../../../../../../features/models/IUser.ts";
 import AgencyItem from "./AgencyItem.tsx";
 import {Button, Skeleton} from "antd";

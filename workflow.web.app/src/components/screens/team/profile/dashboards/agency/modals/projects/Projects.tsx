@@ -1,6 +1,6 @@
 import {FC} from 'react';
 import {IAgency} from "../../../../../../../../features/models/IAgency.ts";
-import {useGetProjectsByAgencyQuery} from "../../../../../../../../store/apis/projectApi.ts";
+import {useGetProjectsByAgencyQuery} from "../../../../../../../../store/apis/project/projectApi.ts";
 import {Button, Skeleton} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
 import ProjectItem from "./ProjectItem.tsx";

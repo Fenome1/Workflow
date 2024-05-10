@@ -6,11 +6,11 @@ import './style.scss';
 import {Button, Input} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
 import ObjectiveCard from "../current-column/ObjectiveCard.tsx";
-import {useGetObjectivesByColumnQuery} from "../../../../store/apis/objectiveApi.ts";
+import {useGetObjectivesByColumnQuery} from "../../../../store/apis/objective/objectiveApi.ts";
 import {useDialog} from "../../../../hok/useDialog.ts";
 import CreateObjectiveCard from "./create-objective/CreateObjectiveCard.tsx";
 import {IUpdateColumnCommand} from "../../../../features/commands/column/IUpdateColumnCommand.ts";
-import {useUpdateColumnMutation} from "../../../../store/apis/columnApi.ts";
+import {useUpdateColumnMutation} from "../../../../store/apis/column/columnApi.ts";
 
 interface IColumnCardProps {
     column: IColumn

@@ -1,8 +1,9 @@
-import {ApiTags, baseApi} from "./baseApi.ts";
-import {HttpMethod} from "../../common/HttpMetod.ts";
-import {IProject} from "../../features/models/IProject.ts";
-import {ICreateProjectCommand} from "../../features/commands/project/ICreateProjectCommand.ts";
-import {IUpdateProjectCommand} from "../../features/commands/project/IUpdateProjectCommand.ts";
+import {baseApi} from "../index.ts";
+import {ApiTags} from "../../fetchBaseQueryWithReauth.ts";
+import {HttpMethod} from "../../../common/HttpMetod.ts";
+import {IProject} from "../../../features/models/IProject.ts";
+import {ICreateProjectCommand} from "../../../features/commands/project/ICreateProjectCommand.ts";
+import {IUpdateProjectCommand} from "../../../features/commands/project/IUpdateProjectCommand.ts";
 import {message} from "antd";
 
 export const projectApi = baseApi.injectEndpoints({

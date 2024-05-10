@@ -1,6 +1,6 @@
 import {FC} from 'react';
 import {Modal} from "antd";
-import {useDeleteObjectiveMutation} from "../../../../../store/apis/objectiveApi.ts";
+import {useDeleteObjectiveMutation} from "../../../../../store/apis/objective/objectiveApi.ts";
 import {IDialog} from "../../../../../features/models/IDialog.ts";
 
 interface DeleteObjectiveModalProps {

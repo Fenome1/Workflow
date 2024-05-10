@@ -1,7 +1,7 @@
 import {FC, useEffect} from 'react';
 import {Form} from "react-bootstrap";
 import {useAppDispatch, useTypedSelector} from "../../../store/hooks/hooks.ts";
-import {useGetAgencyByUserQuery} from "../../../store/apis/agencyApi.ts";
+import {useGetAgencyByUserQuery} from "../../../store/apis/agency/agencyApi.ts";
 import {selectAgency} from "../../../store/slices/agencySlice.ts";
 import {selectProject} from "../../../store/slices/projectSlice.ts";
 import './style.scss'

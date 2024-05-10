@@ -5,7 +5,7 @@ import {Button, Popconfirm} from "antd";
 import './style.scss'
 import {IAgency} from "../../../../../../../../features/models/IAgency.ts";
 import {useDialog} from "../../../../../../../../hok/useDialog.ts";
-import {useFireUserFromAgencyMutation} from "../../../../../../../../store/apis/agencyApi.ts";
+import {useFireUserFromAgencyMutation} from "../../../../../../../../store/apis/agency/agencyApi.ts";
 import {
     IFireUserFormAgencyCommand
 } from "../../../../../../../../features/commands/agency/IFireUserFormAgencyCommand.ts";

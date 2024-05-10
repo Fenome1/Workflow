@@ -1,9 +1,10 @@
-import {ApiTags, baseApi} from "./baseApi.ts";
-import {HttpMethod} from "../../common/HttpMetod.ts";
-import {IInvitation} from "../../features/models/IInvitation.ts";
-import {ISendInvitationCommand} from "../../features/commands/invitation/ISendInvitationCommand.ts";
-import {IAnswerOnInvitationCommand} from "../../features/commands/invitation/IAnswerOnInvitationCommand.ts";
+import {ApiTags} from "../../fetchBaseQueryWithReauth.ts";
+import {HttpMethod} from "../../../common/HttpMetod.ts";
+import {IInvitation} from "../../../features/models/IInvitation.ts";
+import {ISendInvitationCommand} from "../../../features/commands/invitation/ISendInvitationCommand.ts";
+import {IAnswerOnInvitationCommand} from "../../../features/commands/invitation/IAnswerOnInvitationCommand.ts";
 import {message} from "antd";
+import {baseApi} from "../index.ts";
 
 export const invitationApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({

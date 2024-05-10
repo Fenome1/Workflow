@@ -1,5 +1,5 @@
 import {useTypedSelector} from "../../../../store/hooks/hooks.ts";
-import {useGetColumnsByBoardQuery} from "../../../../store/apis/columnApi.ts";
+import {useGetColumnsByBoardQuery} from "../../../../store/apis/column/columnApi.ts";
 import ColumnCard from "./ColumnCard.tsx";
 import './style.scss'
 import {Button} from "antd";

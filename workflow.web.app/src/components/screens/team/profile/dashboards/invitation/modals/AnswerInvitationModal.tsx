@@ -1,7 +1,7 @@
 import {Button, Modal} from "antd";
 import {AnswerType} from "../../../../../../../common/AnswerType.ts";
 import {IInvitation} from "../../../../../../../features/models/IInvitation.ts";
-import {useAnswerInvitationMutation} from "../../../../../../../store/apis/invitationApi.ts";
+import {useAnswerInvitationMutation} from "../../../../../../../store/apis/invitation/invitationApi.ts";
 import {
     IAnswerOnInvitationCommand
 } from "../../../../../../../features/commands/invitation/IAnswerOnInvitationCommand.ts";

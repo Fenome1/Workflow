@@ -1,11 +1,12 @@
-import {ApiTags, baseApi} from "./baseApi.ts";
-import {HttpMethod} from "../../common/HttpMetod.ts";
-import {IAgency} from "../../features/models/IAgency.ts";
-import {IUpdateAgencyCommand} from "../../features/commands/agency/IUpdateAgencyCommand.ts";
-import {ICreateAgencyCommand} from "../../features/commands/agency/ICreateAgencyCommand.ts";
-import {IFireUserFormAgencyCommand} from "../../features/commands/agency/IFireUserFormAgencyCommand.ts";
+import {HttpMethod} from "../../../common/HttpMetod.ts";
+import {IAgency} from "../../../features/models/IAgency.ts";
+import {IUpdateAgencyCommand} from "../../../features/commands/agency/IUpdateAgencyCommand.ts";
+import {ICreateAgencyCommand} from "../../../features/commands/agency/ICreateAgencyCommand.ts";
+import {IFireUserFormAgencyCommand} from "../../../features/commands/agency/IFireUserFormAgencyCommand.ts";
 import {message} from "antd";
-import {FireVariant} from "../../common/FireVariant.ts";
+import {FireVariant} from "../../../common/FireVariant.ts";
+import {ApiTags} from "../../fetchBaseQueryWithReauth.ts";
+import {baseApi} from "../index.ts";
 
 export const agencyApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({

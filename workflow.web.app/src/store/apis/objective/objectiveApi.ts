@@ -1,9 +1,10 @@
-import {ApiTags, baseApi} from "./baseApi.ts";
-import {HttpMethod} from "../../common/HttpMetod.ts";
-import {IObjective} from "../../features/models/IObjective.ts";
-import {IUpdateObjectiveCommand} from "../../features/commands/objective/IUpdateObjectiveCommand.ts";
-import {IAssignifyUserToObjectiveCommand} from "../../features/commands/objective/IAssignifyUserToObjectiveCommand.ts";
-import {ICreateObjectiveCommand} from "../../features/commands/objective/ICreateObjectiveCommand.ts";
+import {baseApi} from "../index.ts";
+import {ApiTags} from "../../fetchBaseQueryWithReauth.ts";
+import {HttpMethod} from "../../../common/HttpMetod.ts";
+import {IObjective} from "../../../features/models/IObjective.ts";
+import {IUpdateObjectiveCommand} from "../../../features/commands/objective/IUpdateObjectiveCommand.ts";
+import {IAssignifyUserToObjectiveCommand} from "../../../features/commands/objective/IAssignifyUserToObjectiveCommand.ts";
+import {ICreateObjectiveCommand} from "../../../features/commands/objective/ICreateObjectiveCommand.ts";
 
 export const objectiveApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({

@@ -1,8 +1,8 @@
 import {Dropdown, MenuProps, message} from "antd";
 import {FC} from "react";
-import {useGetPriorityQuery} from "../../../../../../store/apis/priorityApi.ts";
+import {useGetPriorityQuery} from "../../../../../../store/apis/priority/priorityApi.ts";
 import {ItemType} from "antd/es/menu/hooks/useItems";
-import {useUpdateObjectiveMutation} from "../../../../../../store/apis/objectiveApi.ts";
+import {useUpdateObjectiveMutation} from "../../../../../../store/apis/objective/objectiveApi.ts";
 import {IUpdateObjectiveCommand} from "../../../../../../features/commands/objective/IUpdateObjectiveCommand.ts";
 import {IObjective} from "../../../../../../features/models/IObjective.ts";
 

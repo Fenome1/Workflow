@@ -2,7 +2,7 @@ import {FC, useState} from 'react';
 import {IProject} from "../../../../../../../../features/models/IProject.ts";
 import {Button, Input, Popconfirm} from 'antd';
 import {DeleteOutlined, EditOutlined, FolderOutlined} from '@ant-design/icons';
-import {useDeleteProjectMutation, useUpdateProjectMutation} from "../../../../../../../../store/apis/projectApi.ts";
+import {useDeleteProjectMutation, useUpdateProjectMutation} from "../../../../../../../../store/apis/project/projectApi.ts";
 import {useDialog} from "../../../../../../../../hok/useDialog.ts";
 import {IUpdateProjectCommand} from "../../../../../../../../features/commands/project/IUpdateProjectCommand.ts";
 

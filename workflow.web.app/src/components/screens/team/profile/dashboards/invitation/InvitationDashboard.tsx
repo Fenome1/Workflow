@@ -1,6 +1,6 @@
 import InvitationItem from "./InvitationItem.tsx";
 import {FC} from "react";
-import {useGetUserInvitationsQuery} from "../../../../../../store/apis/invitationApi.ts";
+import {useGetUserInvitationsQuery} from "../../../../../../store/apis/invitation/invitationApi.ts";
 import {Empty, Skeleton} from "antd";
 
 interface InvitationDashBoardProps {

@@ -1,6 +1,6 @@
 import {FC} from "react";
 import {Modal} from "antd";
-import {useDeleteAgencyMutation} from "../../../../../../../../store/apis/agencyApi.ts";
+import {useDeleteAgencyMutation} from "../../../../../../../../store/apis/agency/agencyApi.ts";
 import "./style.scss";
 import {IDialog} from "../../../../../../../../features/models/IDialog.ts";
 import {useAppDispatch, useTypedSelector} from "../../../../../../../../store/hooks/hooks.ts";

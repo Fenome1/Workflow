@@ -1,7 +1,7 @@
 import {Button, Calendar, message, Popover} from "antd";
 import {FC, useState} from "react";
 import {IObjective} from "../../../../../../features/models/IObjective.ts";
-import {useUpdateObjectiveMutation} from "../../../../../../store/apis/objectiveApi.ts";
+import {useUpdateObjectiveMutation} from "../../../../../../store/apis/objective/objectiveApi.ts";
 import {IUpdateObjectiveCommand} from "../../../../../../features/commands/objective/IUpdateObjectiveCommand.ts";
 import {Dayjs} from "dayjs";
 import {IDialog} from "../../../../../../features/models/IDialog.ts";

@@ -16,7 +16,7 @@ import DeadlineSticker from "./stickers/deadline/DeadlineSticker.tsx";
 import AddStickerPopup from "./stickers/sticker-add/AddStickerPopup.tsx";
 import {useDialog} from "../../../../hok/useDialog.ts";
 import AssignmentChangeModal from "./modals/Assignment/AssignmentChangeModal.tsx";
-import {useUpdateObjectiveMutation} from "../../../../store/apis/objectiveApi.ts";
+import {useUpdateObjectiveMutation} from "../../../../store/apis/objective/objectiveApi.ts";
 import {AppColors} from "../../../../common/AppColors.ts";
 import AvatarItem from "../../../ui/AvatarItem.tsx";
 

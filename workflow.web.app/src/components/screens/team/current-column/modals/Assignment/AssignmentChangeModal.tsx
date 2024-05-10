@@ -2,7 +2,7 @@ import {IDialog} from "../../../../../../features/models/IDialog.ts";
 import {Empty, Input, Modal} from "antd";
 import {FC, useState} from "react";
 import {IObjective} from "../../../../../../features/models/IObjective.ts";
-import {useGetUsersByAgencyQuery} from "../../../../../../store/apis/userApi.ts";
+import {useGetUsersByAgencyQuery} from "../../../../../../store/apis/user/userApi.ts";
 import {useTypedSelector} from "../../../../../../store/hooks/hooks.ts";
 import './style.scss'
 import AssignmentUserItem from "./AssignmentUserItem.tsx";

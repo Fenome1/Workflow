@@ -2,7 +2,7 @@ import {FC} from 'react';
 import {IDialog} from "../../../../../../features/models/IDialog.ts";
 import {Form, FormProps, Input, Modal} from "antd";
 import {ICreateBoardCommand} from "../../../../../../features/commands/board/ICreateBoardCommand.ts";
-import {useCreateBoardMutation} from "../../../../../../store/apis/boardApi.ts";
+import {useCreateBoardMutation} from "../../../../../../store/apis/board/boardApi.ts";
 import TextArea from "antd/es/input/TextArea";
 
 interface CreateBoardModalProps {

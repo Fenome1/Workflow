@@ -1,19 +1,19 @@
 import "../style.scss";
 import {useNavigate} from "react-router-dom";
-import {useLoginUserMutation} from "../../../../store/apis/userApi.ts";
 import {useCallback} from "react";
 import {connection} from "../../../../store/signalRClient.ts";
 import {Button, Form, Input, Spin} from "antd";
 import {Card} from "react-bootstrap";
 import {LockOutlined, UserOutlined} from "@ant-design/icons";
 import {ILoginUserCommand} from "../../../../features/commands/user/ILoginUserCommand.ts";
+import {useLoginMutation} from "../../../../store/apis";
 
 const LoginForm = () => {
     const navigate = useNavigate();
     const toRegisterPage = () => navigate("/reg");
     const toTeamPage = () => navigate("/team");
 
-    const [login, {isLoading}] = useLoginUserMutation();
+    const [login, {isLoading}] = useLoginMutation();
     const [form] = Form.useForm();
 
     const onFinish = async (values: ILoginUserCommand) => {

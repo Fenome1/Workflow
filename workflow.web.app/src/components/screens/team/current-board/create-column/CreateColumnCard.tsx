@@ -1,7 +1,7 @@
 import React, {FC, useState} from 'react';
 import {IDialog} from "../../../../../features/models/IDialog.ts";
 import {ICreateColumnCommand} from "../../../../../features/commands/column/ICreateColumnCommand.ts";
-import {useCreateColumnMutation} from "../../../../../store/apis/columnApi.ts";
+import {useCreateColumnMutation} from "../../../../../store/apis/column/columnApi.ts";
 import {Input} from "antd";
 
 interface CreateColumnCardProps {

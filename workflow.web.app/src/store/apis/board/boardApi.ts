@@ -1,8 +1,9 @@
-import {ApiTags, baseApi} from "./baseApi.ts";
-import {HttpMethod} from "../../common/HttpMetod.ts";
-import {IBoard} from "../../features/models/IBoard.ts";
-import {ICreateBoardCommand} from "../../features/commands/board/ICreateBoardCommand.ts";
-import {IUpdateBoardCommand} from "../../features/commands/board/IUpdateBoardCommand.ts";
+import {HttpMethod} from "../../../common/HttpMetod.ts";
+import {IBoard} from "../../../features/models/IBoard.ts";
+import {ICreateBoardCommand} from "../../../features/commands/board/ICreateBoardCommand.ts";
+import {IUpdateBoardCommand} from "../../../features/commands/board/IUpdateBoardCommand.ts";
+import {ApiTags} from "../../fetchBaseQueryWithReauth.ts";
+import {baseApi} from "../index.ts";
 
 export const boardApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({

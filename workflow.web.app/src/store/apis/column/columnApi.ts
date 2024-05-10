@@ -1,8 +1,9 @@
-import {ApiTags, baseApi} from "./baseApi.ts";
-import {HttpMethod} from "../../common/HttpMetod.ts";
-import {IColumn} from "../../features/models/IColumn.ts";
-import {IUpdateColumnCommand} from "../../features/commands/column/IUpdateColumnCommand.ts";
-import {ICreateColumnCommand} from "../../features/commands/column/ICreateColumnCommand.ts";
+import {ApiTags} from "../../fetchBaseQueryWithReauth.ts";
+import {HttpMethod} from "../../../common/HttpMetod.ts";
+import {IColumn} from "../../../features/models/IColumn.ts";
+import {IUpdateColumnCommand} from "../../../features/commands/column/IUpdateColumnCommand.ts";
+import {ICreateColumnCommand} from "../../../features/commands/column/ICreateColumnCommand.ts";
+import {baseApi} from "../index.ts";
 
 export const columnApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({

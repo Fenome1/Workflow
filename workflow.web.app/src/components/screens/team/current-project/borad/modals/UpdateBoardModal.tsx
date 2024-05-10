@@ -3,7 +3,7 @@ import {IBoard} from "../../../../../../features/models/IBoard.ts";
 import {Form, FormProps, Input, message, Modal} from "antd";
 import TextArea from "antd/es/input/TextArea";
 import {FC} from "react";
-import {useUpdateBoardMutation} from "../../../../../../store/apis/boardApi.ts";
+import {useUpdateBoardMutation} from "../../../../../../store/apis/board/boardApi.ts";
 import {IUpdateBoardCommand} from "../../../../../../features/commands/board/IUpdateBoardCommand.ts";
 
 interface CreateBoardModalProps {

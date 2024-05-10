@@ -1,6 +1,6 @@
 import {IDialog} from "../../../../../../../../features/models/IDialog.ts";
 import React, {FC, useState} from "react";
-import {useCreateProjectMutation} from "../../../../../../../../store/apis/projectApi.ts";
+import {useCreateProjectMutation} from "../../../../../../../../store/apis/project/projectApi.ts";
 import {ICreateProjectCommand} from "../../../../../../../../features/commands/project/ICreateProjectCommand.ts";
 import {Input} from "antd";
 

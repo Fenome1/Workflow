@@ -1,7 +1,7 @@
 import React, {FC, useRef, useState} from 'react';
 import {Button, Input, InputRef} from "antd";
 import {LogoutOutlined} from "@ant-design/icons";
-import {useLogoutMutation, useUpdateUserMutation} from "../../../../../../store/apis/userApi.ts";
+import {useUpdateUserMutation} from "../../../../../../store/apis/user/userApi.ts";
 import {ILogoutUserCommand} from "../../../../../../features/commands/user/ILogoutUserCommand.ts";
 import {IUpdateUserCommand} from "../../../../../../features/commands/user/IUpdateUserCommand.ts";
 import AvatarItem from "../../../../../ui/AvatarItem.tsx";
@@ -9,6 +9,7 @@ import {IUserState} from "../../../../../../store/slices/userSlice.ts";
 import SkeletonAvatar from "antd/es/skeleton/Avatar";
 import SkeletonInput from "antd/es/skeleton/Input";
 import SkeletonButton from "antd/es/skeleton/Button";
+import {useLogoutMutation} from "../../../../../../store/apis";
 
 interface ProfileDashboardProps {
     userState: IUserState,

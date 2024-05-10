@@ -3,7 +3,7 @@ import './style.scss'
 import {IUser} from "../../../../../../features/models/IUser.ts";
 import {IObjective} from "../../../../../../features/models/IObjective.ts";
 import {Checkbox} from "antd";
-import {useAssignifyUserToObjectiveMutation} from "../../../../../../store/apis/objectiveApi.ts";
+import {useAssignifyUserToObjectiveMutation} from "../../../../../../store/apis/objective/objectiveApi.ts";
 import {
     IAssignifyUserToObjectiveCommand
 } from "../../../../../../features/commands/objective/IAssignifyUserToObjectiveCommand.ts";

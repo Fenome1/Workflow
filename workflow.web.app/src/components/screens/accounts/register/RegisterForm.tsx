@@ -4,7 +4,7 @@ import {useCallback} from "react";
 import {connection} from "../../../../store/signalRClient.ts";
 import {IRegisterUserCommand} from "../../../../features/commands/user/IRegisterUserCommand.ts";
 import {Card} from "react-bootstrap";
-import {useRegiserUserMutation} from "../../../../store/apis/userApi.ts";
+import {useRegiserUserMutation} from "../../../../store/apis/user/userApi.ts";
 import {LockOutlined, UserOutlined} from "@ant-design/icons";
 import '../style.scss'
 

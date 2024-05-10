@@ -4,7 +4,7 @@ import {Dropdown, MenuProps} from "antd";
 import DeadlinePicker from "./DeadlinePicker.tsx";
 import './style.scss'
 import {IUpdateObjectiveCommand} from "../../../../../../features/commands/objective/IUpdateObjectiveCommand.ts";
-import {useUpdateObjectiveMutation} from "../../../../../../store/apis/objectiveApi.ts";
+import {useUpdateObjectiveMutation} from "../../../../../../store/apis/objective/objectiveApi.ts";
 import {useDialog} from "../../../../../../hok/useDialog.ts";
 
 interface DeadlineDatePickerProps {

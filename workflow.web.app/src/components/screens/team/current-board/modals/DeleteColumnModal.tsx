@@ -1,6 +1,6 @@
 import {FC} from 'react';
 import {IDialog} from "../../../../../features/models/IDialog.ts";
-import {useDeleteColumnMutation} from "../../../../../store/apis/columnApi.ts";
+import {useDeleteColumnMutation} from "../../../../../store/apis/column/columnApi.ts";
 import {Modal} from "antd";
 
 interface DeleteColumnModalProps {

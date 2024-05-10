@@ -4,7 +4,7 @@ import {Form, FormProps, Input, message, Modal} from "antd";
 import TextArea from "antd/es/input/TextArea";
 import {IUpdateAgencyCommand} from "../../../../../../../features/commands/agency/IUpdateAgencyCommand.ts";
 import {IAgency} from "../../../../../../../features/models/IAgency.ts";
-import {useUpdateAgencyMutation} from "../../../../../../../store/apis/agencyApi.ts";
+import {useUpdateAgencyMutation} from "../../../../../../../store/apis/agency/agencyApi.ts";
 
 interface EditAgencyModalProps {
     dialog: IDialog

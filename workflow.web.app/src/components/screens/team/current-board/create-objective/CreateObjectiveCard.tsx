@@ -2,7 +2,7 @@ import './style.scss'
 import {Input} from "antd";
 import React, {FC, useState} from "react";
 import {IDialog} from "../../../../../features/models/IDialog.ts";
-import {useCreateObjectiveMutation} from "../../../../../store/apis/objectiveApi.ts";
+import {useCreateObjectiveMutation} from "../../../../../store/apis/objective/objectiveApi.ts";
 import {ICreateObjectiveCommand} from "../../../../../features/commands/objective/ICreateObjectiveCommand.ts";
 
 interface CreateObjectiveCardProps {

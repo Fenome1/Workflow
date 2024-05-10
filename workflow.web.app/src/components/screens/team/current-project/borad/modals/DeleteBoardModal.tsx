@@ -1,6 +1,6 @@
 import {FC} from 'react';
 import {IDialog} from "../../../../../../features/models/IDialog.ts";
-import {useDeleteBoardMutation} from "../../../../../../store/apis/boardApi.ts";
+import {useDeleteBoardMutation} from "../../../../../../store/apis/board/boardApi.ts";
 import {Modal} from "antd";
 
 interface DeleteBoardModalProps {

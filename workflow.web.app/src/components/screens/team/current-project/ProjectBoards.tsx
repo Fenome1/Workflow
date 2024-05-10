@@ -1,5 +1,5 @@
 import {FC} from 'react';
-import {useGetBoardsByProjectQuery} from "../../../../store/apis/boardApi.ts";
+import {useGetBoardsByProjectQuery} from "../../../../store/apis/board/boardApi.ts";
 import {IBoard} from "../../../../features/models/IBoard.ts";
 import BoardCard from "./borad/BoardCard.tsx";
 import './style.scss'

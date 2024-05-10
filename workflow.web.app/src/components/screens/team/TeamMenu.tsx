@@ -6,7 +6,7 @@ import AgencySelector from "./AgencySelector.tsx";
 import {selectProject} from "../../../store/slices/projectSlice.ts";
 import {AppColors} from "../../../common/AppColors.ts";
 import './style.scss'
-import {useGetProjectsByAgencyQuery} from "../../../store/apis/projectApi.ts";
+import {useGetProjectsByAgencyQuery} from "../../../store/apis/project/projectApi.ts";
 import {selectMenuItem} from "../../../store/slices/menuSlice.ts";
 import {TeamMenuItem} from "../../../common/TeamMenuItem.ts";
 import AvatarItem from "../../ui/AvatarItem.tsx";

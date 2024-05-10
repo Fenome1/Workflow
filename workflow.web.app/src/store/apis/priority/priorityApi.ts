@@ -1,6 +1,7 @@
-import {ApiTags, baseApi} from "./baseApi.ts";
-import {HttpMethod} from "../../common/HttpMetod.ts";
-import {IPriority} from "../../features/models/IPriority.ts";
+import {baseApi} from "../index.ts";
+import {ApiTags} from "../../fetchBaseQueryWithReauth.ts";
+import {HttpMethod} from "../../../common/HttpMetod.ts";
+import {IPriority} from "../../../features/models/IPriority.ts";
 
 export const priorityApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({

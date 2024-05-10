@@ -10,7 +10,7 @@ import {
     useGetAgencyInvitationsQuery,
     useRecallInvitationMutation,
     useSendInvitationMutation
-} from "../../../../../../../../../store/apis/invitationApi.ts";
+} from "../../../../../../../../../store/apis/invitation/invitationApi.ts";
 import {IAgency} from "../../../../../../../../../features/models/IAgency.ts";
 import {IInvitation} from "../../../../../../../../../features/models/IInvitation.ts";
 import {InvitationStatus} from "../../../../../../../../../common/InvitationStatus.ts";
