@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Workflow.Application.Common.Interfaces;
-using Workflow.Application.Features.Agencies.Commands.CreateDefault;
+using Workflow.Application.Features.Agencies;
 using Workflow.Core.Models;
 using Workflow.Persistense.Context;
 
@@ -15,8 +16,9 @@ public sealed class CreateUserCommandHandler(
 {
     public async Task<int> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
-        var isLoginExist = context.Users
-            .Any(u => u.Email == request.Email);
+        var isLoginExist = await context.Users
+            .AnyAsync(u => u.Email == request.Email,
+                cancellationToken);
 
         if (isLoginExist)
             throw new Exception("Пользователь с таким логином уже существует");
@@ -31,8 +33,7 @@ public sealed class CreateUserCommandHandler(
         await context.Users.AddAsync(user, cancellationToken);
         await context.SaveChangesAsync(cancellationToken);
 
-        await mediator.Send(new CreateDefaultAgencyCommand(user.UserId),
-            cancellationToken);
+        await mediator.CreateAgencyAsync(user.UserId, cancellationToken);
 
         return user.UserId;
     }

@@ -16,7 +16,6 @@ const DeleteAgencyModal: FC<DeleteAgencyModalProps> = ({dialog, agencyId}) => {
     const dispatch = useAppDispatch()
     const selectedAgencyId = useTypedSelector((state) => state.agency.selectedAgencyId)
 
-
     const [deleteAgency] = useDeleteAgencyMutation();
 
     const handleOk = async () => {

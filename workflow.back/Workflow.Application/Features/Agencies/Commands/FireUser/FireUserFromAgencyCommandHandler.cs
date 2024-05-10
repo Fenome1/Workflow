@@ -6,41 +6,40 @@ using Workflow.Persistense.Context;
 
 namespace Workflow.Application.Features.Agencies.Commands.FireUser;
 
-public class FireUserFromAgencyCommandHandler(WorkflowDbContext context)
+public sealed class FireUserFromAgencyCommandHandler(WorkflowDbContext context)
     : IRequestHandler<FireUserFromAgencyCommand, Unit>
 {
     public async Task<Unit> Handle(FireUserFromAgencyCommand request, CancellationToken cancellationToken)
     {
-        await using var transaction = await context.Database.BeginTransactionAsync(cancellationToken);
-
-        var agency = await context.Agencies
-            .Include(a => a.Projects)
+        return await context.WithTransactionAsync(async () =>
+        {
+            var agency = await context.Agencies
+                .Include(a => a.Projects)
                 .ThenInclude(p => p.Boards)
                 .ThenInclude(c => c.Columns)
                 .ThenInclude(b => b.Objectives)
                 .ThenInclude(objective => objective.Users)
-            .Include(agency => agency.Users)
-            .FirstOrDefaultAsync(a => a.AgencyId == request.AgencyId,
-                cancellationToken);
+                .Include(agency => agency.Users)
+                .FirstOrDefaultAsync(a => a.AgencyId == request.AgencyId,
+                    cancellationToken);
 
-        if (agency is null)
-            throw new NotFoundException(nameof(Agency), request.AgencyId);
+            if (agency is null)
+                throw new NotFoundException(nameof(Agency), request.AgencyId);
 
-        var user = agency.Users
-            .FirstOrDefault(u => u.UserId == request.UserId);
-        
-        if (user is null)
-            throw new NotFoundException($"Пользователь: {user.UserId} не состоит в агентстве: {agency.AgencyId}");
+            var user = agency.Users
+                .FirstOrDefault(u => u.UserId == request.UserId);
 
-        UnassignUserFromAgencyObjectives(agency, user);
+            if (user is null)
+                throw new NotFoundException($"Пользователь: {user.UserId} не состоит в агентстве: {agency.AgencyId}");
 
-        agency.Users.Remove(user);
+            UnassignUserFromAgencyObjectives(agency, user);
 
-        await context.SaveChangesAsync(cancellationToken);
+            agency.Users.Remove(user);
 
-        await transaction.CommitAsync(cancellationToken);
+            await context.SaveChangesAsync(cancellationToken);
 
-        return Unit.Value;
+            return Unit.Value;
+        }, cancellationToken);
     }
 
     private static void UnassignUserFromAgencyObjectives(Agency agency, User user)

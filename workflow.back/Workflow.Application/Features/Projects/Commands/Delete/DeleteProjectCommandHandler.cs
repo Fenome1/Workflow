@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Workflow.Application.Common.Exceptions;
 using Workflow.Persistense.Context;
 
@@ -9,7 +10,9 @@ public sealed class DeleteProjectCommandHandler(WorkflowDbContext context) : IRe
     public async Task<Unit> Handle(DeleteProjectCommand request, CancellationToken cancellationToken)
     {
         var deletingProject = await context.Projects
-            .FindAsync(request.ProjectId);
+            .AsNoTrackingWithIdentityResolution()
+            .FirstOrDefaultAsync(p => p.ProjectId == request.ProjectId,
+                cancellationToken);
 
         if (deletingProject is null)
             throw new NotFoundException(nameof(deletingProject));

@@ -5,6 +5,9 @@ import {Button, Popconfirm} from "antd";
 import {useFireUserFromAgencyMutation} from "../../../../../../store/apis/agencyApi.ts";
 import {IFireUserFormAgencyCommand} from "../../../../../../features/commands/agency/IFireUserFormAgencyCommand.ts";
 import {FireVariant} from "../../../../../../common/FireVariant.ts";
+import {useAppDispatch, useTypedSelector} from "../../../../../../store/hooks/hooks.ts";
+import {selectAgency} from "../../../../../../store/slices/agencySlice.ts";
+import {selectProject} from "../../../../../../store/slices/projectSlice.ts";
 
 type LeaveButtonProps = {
     agency: IAgency
@@ -12,7 +15,8 @@ type LeaveButtonProps = {
 }
 
 const LeaveButton: FC<LeaveButtonProps> = ({agency, currentUser}) => {
-
+    const dispatch = useAppDispatch()
+    const selectedAgencyId = useTypedSelector((state) => state.agency.selectedAgencyId)
     const [fireUserFormAgency] = useFireUserFromAgencyMutation()
 
     const handleFireUser = async () => {
@@ -23,6 +27,11 @@ const LeaveButton: FC<LeaveButtonProps> = ({agency, currentUser}) => {
             agencyId: agency.agencyId,
             userId: currentUser.userId,
             fireVariant: FireVariant.Self
+        }
+
+        if (selectedAgencyId === agency.agencyId) {
+            await dispatch(selectAgency(null))
+            await dispatch(selectProject(null))
         }
 
         await fireUserFormAgency(command)

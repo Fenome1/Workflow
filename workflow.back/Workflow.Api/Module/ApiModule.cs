@@ -26,8 +26,10 @@ public class ApiModule(IConfiguration configuration) : Autofac.Module
             .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
+                options.SaveToken = true;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
+                    ClockSkew = TimeSpan.FromSeconds(0),
                     ValidateIssuer = false,
                     ValidateAudience = false,
                     ValidateLifetime = true,

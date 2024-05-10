@@ -21,20 +21,19 @@ public sealed class CreateObjectiveCommandHandler(
         if (ownerColumn is null)
             throw new NotFoundException(nameof(Column), request.ColumnId);
 
-        await using var transaction = await context.Database.BeginTransactionAsync(cancellationToken);
+        return await context.WithTransactionAsync(async () =>
+        {
+            var newObjective = mapper.Map<Objective>(request);
+            newObjective.Order = 0;
 
-        var newObjective = mapper.Map<Objective>(request);
-        newObjective.Order = 0;
+            foreach (var objective in ownerColumn.Objectives)
+                objective.Order += 1;
 
-        foreach (var objective in ownerColumn.Objectives)
-            objective.Order += 1;
+            await context.Objectives.AddAsync(newObjective, cancellationToken);
 
-        await context.Objectives.AddAsync(newObjective, cancellationToken);
+            await context.SaveChangesAsync(cancellationToken);
 
-        await context.SaveChangesAsync(cancellationToken);
-
-        await transaction.CommitAsync(cancellationToken);
-
-        return newObjective.ObjectiveId;
+            return newObjective.ObjectiveId;
+        }, cancellationToken);
     }
 }

@@ -6,7 +6,7 @@ using Workflow.Persistense.Context;
 
 namespace Workflow.Application.Features.Boards.Queries.ByProject;
 
-public class ListBoardsByProjectQueryHandler(
+public sealed class ListBoardsByProjectQueryHandler(
     WorkflowDbContext context,
     IMapper mapper) : IRequestHandler<ListBoardsByProjectQuery, List<BoardViewModel>>
 {
@@ -19,7 +19,6 @@ public class ListBoardsByProjectQueryHandler(
             .AsNoTrackingWithIdentityResolution()
             .Where(p => p.ProjectId == request.ProjectId)
             .ToListAsync(cancellationToken);
-
 
         return mapper.Map<List<BoardViewModel>>(boardsByProject);
     }

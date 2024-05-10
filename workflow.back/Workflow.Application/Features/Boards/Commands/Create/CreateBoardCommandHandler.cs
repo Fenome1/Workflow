@@ -7,7 +7,7 @@ using Workflow.Persistense.Context;
 
 namespace Workflow.Application.Features.Boards.Commands.Create;
 
-public class CreateBoardCommandHandler(
+public sealed class CreateBoardCommandHandler(
     WorkflowDbContext context,
     IMapper mapper) : IRequestHandler<CreateBoardCommand, int>
 {

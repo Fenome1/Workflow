@@ -9,7 +9,7 @@ using Workflow.Persistense.Context;
 
 namespace Workflow.Application.Features.Invitations.Queries.ByUser;
 
-public class ListUserInvitationsQueryHandler(
+public sealed class ListUserInvitationsQueryHandler(
     WorkflowDbContext context,
     IMapper mapper) : IRequestHandler<ListUserInvitationsQuery, List<InvitationViewModel>>
 {

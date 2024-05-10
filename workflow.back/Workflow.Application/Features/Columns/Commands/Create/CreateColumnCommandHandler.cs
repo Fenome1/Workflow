@@ -15,8 +15,8 @@ public sealed class CreateColumnCommandHandler(
     public async Task<int> Handle(CreateColumnCommand request, CancellationToken cancellationToken)
     {
         var ownerBoard = await context.Boards
-            .AsNoTrackingWithIdentityResolution()
             .Include(board => board.Columns)
+            .AsNoTrackingWithIdentityResolution()
             .FirstOrDefaultAsync(b => b.BoardId == request.BoardId,
                 cancellationToken);
 

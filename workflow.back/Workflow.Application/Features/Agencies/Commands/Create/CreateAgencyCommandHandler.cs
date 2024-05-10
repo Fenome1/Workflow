@@ -6,33 +6,36 @@ using Workflow.Persistense.Context;
 
 namespace Workflow.Application.Features.Agencies.Commands.Create;
 
-public class CreateAgencyCommandHandler(
+public sealed class CreateAgencyCommandHandler(
     WorkflowDbContext context,
     IMediator mediator) : IRequestHandler<CreateAgencyCommand, int>
 {
     public async Task<int> Handle(CreateAgencyCommand request, CancellationToken cancellationToken)
     {
-        var isUserExists = await context.Users
-            .AsNoTrackingWithIdentityResolution()
-            .AnyAsync(u => u.UserId == request.UserId,
-                cancellationToken);
-
-        if (!isUserExists)
-            throw new NotFoundException(nameof(User), request.UserId);
-
-        var newAgency = new Agency
+        return await context.WithTransactionAsync(async () =>
         {
-            OwnerId = request.UserId,
-            Name = request.Name,
-            Description = request.Description
-        };
+            var isUserExists = await context.Users
+                .AsNoTrackingWithIdentityResolution()
+                .AnyAsync(u => u.UserId == request.UserId,
+                    cancellationToken);
 
-        await context.AddAsync(newAgency, cancellationToken);
+            if (!isUserExists)
+                throw new NotFoundException(nameof(User), request.UserId);
 
-        await context.SaveChangesAsync(cancellationToken);
+            var newAgency = new Agency
+            {
+                OwnerId = request.UserId,
+                Name = request.Name,
+                Description = request.Description
+            };
 
-        await mediator.CreateDefaultProject(cancellationToken, newAgency);
+            await context.AddAsync(newAgency, cancellationToken);
 
-        return newAgency.AgencyId;
+            await context.SaveChangesAsync(cancellationToken);
+
+            await mediator.CreateProjectAsync(newAgency, cancellationToken);
+
+            return newAgency.AgencyId;
+        }, cancellationToken);
     }
 }

@@ -8,7 +8,7 @@ using Workflow.Persistense.Context;
 
 namespace Workflow.Application.Features.Invitations.Queries.ByAgency;
 
-public class ListAgencyInvitationsQueryHandler(
+public sealed class ListAgencyInvitationsQueryHandler(
     WorkflowDbContext context,
     IMapper mapper) : IRequestHandler<ListAgencyInvitationsQuery, List<InvitationViewModel>>
 {

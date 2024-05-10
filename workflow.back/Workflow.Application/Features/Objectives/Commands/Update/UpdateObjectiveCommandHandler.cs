@@ -10,9 +10,6 @@ public sealed class UpdateObjectiveCommandHandler(WorkflowDbContext context)
 {
     public async Task<int> Handle(UpdateObjectiveCommand request, CancellationToken cancellationToken)
     {
-        await using var transaction = await context.Database
-            .BeginTransactionAsync(cancellationToken);
-
         var objective = await context.Objectives.FindAsync(request.ObjectiveId);
 
         if (objective is null)
@@ -35,7 +32,6 @@ public sealed class UpdateObjectiveCommandHandler(WorkflowDbContext context)
             objective.Status = request.Status.Value;
 
         await context.SaveChangesAsync(cancellationToken);
-        await transaction.CommitAsync(cancellationToken);
 
         return objective.ObjectiveId;
     }

@@ -7,7 +7,8 @@ using Workflow.Persistense.Context;
 
 namespace Workflow.Application.Features.Invitations.Commands.Recall;
 
-public class RecallInvitationCommandHandler(WorkflowDbContext context) : IRequestHandler<RecallInvitationCommand, Unit>
+public sealed class RecallInvitationCommandHandler(WorkflowDbContext context)
+    : IRequestHandler<RecallInvitationCommand, Unit>
 {
     public async Task<Unit> Handle(RecallInvitationCommand request, CancellationToken cancellationToken)
     {

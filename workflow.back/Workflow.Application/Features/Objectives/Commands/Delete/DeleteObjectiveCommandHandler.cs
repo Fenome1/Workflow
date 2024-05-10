@@ -17,21 +17,20 @@ public sealed class DeleteObjectiveCommandHandler(WorkflowDbContext context)
         if (deletingObjective is null)
             throw new NotFoundException(nameof(Objective), request.ObjectiveId);
 
-        await using var transaction = await context.Database.BeginTransactionAsync(cancellationToken);
+        return await context.WithTransactionAsync(async () =>
+        {
+            var remainingObjectives = await context.Objectives
+                .Where(o => o.ColumnId == deletingObjective.ColumnId &&
+                            o.ObjectiveId != request.ObjectiveId)
+                .OrderBy(o => o.Order)
+                .ToListAsync(cancellationToken);
 
-        var remainingObjectives = await context.Objectives
-            .Where(o => o.ColumnId == deletingObjective.ColumnId &&
-                        o.ObjectiveId != request.ObjectiveId)
-            .OrderBy(o => o.Order)
-            .ToListAsync(cancellationToken);
+            for (var i = 0; i < remainingObjectives.Count; i++)
+                remainingObjectives[i].Order = i + 1;
 
-        for (var i = 0; i < remainingObjectives.Count; i++)
-            remainingObjectives[i].Order = i + 1;
-
-        context.Objectives.Remove(deletingObjective);
-        await context.SaveChangesAsync(cancellationToken);
-        await transaction.CommitAsync(cancellationToken);
-
-        return Unit.Value;
+            context.Objectives.Remove(deletingObjective);
+            await context.SaveChangesAsync(cancellationToken);
+            return Unit.Value;
+        }, cancellationToken);
     }
 }

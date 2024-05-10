@@ -3,6 +3,4 @@ using Workflow.Application.ViewModels;
 
 namespace Workflow.Application.Features.Boards.Queries.ByProject;
 
-public record class ListBoardsByProjectQuery(int ProjectId) : IRequest<List<BoardViewModel>>
-{
-}
+public record ListBoardsByProjectQuery(int ProjectId) : IRequest<List<BoardViewModel>>;
