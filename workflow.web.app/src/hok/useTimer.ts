@@ -1,59 +1,58 @@
 import {useEffect, useState} from "react";
 
-interface TimerStyle {
-    color: string;
-    backgroundColor: string;
-}
-
 interface TimerResult {
-    timeLeft: string;
-    style: TimerStyle;
+    timeLeft: string | null;
+    isDeadlineExpired: boolean;
 }
 
 const useTimer = (status: boolean, deadline: string | null): TimerResult => {
-    const [timeLeft, setTimeLeft] = useState<string>('');
-    const [style, setStyle] = useState<TimerStyle>({
-        color: '',
-        backgroundColor: ''
-    });
+    const [timeLeft, setTimeLeft] = useState<string | null>(null);
+    const [isDeadlineExpired, setIsDeadlineExpired] = useState<boolean>(false);
 
     useEffect(() => {
         const calculateTimeLeft = () => {
             if (!status && deadline) {
                 const deadlineDate = new Date(deadline);
-                const currentDate = new Date();
-                const difference = deadlineDate.getTime() - currentDate.getTime();
+                const now = new Date();
 
-                if (difference > 0 && difference <= 24 * 60 * 60 * 1000) {
-                    const hours = String(Math.floor(difference / (1000 * 60 * 60))).padStart(2, '0');
-                    const minutes = String(Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
-                    const seconds = String(Math.floor((difference % (1000 * 60)) / 1000)).padStart(2, '0');
-                    setTimeLeft(`Осталось: ${hours}:${minutes}:${seconds}`);
-                    setStyle({
-                        color: 'white',
-                        backgroundColor: ''
-                    });
-                } else {
-                    setTimeLeft('');
-                    setStyle({
-                        color: '',
-                        backgroundColor: 'red'
-                    });
+                const isDeadlineToday = deadlineDate.toDateString() === now.toDateString();
+                const isDeadlinePassed = now.getUTCDate() > deadlineDate.getUTCDate();
+
+                if(isDeadlineToday && !isDeadlinePassed){
+                    const endOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
+
+                    const difference = Math.max(0, endOfToday.getTime() - now.getTime());
+                    const hours = Math.floor(difference / (1000 * 60 * 60));
+                    const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+                    setTimeLeft(`${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`);
+                    setIsDeadlineExpired(false);
                 }
+                else if (!isDeadlineToday && !isDeadlinePassed) {
+                    setTimeLeft("")
+                    setIsDeadlineExpired(false)
+                }
+                else if(!isDeadlineToday && isDeadlinePassed) {
+                    setTimeLeft("");
+                    setIsDeadlineExpired(true);
+                }
+
             } else {
-                setTimeLeft('');
-                setStyle({
-                    color: '',
-                    backgroundColor: ''
-                });
+                setTimeLeft("");
+                setIsDeadlineExpired(false);
             }
-        };
+        }
+
+        calculateTimeLeft();
 
         const timer = setInterval(calculateTimeLeft, 1000);
-        return () => clearInterval(timer);
-    }, [status, deadline]);
 
-    return {timeLeft, style};
+        return () => clearInterval(timer);
+
+    }, [deadline, status]);
+
+    return {timeLeft, isDeadlineExpired};
 };
 
 export default useTimer;

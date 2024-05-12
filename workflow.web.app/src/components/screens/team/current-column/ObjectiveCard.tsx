@@ -35,7 +35,7 @@ const ObjectiveCard: FC<IObjectiveCardProps> = ({objective}) => {
 
     const [editedName, setEditedName] = useState(objective.name);
 
-    const {timeLeft} = useTimer(objective.status, objective?.deadline);
+    const {timeLeft, isDeadlineExpired} = useTimer(objective.status, objective?.deadline);
 
     const updateStatus = async () => {
 
@@ -65,11 +65,9 @@ const ObjectiveCard: FC<IObjectiveCardProps> = ({objective}) => {
     };
 
     return (
-        <div className='objective-card'
+        <div className={`objective-card ${isDeadlineExpired ? 'overdo' : ''}`}
              style={{
                  opacity: objective.status ? (hovered ? 1 : 0.7) : 1,
-                 backgroundColor: !objective.status && (timeLeft === 'Дедлайн просрочен' ||
-                     (objective.deadline && new Date(objective.deadline) < new Date())) ? 'red' : '',
              }}
              onMouseEnter={() => setHovered(true)}
              onMouseLeave={() => setHovered(false)}>
@@ -142,10 +140,17 @@ const ObjectiveCard: FC<IObjectiveCardProps> = ({objective}) => {
                             }
                         </div>
                     </div>}
-                {!objective.status && (timeLeft || timeLeft === 'Дедлайн просрочен') && (
+                {!objective.status && (timeLeft) && (
                     <div className="objective-card-time-left">
                         <div className="objective-card-time-left-title">
                             {timeLeft}
+                        </div>
+                    </div>
+                )}
+                {!objective.status && (isDeadlineExpired) && (
+                    <div className="objective-card-time-left">
+                        <div className="objective-card-time-left-title">
+                            Дедлайн просрочен
                         </div>
                     </div>
                 )}

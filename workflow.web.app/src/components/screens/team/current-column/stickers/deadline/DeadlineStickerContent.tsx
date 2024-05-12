@@ -6,10 +6,12 @@ interface DeadlineStickerProps {
     deadline: string;
 }
 
-export const selectDeadlineColor = (differenceInDays: number): [background: string, color: string] => {
-    if (differenceInDays <= 0) {
+export const selectDeadlineColor = (differenceInDays: number): [string, string] => {
+    if (differenceInDays < 0) {
         return [DeadlineColors.Overdue, DeadlineTextColors.Overdue];
-    } else if (differenceInDays <= 1) {
+    } else if (differenceInDays === 0) {
+        return [DeadlineColors.ToDay, DeadlineTextColors.ToDay];
+    } else if (differenceInDays === 1) {
         return [DeadlineColors.Tomorrow, DeadlineTextColors.Tomorrow];
     } else if (differenceInDays <= 7) {
         return [DeadlineColors.OnThisWeek, DeadlineTextColors.OnThisWeek];
