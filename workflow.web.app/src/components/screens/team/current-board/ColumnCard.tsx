@@ -3,7 +3,7 @@ import {IColumn} from "../../../../features/models/IColumn.ts";
 import EllipsisColumnDropDown from "./EllipsisColumnDropDown.tsx";
 import '../current-project/style.scss'
 import './style.scss';
-import {Button, Input} from "antd";
+import {Button, Input, Progress, Skeleton} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
 import ObjectiveCard from "../current-column/ObjectiveCard.tsx";
 import {useGetObjectivesByColumnQuery} from "../../../../store/apis/objective/objectiveApi.ts";
@@ -17,7 +17,7 @@ interface IColumnCardProps {
 }
 
 const ColumnCard: FC<IColumnCardProps> = ({column}) => {
-    const {data: objectives} = useGetObjectivesByColumnQuery(column.columnId)
+    const {data: objectives, isLoading} = useGetObjectivesByColumnQuery(column.columnId)
 
     const [updateColumn] = useUpdateColumnMutation()
     const createObjectiveDialog = useDialog()
@@ -41,6 +41,17 @@ const ColumnCard: FC<IColumnCardProps> = ({column}) => {
         editingDialog.close();
     };
 
+    const percentComplete = (): number => {
+        if (!objectives) return 0
+
+        const completedCount = objectives.filter(o => o.status).length
+        const totalCount = objectives.length
+
+        if (totalCount === 0) return 0
+
+        return Math.round((completedCount / totalCount) * 100)
+    };
+
     return (
         <div className='column-card'>
             <div className='column-card-header'>
@@ -62,19 +73,28 @@ const ColumnCard: FC<IColumnCardProps> = ({column}) => {
                             autoFocus
                         />
                     ) : (
-                        <b className='column-card-name'>{column.name}</b>
+                        <div className='column-card-name'>
+                            <div className='column-card-name-title'>{column.name}</div>
+                            {objectives && objectives.length > 0 &&
+                                <div className='column-card-name-count'>({objectives.length})</div>
+                            }
+                        </div>
                     )}
                     <EllipsisColumnDropDown startEditing={editingDialog.show} columnId={column.columnId}/>
                 </div>
                 <Button className='column-add-objective' type='link' onClick={createObjectiveDialog.show}
                         icon={<PlusOutlined width='50px'/>}>Создать
                     задачу</Button>
+                {objectives && objectives.length > 0 &&
+                    <Progress percent={percentComplete()} strokeColor='lightgreen'/>}
             </div>
             <div className='column-objectives-content'>
                 {createObjectiveDialog.open &&
                     <CreateObjectiveCard columnId={column.columnId} dialog={createObjectiveDialog}/>}
                 {objectives && objectives?.map((objective) => (
-                    <ObjectiveCard key={objective.objectiveId} objective={objective}/>
+                    <Skeleton loading={isLoading}>
+                        <ObjectiveCard key={objective.objectiveId} objective={objective}/>
+                    </Skeleton>
                 ))}
             </div>
         </div>

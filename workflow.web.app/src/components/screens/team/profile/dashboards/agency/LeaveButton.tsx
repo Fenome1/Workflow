@@ -20,7 +20,7 @@ const LeaveButton: FC<LeaveButtonProps> = ({agency, currentUser}) => {
     const [fireUserFormAgency] = useFireUserFromAgencyMutation()
 
     const handleFireUser = async () => {
-        if(!currentUser?.userId)
+        if (!currentUser?.userId)
             return
 
         const command: IFireUserFormAgencyCommand = {
@@ -38,10 +38,11 @@ const LeaveButton: FC<LeaveButtonProps> = ({agency, currentUser}) => {
     }
 
     return (
-        <Popconfirm title='Вы хотите покинуть агенство?' onConfirm={handleFireUser} okText='Да' cancelText='Нет' onPopupClick={(e) => {
-            e.preventDefault()
-            e.stopPropagation()
-        }}>
+        <Popconfirm title='Вы хотите покинуть агенство?' onConfirm={handleFireUser} okText='Да' cancelText='Нет'
+                    onPopupClick={(e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                    }}>
             <Button size='small' danger onClick={(e) => {
                 e.preventDefault()
                 e.stopPropagation()

@@ -29,7 +29,7 @@
 
     .column-card {
       min-width: 400px;
-      border: solid 1px gainsboro;
+      border: solid 1px var(--main-border-color);
       border-radius: 10px;
       box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 10px 10px 0 rgba(0, 0, 0, 0.01);
       transition: all 0.5ms ease;
@@ -38,16 +38,28 @@
 
       .column-card-header {
         padding: 20px 15px 5px 15px;
-        border-bottom: solid 1px gainsboro;
+        border-bottom: solid 1px var(--main-border-color);
 
         .column-card-header-title {
           display: flex;
           align-items: center;
 
           .column-card-name {
+            display: flex;
+            gap: 5px;
             padding: 0 0 0 5px;
-            font-size: 16pt;
             flex-grow: 1;
+            align-items: center;
+
+            .column-card-name-title {
+              font-size: 16pt;
+              font-weight: bold;
+            }
+
+            .column-card-name-count {
+              font-size: 14pt;
+              color: gray;
+            }
           }
 
           .column-card-name-input {

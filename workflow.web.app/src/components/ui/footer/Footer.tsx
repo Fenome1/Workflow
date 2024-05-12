@@ -1,5 +1,5 @@
 import './style.scss'
-import {AppColors} from "../../../common/AppColors.ts";
+import {AppColors} from "../../../common/Colors.ts";
 
 const Footer = () => {
     return (

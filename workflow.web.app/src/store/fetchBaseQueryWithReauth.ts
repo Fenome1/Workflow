@@ -3,11 +3,12 @@ import {Mutex} from "async-mutex";
 import {BaseQueryFn, FetchArgs, fetchBaseQuery, FetchBaseQueryError} from "@reduxjs/toolkit/query";
 import {BASE_API_URL} from "../../config.ts";
 import {IRefreshUserCommand} from "../features/commands/user/IRefreshUserCommand.ts";
-import {baseApi} from "./apis";
+import {authApi} from "./apis";
 
 const mutex = new Mutex()
 
 export enum ApiTags {
+    Auth = "Auth",
     User = "User",
     Agency = "Agency",
     Project = "Project",
@@ -50,7 +51,7 @@ export const fetchQueryWithReauth: BaseQueryFn<
                 const user = authState.user
 
                 if (user) {
-                    await api.dispatch(baseApi.endpoints.refresh.initiate({
+                    await api.dispatch(authApi.endpoints.refresh.initiate({
                         accessToken: authState.accessToken,
                         refreshToken: authState.refreshToken
                     } as IRefreshUserCommand))

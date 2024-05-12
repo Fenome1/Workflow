@@ -9,6 +9,7 @@ import {ILogoutUserCommand} from "../../features/commands/user/ILogoutUserComman
 import {resetAndCleanStore, RootState} from "../store.ts";
 import {IRefreshUserCommand} from "../../features/commands/user/IRefreshUserCommand.ts";
 import {FetchBaseQueryError} from "@reduxjs/toolkit/query";
+import {getErrorMessageFormBaseQuery} from "../../hok/getErrorMessageFormBaseQuery.ts";
 
 export const baseApi = createApi({
     reducerPath: "baseApi",
@@ -17,10 +18,14 @@ export const baseApi = createApi({
     refetchOnReconnect: true,
     refetchOnFocus: true,
     keepUnusedDataFor: 0,
+    endpoints: () => ({})
+})
+
+export const authApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         login: builder.mutation<ILoginUserResponse, ILoginUserCommand>({
             query: command => ({
-                url: `${ApiTags.User}/Login`,
+                url: `${ApiTags.Auth}/Login`,
                 method: HttpMethod.POST,
                 body: command
             }),
@@ -35,14 +40,13 @@ export const baseApi = createApi({
                     message.success(welcomeMessage, 3);
 
                 } catch (error) {
-                    const errorMessage = error.error?.data || "Произошла ошибка";
-                    message.error(errorMessage, 3)
+                    message.error(getErrorMessageFormBaseQuery(error as FetchBaseQueryError), 3)
                 }
             }
         }),
         logout: builder.mutation<void, ILogoutUserCommand>({
             query: command => ({
-                url: `${ApiTags.User}/Logout`,
+                url: `${ApiTags.Auth}/Logout`,
                 method: HttpMethod.POST,
                 body: command,
             }),
@@ -58,7 +62,7 @@ export const baseApi = createApi({
         refresh: builder.mutation<ILoginUserResponse, IRefreshUserCommand>({
             queryFn: async (command, api, extraOptions) => {
                 const response = await baseQuery({
-                    url: `${ApiTags.User}/Refresh`,
+                    url: `${ApiTags.Auth}/Refresh`,
                     method: HttpMethod.POST,
                     body: command,
                 }, api, extraOptions)
@@ -68,18 +72,17 @@ export const baseApi = createApi({
                     return {data: result}
                 }
                 const authState = (api.getState() as RootState).user;
-                await api.dispatch(baseApi.endpoints.logout.initiate({
+                await api.dispatch(authApi.endpoints.logout.initiate({
                     accessToken: authState.accessToken,
                     refreshToken: authState.refreshToken
                 } as ILogoutUserCommand))
                 return {error: response.error as FetchBaseQueryError}
             },
-        }),
-    }),
+        })
+    })
 })
 
 export const {
     useLoginMutation,
     useLogoutMutation,
-    useRefreshMutation
-} = baseApi;
+} = authApi;

@@ -5,6 +5,8 @@ import {ISendInvitationCommand} from "../../../features/commands/invitation/ISen
 import {IAnswerOnInvitationCommand} from "../../../features/commands/invitation/IAnswerOnInvitationCommand.ts";
 import {message} from "antd";
 import {baseApi} from "../index.ts";
+import {getErrorMessageFormBaseQuery} from "../../../hok/getErrorMessageFormBaseQuery.ts";
+import {FetchBaseQueryError} from "@reduxjs/toolkit/query/react";
 
 export const invitationApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -33,8 +35,7 @@ export const invitationApi = baseApi.injectEndpoints({
                     await queryFulfilled
                     message.success("Пользователь успешно приглашен", 2)
                 } catch (error) {
-                    const errorMessage = error.error?.data || "Произошла ошибка";
-                    message.error(errorMessage, 3);
+                    message.error(getErrorMessageFormBaseQuery(error as FetchBaseQueryError), 3)
                 }
             },
             invalidatesTags: [{type: ApiTags.Invitation}]
@@ -57,8 +58,7 @@ export const invitationApi = baseApi.injectEndpoints({
                     await queryFulfilled
                     message.success("Приглашение отозвано", 2)
                 } catch (error) {
-                    const errorMessage = error.error?.data || "Произошла ошибка";
-                    message.error(errorMessage, 3);
+                    message.error(getErrorMessageFormBaseQuery(error as FetchBaseQueryError), 3)
                 }
             },
             invalidatesTags: [{type: ApiTags.Invitation}]

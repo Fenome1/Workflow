@@ -1,10 +1,11 @@
 import TeamMenu from "./TeamMenu.tsx";
-import {AppColors} from "../../../common/AppColors.ts";
 import './style.scss'
 import {useTypedSelector} from "../../../store/hooks/hooks.ts";
 import {TeamMenuItem} from "../../../common/TeamMenuItem.ts";
 import ProjectBoards from "./current-project/ProjectBoards.tsx";
 import Profile from "./profile/Profile.tsx";
+import Objectives from "./objectives/Objectives.tsx";
+import {AppColors} from "../../../common/Colors.ts";
 
 const Team = () => {
     const selectedMenuItem = useTypedSelector(state => state.menu?.selectedMenuItem);
@@ -20,7 +21,7 @@ const Team = () => {
             {selectedMenuItem && selectedMenuItem === TeamMenuItem.Profile &&
                 <Profile userState={userState}/>}
             {selectedMenuItem && selectedMenuItem === TeamMenuItem.Objectives &&
-                <div>Задачи</div>}
+                <Objectives currentUser={userState.user}/>}
             {selectedMenuItem && selectedMenuItem === TeamMenuItem.Projects &&
                 <ProjectBoards selectedProjectId={selectedProjectId}/>}
         </div>

@@ -6,6 +6,7 @@ using Workflow.Application.Features.Objectives.Commands.Create;
 using Workflow.Application.Features.Objectives.Commands.Delete;
 using Workflow.Application.Features.Objectives.Commands.Update;
 using Workflow.Application.Features.Objectives.Queries.ByColumn;
+using Workflow.Application.Features.Objectives.Queries.ByUser;
 using Workflow.Application.ViewModels;
 
 namespace Workflow.Api.Controllers;
@@ -25,6 +26,21 @@ public class ObjectiveController : BaseController
             return BadRequest($"{e.Message}");
         }
     }
+    
+    /*[Authorize]*/
+    [HttpGet("Agency/{agencyId}/User/{userId}")]
+    public async Task<ActionResult<List<ObjectiveViewModel>>> GetByUser(int agencyId, int userId)
+    {
+        try
+        {
+            return Ok(await Mediator.Send(new ListObjectivesByUserQuery(agencyId, userId)));
+        }
+        catch (Exception e)
+        {
+            return BadRequest($"{e.Message}");
+        }
+    }
+    
 
     /*[Authorize]*/
     [HttpPost("Create")]

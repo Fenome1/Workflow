@@ -1,5 +1,4 @@
 import {combineReducers, configureStore} from "@reduxjs/toolkit";
-import {signal} from "./signalRClient.ts";
 import userSlice from "./slices/userSlice.ts";
 import storage from "redux-persist/es/storage";
 import {FLUSH, persistReducer, persistStore} from "redux-persist";
@@ -33,7 +32,7 @@ export const setupStore = () => {
                 serializableCheck: {
                     ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
                 }
-            }).concat(baseApi.middleware, signal)
+            }).concat(baseApi.middleware)
     })
 }
 

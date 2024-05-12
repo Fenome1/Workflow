@@ -21,7 +21,7 @@ public class TokenService(IOptions<JwtOptions> options) : ITokenService
             ValidateIssuer = false,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey)),
-            ValidateLifetime = true
+            ValidateLifetime = false
         };
         var tokenHandler = new JwtSecurityTokenHandler();
         var principal = tokenHandler.ValidateToken(accessToken, tokenValidationParameters, out var securityToken);

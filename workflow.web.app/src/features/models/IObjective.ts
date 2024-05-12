@@ -9,5 +9,6 @@ export interface IObjective {
     order: number
     deadline: string | null
     priority: IPriority | null
+    creationDate: string
     users: IUser[] | null
 }

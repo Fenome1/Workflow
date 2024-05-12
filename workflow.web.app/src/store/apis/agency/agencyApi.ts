@@ -7,6 +7,8 @@ import {message} from "antd";
 import {FireVariant} from "../../../common/FireVariant.ts";
 import {ApiTags} from "../../fetchBaseQueryWithReauth.ts";
 import {baseApi} from "../index.ts";
+import {getErrorMessageFormBaseQuery} from "../../../hok/getErrorMessageFormBaseQuery.ts";
+import {FetchBaseQueryError} from "@reduxjs/toolkit/query/react";
 
 export const agencyApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -43,8 +45,7 @@ export const agencyApi = baseApi.injectEndpoints({
                     await queryFulfilled
                     message.success(`Агентство успешно удалено`, 3)
                 } catch (error) {
-                    const errorMessage = error.error?.data || "Произошла ошибка";
-                    message.error(errorMessage, 3)
+                    message.error(getErrorMessageFormBaseQuery(error as FetchBaseQueryError), 3)
                 }
             },
             invalidatesTags: [{type: ApiTags.User}],
@@ -60,12 +61,11 @@ export const agencyApi = baseApi.injectEndpoints({
                     await queryFulfilled
                     const successMessage =
                         command?.fireVariant === FireVariant.Someone ?
-                        "Сотрудник успешно удален из агентства" :
-                        "Вы успешно покинули агентство"
+                            "Сотрудник успешно удален из агентства" :
+                            "Вы успешно покинули агентство"
                     message.success(successMessage, 3)
                 } catch (error) {
-                    const errorMessage = error.error?.data || "Произошла ошибка";
-                    message.error(errorMessage, 3)
+                    message.error(getErrorMessageFormBaseQuery(error as FetchBaseQueryError), 3)
                 }
             },
             invalidatesTags: [{type: ApiTags.User}],

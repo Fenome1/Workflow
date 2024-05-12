@@ -4,13 +4,13 @@ import {FolderOutlined, GlobalOutlined, SolutionOutlined} from "@ant-design/icon
 import {useAppDispatch, useTypedSelector} from "../../../store/hooks/hooks.ts";
 import AgencySelector from "./AgencySelector.tsx";
 import {selectProject} from "../../../store/slices/projectSlice.ts";
-import {AppColors} from "../../../common/AppColors.ts";
 import './style.scss'
 import {useGetProjectsByAgencyQuery} from "../../../store/apis/project/projectApi.ts";
 import {selectMenuItem} from "../../../store/slices/menuSlice.ts";
 import {TeamMenuItem} from "../../../common/TeamMenuItem.ts";
 import AvatarItem from "../../ui/AvatarItem.tsx";
 import {IUser} from "../../../features/models/IUser.ts";
+import {AppColors} from "../../../common/Colors.ts";
 
 interface TeamMenuProps {
     selectedAgencyId: number | null
@@ -33,7 +33,7 @@ const TeamMenu: FC<TeamMenuProps> = ({selectedAgencyId, selectedProjectId, curre
             await dispatch(selectProject(projects[0]?.projectId));
             setSelectedKey(projects[0]?.projectId.toString())
         } else {
-            setSelectedKey(selectedProjectId!.toString())
+            setSelectedKey(selectedProjectId?.toString() ?? 'null')
         }
         await dispatch(selectMenuItem(TeamMenuItem.Projects))
     };

@@ -15,11 +15,16 @@
     margin: 10px 0 5px 0;
   }
 
+  .overdo {
+    background-color: red;
+  }
+
   .objective-card-container {
     min-height: 100px;
     display: flex;
     flex-direction: column;
     padding: 10px;
+    gap: 5px;
 
     .objective-card-container-head {
       display: flex;
@@ -27,7 +32,15 @@
       .objective-card-status-icon {
         margin-right: 5px;
         align-self: self-start;
-        cursor: pointer;
+
+        .objective-status-icon {
+          cursor: pointer;
+          transition: all ease-in-out 0.3s;
+
+          &:hover {
+            color: var(--main-blue-color);
+          }
+        }
       }
 
       .objective-card-name-container {
@@ -50,7 +63,7 @@
             margin-right: 5px;
 
             &:hover {
-              color: #1677ff;
+              color: var(--main-blue-color);
             }
 
           }
@@ -78,7 +91,7 @@
 
         .objective-sticker {
           display: flex;
-          background-color: gainsboro;
+          background-color: var(--main-border-color);
           padding: 5px 5px 5px 5px;
           justify-content: center;
           align-items: center;
@@ -103,7 +116,7 @@
             margin-right: 5px;
 
             &:hover {
-              color: #1677ff;
+              color: var(--main-blue-color);
             }
           }
         }
@@ -121,7 +134,7 @@
             transition: all ease-in-out 50ms;
 
             &:hover {
-              color: #1677ff;
+              color: var(--main-blue-color);
             }
           }
         }
@@ -137,9 +150,24 @@
 
         .objective-card-existed-users-icon {
           &:hover {
-            color: #1677ff;
+            color: var(--main-blue-color);
           }
         }
+      }
+    }
+
+    .objective-card-time-left {
+      display: flex;
+      padding: 5px;
+      border-radius: 10px;
+      background-color: #FF3333;
+      flex-direction: column;
+      align-items: center;
+
+      .objective-card-time-left-title {
+        font-size: 15px;
+        font-weight: bold;
+        color: #FFFF;
       }
     }
   }

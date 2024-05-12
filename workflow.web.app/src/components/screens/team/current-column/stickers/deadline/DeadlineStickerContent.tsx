@@ -1,20 +1,20 @@
 import {FC} from 'react';
 import {CalendarOutlined} from "@ant-design/icons";
-import DeadlineColors from "../../../../../../common/DeadlineColors.ts";
+import {DeadlineColors, DeadlineTextColors} from "../../../../../../common/Colors.ts";
 
 interface DeadlineStickerProps {
     deadline: string;
 }
 
-const selectDeadlineColor = (differenceInDays: number): string => {
+export const selectDeadlineColor = (differenceInDays: number): [background: string, color: string] => {
     if (differenceInDays <= 0) {
-        return DeadlineColors.Overdue;
+        return [DeadlineColors.Overdue, DeadlineTextColors.Overdue];
     } else if (differenceInDays <= 1) {
-        return DeadlineColors.Tomorrow;
+        return [DeadlineColors.Tomorrow, DeadlineTextColors.Tomorrow];
     } else if (differenceInDays <= 7) {
-        return DeadlineColors.OnThisWeek;
+        return [DeadlineColors.OnThisWeek, DeadlineTextColors.OnThisWeek];
     } else {
-        return DeadlineColors.Far;
+        return [DeadlineColors.Far, DeadlineTextColors.Far];
     }
 };
 
@@ -23,7 +23,7 @@ const DeadlineStickerContent: FC<DeadlineStickerProps> = ({deadline}) => {
     const currentDate = new Date();
 
     const differenceInDays = Math.ceil((formattedDate.getTime() - currentDate.getTime()) / (1000 * 3600 * 24));
-    const color = selectDeadlineColor(differenceInDays);
+    const [backgroundColor, color] = selectDeadlineColor(differenceInDays);
 
     const formattedDateString = formattedDate.toLocaleDateString('ru-RU', {
         month: 'short',
@@ -32,7 +32,8 @@ const DeadlineStickerContent: FC<DeadlineStickerProps> = ({deadline}) => {
     });
 
     return (
-        <div className="objective-sticker" style={{background: color}}>
+        <div className="objective-sticker"
+             style={{background: backgroundColor, color: color, border: `${color} 1px dashed`}}>
             <CalendarOutlined className="objective-sticker-icon"/>
             {formattedDateString}
         </div>

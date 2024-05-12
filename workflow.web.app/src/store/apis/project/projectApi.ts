@@ -5,6 +5,8 @@ import {IProject} from "../../../features/models/IProject.ts";
 import {ICreateProjectCommand} from "../../../features/commands/project/ICreateProjectCommand.ts";
 import {IUpdateProjectCommand} from "../../../features/commands/project/IUpdateProjectCommand.ts";
 import {message} from "antd";
+import {getErrorMessageFormBaseQuery} from "../../../hok/getErrorMessageFormBaseQuery.ts";
+import {FetchBaseQueryError} from "@reduxjs/toolkit/query/react";
 
 export const projectApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -41,8 +43,7 @@ export const projectApi = baseApi.injectEndpoints({
                     await queryFulfilled
                     message.success(`Проект успешно удален`, 3)
                 } catch (error) {
-                    const errorMessage = error.error?.data || "Произошла ошибка";
-                    message.error(errorMessage, 3)
+                    message.error(getErrorMessageFormBaseQuery(error as FetchBaseQueryError), 3)
                 }
             },
             invalidatesTags: [{type: ApiTags.Project}]

@@ -1,4 +1,4 @@
-export enum FireVariant{
+export enum FireVariant {
     Someone = "Someone",
     Self = "Self"
 }

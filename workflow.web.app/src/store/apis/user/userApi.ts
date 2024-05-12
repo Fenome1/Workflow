@@ -5,7 +5,9 @@ import {message} from "antd";
 import {updateUser} from "../../slices/userSlice.ts";
 import {IUser} from "../../../features/models/IUser.ts";
 import {IUpdateUserCommand} from "../../../features/commands/user/IUpdateUserCommand.ts";
-import { baseApi } from "../index.ts";
+import {baseApi} from "../index.ts";
+import {getErrorMessageFormBaseQuery} from "../../../hok/getErrorMessageFormBaseQuery.ts";
+import {FetchBaseQueryError} from "@reduxjs/toolkit/query/react";
 
 export const userApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -29,10 +31,7 @@ export const userApi = baseApi.injectEndpoints({
                     dispatch(updateUser(data))
                     message.success("Профиль успешно обновлен", 2)
                 } catch (error) {
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-expect-error
-                    const errorMessage = error.error?.data || "Произошла ошибка";
-                    message.error(errorMessage, 3);
+                    message.error(getErrorMessageFormBaseQuery(error as FetchBaseQueryError), 3)
                 }
             },
             invalidatesTags: [{type: ApiTags.User}],
@@ -48,8 +47,7 @@ export const userApi = baseApi.injectEndpoints({
                     await queryFulfilled
                     message.success(`Вы успешно зарегистрированы`, 3)
                 } catch (error) {
-                    const errorMessage = error.error?.data || "Произошла ошибка";
-                    message.error(errorMessage, 3)
+                    message.error(getErrorMessageFormBaseQuery(error as FetchBaseQueryError), 3)
                 }
             }
         }),

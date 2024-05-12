@@ -3,14 +3,24 @@ import {ApiTags} from "../../fetchBaseQueryWithReauth.ts";
 import {HttpMethod} from "../../../common/HttpMetod.ts";
 import {IObjective} from "../../../features/models/IObjective.ts";
 import {IUpdateObjectiveCommand} from "../../../features/commands/objective/IUpdateObjectiveCommand.ts";
-import {IAssignifyUserToObjectiveCommand} from "../../../features/commands/objective/IAssignifyUserToObjectiveCommand.ts";
+import {
+    IAssignifyUserToObjectiveCommand
+} from "../../../features/commands/objective/IAssignifyUserToObjectiveCommand.ts";
 import {ICreateObjectiveCommand} from "../../../features/commands/objective/ICreateObjectiveCommand.ts";
+import {IGetObjectiveByUserCommand} from "../../../features/commands/objective/IGetObjectiveByUserCommand.ts";
 
 export const objectiveApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         getObjectivesByColumn: builder.query<IObjective[], number>({
             query: query => ({
                 url: `${ApiTags.Objective}/Column/${query}`,
+                method: HttpMethod.GET,
+            }),
+            providesTags: [{type: ApiTags.Objective}, {type: ApiTags.User}]
+        }),
+        getObjectivesByUser: builder.query<IObjective[], IGetObjectiveByUserCommand>({
+            query: command => ({
+                url: `${ApiTags.Objective}/Agency/${command.agencyId}/User/${command.userId}`,
                 method: HttpMethod.GET,
             }),
             providesTags: [{type: ApiTags.Objective}, {type: ApiTags.User}]
@@ -58,6 +68,7 @@ export const objectiveApi = baseApi.injectEndpoints({
 
 export const {
     useGetObjectivesByColumnQuery,
+    useGetObjectivesByUserQuery,
     useCreateObjectiveMutation,
     useDeleteObjectiveMutation,
     useUpdateObjectiveMutation,

@@ -1,6 +1,6 @@
 import RegisterForm from "./RegisterForm.tsx";
 import FooteredPage from "../../../ui/footer/FooteredPage.tsx";
-import {AppColors} from "../../../../common/AppColors.ts";
+import {AppColors} from "../../../../common/Colors.ts";
 
 const RegisterPage = () => {
     return (

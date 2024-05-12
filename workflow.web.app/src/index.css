@@ -13,6 +13,11 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
+    --main-blue-color: #1677ff;
+    --white-hover-color: #E4E7EB;
+    --delete-hover-color: #ff4d4f;
+    --main-border-color: gainsboro;
 }
 
 ::-webkit-scrollbar {

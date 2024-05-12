@@ -17,11 +17,11 @@ import AddStickerPopup from "./stickers/sticker-add/AddStickerPopup.tsx";
 import {useDialog} from "../../../../hok/useDialog.ts";
 import AssignmentChangeModal from "./modals/Assignment/AssignmentChangeModal.tsx";
 import {useUpdateObjectiveMutation} from "../../../../store/apis/objective/objectiveApi.ts";
-import {AppColors} from "../../../../common/AppColors.ts";
 import AvatarItem from "../../../ui/AvatarItem.tsx";
+import useTimer from "../../../../hok/useTimer.ts";
 
 interface IObjectiveCardProps {
-    objective: IObjective
+    objective: IObjective,
 }
 
 const ObjectiveCard: FC<IObjectiveCardProps> = ({objective}) => {
@@ -34,6 +34,8 @@ const ObjectiveCard: FC<IObjectiveCardProps> = ({objective}) => {
     const assignmentChangeModal = useDialog()
 
     const [editedName, setEditedName] = useState(objective.name);
+
+    const {timeLeft} = useTimer(objective.status, objective?.deadline);
 
     const updateStatus = async () => {
 
@@ -64,7 +66,11 @@ const ObjectiveCard: FC<IObjectiveCardProps> = ({objective}) => {
 
     return (
         <div className='objective-card'
-             style={{opacity: objective.status ? (hovered ? 1 : 0.7) : 1, background: AppColors.Secondary}}
+             style={{
+                 opacity: objective.status ? (hovered ? 1 : 0.7) : 1,
+                 backgroundColor: !objective.status && (timeLeft === 'Дедлайн просрочен' ||
+                     (objective.deadline && new Date(objective.deadline) < new Date())) ? 'red' : '',
+             }}
              onMouseEnter={() => setHovered(true)}
              onMouseLeave={() => setHovered(false)}>
 
@@ -72,7 +78,8 @@ const ObjectiveCard: FC<IObjectiveCardProps> = ({objective}) => {
                 <div className='objective-card-container-head'>
                     <div className='objective-card-status-icon'
                          style={{color: objective.status ? "forestgreen" : 'gray'}} onClick={updateStatus}>
-                        {objective.status ? <CheckCircleFilled/> : <CheckCircleOutlined/>}</div>
+                        {objective.status ? <CheckCircleFilled className='objective-status-icon'/> :
+                            <CheckCircleOutlined className='objective-status-icon'/>}</div>
                     <div className='objective-card-name-container'>
                         {editingDialog.open ? (
                             <Input
@@ -95,44 +102,53 @@ const ObjectiveCard: FC<IObjectiveCardProps> = ({objective}) => {
                         )}
                         {hovered && !editingDialog.open &&
                             <div className='objective-card-name-edit-container'>
-                                <EditOutlined className='objective-card-name-edit-icon' onClick={editingDialog.show}/>
+                                <EditOutlined className='objective-card-name-edit-icon'
+                                              onClick={editingDialog.show}/>
                             </div>}
                     </div>
                     <EllipsisObjectiveDropDown startEditing={editingDialog.show} objectiveId={objective.objectiveId}
                                                className='objective-card-dropdown'/>
                 </div>
-                <div className='objective-card-container-footer'>
-                    <div className='objective-card-content-stickers'>
-                        {objective.priority &&
-                            <PrioritySticker objective={objective}/>
-                        }
-                        {objective.deadline &&
-                            <DeadlineSticker objective={objective}/>
-                        }
-                        <div className='objective-card-sticker-add-container'>
-                            {hovered &&
-                                <PlusCircleOutlined className='objective-card-sticker-add-icon'
-                                                    onClick={addStickerPopup.show}/>}
-                            <AddStickerPopup objective={objective} dialog={addStickerPopup}/>
+                {!objective.status &&
+                    <div className='objective-card-container-footer'>
+                        <div className='objective-card-content-stickers'>
+                            {objective.priority &&
+                                <PrioritySticker objective={objective}/>
+                            }
+                            {objective.deadline &&
+                                <DeadlineSticker objective={objective}/>
+                            }
+                            <div className='objective-card-sticker-add-container'>
+                                {hovered &&
+                                    <PlusCircleOutlined className='objective-card-sticker-add-icon'
+                                                        onClick={addStickerPopup.show}/>}
+                                <AddStickerPopup objective={objective} dialog={addStickerPopup}/>
+                            </div>
+                        </div>
+                        <div className='objective-card-users' onClick={assignmentChangeModal.show}>
+                            {hovered && objective.users && objective.users?.length < 1 &&
+                                <div className='objective-card-users-add-container'>
+                                    <UserOutlined className='objective-card-users-add-icon'/>
+                                </div>
+                            }
+                            {objective.users && objective.users.length > 0 &&
+                                <div className='objective-card-existed-users-container'>
+                                    <Avatar.Group maxCount={2}>
+                                        {objective.users?.map((user) => (
+                                            <AvatarItem key={user.userId} user={user}/>
+                                        ))}
+                                    </Avatar.Group>
+                                </div>
+                            }
+                        </div>
+                    </div>}
+                {!objective.status && (timeLeft || timeLeft === 'Дедлайн просрочен') && (
+                    <div className="objective-card-time-left">
+                        <div className="objective-card-time-left-title">
+                            {timeLeft}
                         </div>
                     </div>
-                    <div className='objective-card-users' onClick={assignmentChangeModal.show}>
-                        {hovered && objective.users && objective.users?.length < 1 &&
-                            <div className='objective-card-users-add-container'>
-                                <UserOutlined className='objective-card-users-add-icon'/>
-                            </div>
-                        }
-                        {objective.users && objective.users.length > 0 &&
-                            <div className='objective-card-existed-users-container'>
-                                <Avatar.Group maxCount={2}>
-                                    {objective.users?.map((user) => (
-                                        <AvatarItem key={user.userId} user={user}/>
-                                    ))}
-                                </Avatar.Group>
-                            </div>
-                        }
-                    </div>
-                </div>
+                )}
             </div>
             <AssignmentChangeModal dialog={assignmentChangeModal} objective={objective}></AssignmentChangeModal>
         </div>

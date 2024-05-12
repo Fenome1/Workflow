@@ -5,7 +5,7 @@
   justify-content: center;
   align-items: center;
 
-  border: gainsboro 1px solid;
+  border: var(--main-border-color) 1px solid;
   border-radius: 10px;
   padding: 2px 5px 2px 5px;
   min-width: 150px;
@@ -17,7 +17,7 @@
 
 .create-column-card {
   min-width: 250px;
-  border: solid 1px gainsboro;
+  border: solid 1px var(--main-border-color);
   border-radius: 10px;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 10px 10px 0 rgba(0, 0, 0, 0.01);
   transition: all 0.5ms ease;
