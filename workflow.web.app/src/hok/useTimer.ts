@@ -16,10 +16,16 @@ const useTimer = (status: boolean, deadline: string | null): TimerResult => {
                 const now = new Date();
 
                 const isDeadlineToday = deadlineDate.toDateString() === now.toDateString();
-                const isDeadlinePassed = now.getUTCDate() > deadlineDate.getUTCDate();
+                const isDeadlinePassed = now > deadlineDate;
 
-                if(isDeadlineToday && !isDeadlinePassed){
-                    const endOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
+                if (isDeadlineToday && !isDeadlinePassed) {
+                    const endOfToday = new Date(
+                        now.getFullYear(),
+                        now.getMonth(),
+                        now.getDate(),
+                        23,
+                        59,
+                        59);
 
                     const difference = Math.max(0, endOfToday.getTime() - now.getTime());
                     const hours = Math.floor(difference / (1000 * 60 * 60));
@@ -28,12 +34,10 @@ const useTimer = (status: boolean, deadline: string | null): TimerResult => {
 
                     setTimeLeft(`${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`);
                     setIsDeadlineExpired(false);
-                }
-                else if (!isDeadlineToday && !isDeadlinePassed) {
+                } else if (!isDeadlineToday && !isDeadlinePassed) {
                     setTimeLeft("")
                     setIsDeadlineExpired(false)
-                }
-                else if(!isDeadlineToday && isDeadlinePassed) {
+                } else if (!isDeadlineToday && isDeadlinePassed) {
                     setTimeLeft("");
                     setIsDeadlineExpired(true);
                 }

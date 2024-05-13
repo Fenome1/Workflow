@@ -4,6 +4,7 @@ using Workflow.Api.Controllers.Base;
 using Workflow.Application.Features.Objectives.Commands.Assignify;
 using Workflow.Application.Features.Objectives.Commands.Create;
 using Workflow.Application.Features.Objectives.Commands.Delete;
+using Workflow.Application.Features.Objectives.Commands.Swap;
 using Workflow.Application.Features.Objectives.Commands.Update;
 using Workflow.Application.Features.Objectives.Queries.ByColumn;
 using Workflow.Application.Features.Objectives.Queries.ByUser;
@@ -26,7 +27,7 @@ public class ObjectiveController : BaseController
             return BadRequest($"{e.Message}");
         }
     }
-    
+
     /*[Authorize]*/
     [HttpGet("Agency/{agencyId}/User/{userId}")]
     public async Task<ActionResult<List<ObjectiveViewModel>>> GetByUser(int agencyId, int userId)
@@ -40,7 +41,7 @@ public class ObjectiveController : BaseController
             return BadRequest($"{e.Message}");
         }
     }
-    
+
 
     /*[Authorize]*/
     [HttpPost("Create")]
@@ -59,6 +60,19 @@ public class ObjectiveController : BaseController
     /*[Authorize]*/
     [HttpPut("Update")]
     public async Task<ActionResult<int>> Update([FromBody] UpdateObjectiveCommand command)
+    {
+        try
+        {
+            return Ok(await Mediator.Send(command));
+        }
+        catch (Exception e)
+        {
+            return BadRequest($"{e.Message}");
+        }
+    }
+
+    [HttpPut("Swap")]
+    public async Task<ActionResult<int>> Swap([FromBody] SwapObjectiveCommand command)
     {
         try
         {

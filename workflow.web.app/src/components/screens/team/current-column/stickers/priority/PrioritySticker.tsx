@@ -10,7 +10,7 @@ interface PriorityStickerProps {
 const PrioritySticker: FC<PriorityStickerProps> = ({objective}) => {
     return (
         <PrioritiesDropDown objective={objective}>
-            <div>
+            <div style={{cursor: 'pointer'}}>
                 <PriorityStickerContent priority={objective.priority!}/>
             </div>
         </PrioritiesDropDown>

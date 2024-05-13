@@ -11,6 +11,7 @@ import {useDialog} from "../../../../hok/useDialog.ts";
 import CreateObjectiveCard from "./create-objective/CreateObjectiveCard.tsx";
 import {IUpdateColumnCommand} from "../../../../features/commands/column/IUpdateColumnCommand.ts";
 import {useUpdateColumnMutation} from "../../../../store/apis/column/columnApi.ts";
+import {Draggable} from "react-beautiful-dnd";
 
 interface IColumnCardProps {
     column: IColumn
@@ -53,51 +54,57 @@ const ColumnCard: FC<IColumnCardProps> = ({column}) => {
     };
 
     return (
-        <div className='column-card'>
-            <div className='column-card-header'>
-                <div className='column-card-header-title'>
-                    {editingDialog.open ? (
-                        <Input
-                            className='column-card-name-input'
-                            placeholder='Имя'
-                            type="text"
-                            value={editedName}
-                            onChange={(event) => setEditedName(event.target.value)}
-                            onBlur={updateTitle}
-                            variant='borderless'
-                            onKeyDown={async (e) => {
-                                if (e.key === 'Enter') {
-                                    await updateTitle();
-                                }
-                            }}
-                            autoFocus
-                        />
-                    ) : (
-                        <div className='column-card-name'>
-                            <div className='column-card-name-title'>{column.name}</div>
-                            {objectives && objectives.length > 0 &&
-                                <div className='column-card-name-count'>({objectives.length})</div>
-                            }
+        <Draggable draggableId={column.columnId.toString()} index={column.order}>
+            {(provided) => (
+                <div className='column-card' {...provided.draggableProps}
+                     {...provided.dragHandleProps}
+                     ref={provided.innerRef} onDrag={() => console.log('драгается')}>
+                    <div className='column-card-header'>
+                        <div className='column-card-header-title'>
+                            {editingDialog.open ? (
+                                <Input
+                                    className='column-card-name-input'
+                                    placeholder='Имя'
+                                    type="text"
+                                    value={editedName}
+                                    onChange={(event) => setEditedName(event.target.value)}
+                                    onBlur={updateTitle}
+                                    variant='borderless'
+                                    onKeyDown={async (e) => {
+                                        if (e.key === 'Enter') {
+                                            await updateTitle();
+                                        }
+                                    }}
+                                    autoFocus
+                                />
+                            ) : (
+                                <div className='column-card-name'>
+                                    <div className='column-card-name-title'>{column.name}</div>
+                                    {objectives && objectives.length > 0 &&
+                                        <div className='column-card-name-count'>({objectives.length})</div>
+                                    }
+                                </div>
+                            )}
+                            <EllipsisColumnDropDown startEditing={editingDialog.show} columnId={column.columnId}/>
                         </div>
-                    )}
-                    <EllipsisColumnDropDown startEditing={editingDialog.show} columnId={column.columnId}/>
+                        <Button className='column-add-objective' type='link' onClick={createObjectiveDialog.show}
+                                icon={<PlusOutlined width='50px'/>}>Создать
+                            задачу</Button>
+                        {objectives && objectives.length > 0 &&
+                            <Progress percent={percentComplete()} strokeColor='lightgreen'/>}
+                    </div>
+                    <div className='column-objectives-content'>
+                        {createObjectiveDialog.open &&
+                            <CreateObjectiveCard columnId={column.columnId} dialog={createObjectiveDialog}/>}
+                        {objectives && objectives?.map((objective) => (
+                            <Skeleton loading={isLoading}>
+                                <ObjectiveCard key={objective.objectiveId} objective={objective}/>
+                            </Skeleton>
+                        ))}
+                    </div>
                 </div>
-                <Button className='column-add-objective' type='link' onClick={createObjectiveDialog.show}
-                        icon={<PlusOutlined width='50px'/>}>Создать
-                    задачу</Button>
-                {objectives && objectives.length > 0 &&
-                    <Progress percent={percentComplete()} strokeColor='lightgreen'/>}
-            </div>
-            <div className='column-objectives-content'>
-                {createObjectiveDialog.open &&
-                    <CreateObjectiveCard columnId={column.columnId} dialog={createObjectiveDialog}/>}
-                {objectives && objectives?.map((objective) => (
-                    <Skeleton loading={isLoading}>
-                        <ObjectiveCard key={objective.objectiveId} objective={objective}/>
-                    </Skeleton>
-                ))}
-            </div>
-        </div>
+            )}
+        </Draggable>
     );
 };
 

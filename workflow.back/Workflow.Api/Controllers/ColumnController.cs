@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Workflow.Api.Controllers.Base;
 using Workflow.Application.Features.Columns.Commands.Create;
 using Workflow.Application.Features.Columns.Commands.Delete;
+using Workflow.Application.Features.Columns.Commands.Swap;
 using Workflow.Application.Features.Columns.Commands.Update;
 using Workflow.Application.Features.Columns.Queries.ByBoard;
 using Workflow.Application.ViewModels;
@@ -61,6 +62,20 @@ public class ColumnController : BaseController
         try
         {
             return Ok(await Mediator.Send(new DeleteColumnCommand(columnId)));
+        }
+        catch (Exception e)
+        {
+            return BadRequest($"{e.Message}");
+        }
+    }
+
+    /*[Authorize]*/
+    [HttpPut("Swap")]
+    public async Task<ActionResult<Unit>> Swap([FromBody] SwapColumnCommand command)
+    {
+        try
+        {
+            return Ok(await Mediator.Send(command));
         }
         catch (Exception e)
         {

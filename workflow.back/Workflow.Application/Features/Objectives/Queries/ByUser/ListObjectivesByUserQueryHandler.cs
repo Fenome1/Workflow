@@ -18,7 +18,7 @@ public class ListObjectivesByUserQueryHandler(WorkflowDbContext context, IMapper
         var isUserExists = await context.Users
             .AsNoTrackingWithIdentityResolution()
             .AnyAsync(u => u.UserId == request.UserId,
-                cancellationToken: cancellationToken);
+                cancellationToken);
 
         if (!isUserExists)
             throw new NotFoundException(nameof(User), request.UserId);
@@ -34,7 +34,7 @@ public class ListObjectivesByUserQueryHandler(WorkflowDbContext context, IMapper
             .Include(o => o.Priority)
             .Where(o => o.Users.Any(u => u.UserId == request.UserId))
             .ProjectTo<ObjectiveViewModel>(mapper.ConfigurationProvider)
-            .ToListAsync(cancellationToken: cancellationToken);
+            .ToListAsync(cancellationToken);
 
         return objectives;
     }

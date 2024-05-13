@@ -1,29 +1,29 @@
 export enum DeadlineColors {
-    Far = '#9ACD32',
-    OnThisWeek = '#FFD700',
-    Tomorrow = '#FFA500',
-    ToDay = '#FF6347',
-    Overdue = '#CD5C5C'
+    Far = '#C0FF3E',
+    OnThisWeek = '#FFE666',
+    Tomorrow = '#FFCC00',
+    ToDay = '#FF7F6F',
+    Overdue = '#E06666'
 }
 
 export enum DeadlineTextColors {
-    Far = '#335D21',
-    OnThisWeek = '#5D531E',
-    Tomorrow = '#503F00',
-    ToDay = '#4F1009',
-    Overdue = '#401E1B'
+    Far = '#2F5420',
+    OnThisWeek = '#26210E',
+    Tomorrow = '#3C3200',
+    ToDay = '#3C0802',
+    Overdue = '#381712'
 }
 
 export enum PriorityColors {
-    High = '#E57373',
-    Medium = '#E6E68A',
-    Low = '#80C7FF',
+    High = '#FF7F6F',
+    Medium = '#FFCC00',
+    Low = '#99E6FF',
 }
 
 export enum PriorityTextColors {
-    High = '#992D2D',
-    Medium = '#6E6E42',
-    Low = '#396B92'
+    High = '#3C0802',
+    Medium = '#3C3200',
+    Low = '#143552'
 }
 
 export enum StatusColors {

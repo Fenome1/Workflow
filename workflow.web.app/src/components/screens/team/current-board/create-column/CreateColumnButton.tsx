@@ -7,15 +7,16 @@ import CreateColumnCard from "./CreateColumnCard.tsx";
 
 interface CreateColumnProps {
     boardId: number
+    className?: string
 }
 
-const CreateColumnButton: FC<CreateColumnProps> = ({boardId}) => {
+const CreateColumnButton: FC<CreateColumnProps> = ({boardId, className}) => {
     const createColumnDialog = useDialog()
 
     return (
         <>
             {!createColumnDialog.open ?
-                <div className='create-column-container'>
+                <div className={className}>
                     <Button type='link' icon={<PlusCircleOutlined/>}
                             className="create-column-button" onClick={createColumnDialog.show}>Создать
                         колонку</Button>

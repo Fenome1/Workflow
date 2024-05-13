@@ -27,7 +27,7 @@ public sealed class DeleteColumnCommandHandler(WorkflowDbContext context) : IReq
                 .ToListAsync(cancellationToken);
 
             for (var i = 0; i < remainingColumns.Count; i++)
-                remainingColumns[i].Order = i + 1;
+                remainingColumns[i].Order = i;
 
             context.Columns.Remove(deletingColumn);
             await context.SaveChangesAsync(cancellationToken);

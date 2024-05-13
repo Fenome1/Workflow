@@ -10,7 +10,7 @@ interface DeadlineStickerProps {
 const DeadlineSticker: FC<DeadlineStickerProps> = ({objective}) => {
     return (
         <DeadlineDropDown objective={objective}>
-            <div>
+            <div style={{cursor: 'pointer'}}>
                 <DeadlineStickerContent deadline={objective.deadline!}/>
             </div>
         </DeadlineDropDown>

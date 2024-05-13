@@ -4,6 +4,7 @@ import {IColumn} from "../../../features/models/IColumn.ts";
 import {IUpdateColumnCommand} from "../../../features/commands/column/IUpdateColumnCommand.ts";
 import {ICreateColumnCommand} from "../../../features/commands/column/ICreateColumnCommand.ts";
 import {baseApi} from "../index.ts";
+import {ISwapColumnCommand} from "../../../features/commands/column/ISwapColumnCommand.ts";
 
 export const columnApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -37,6 +38,14 @@ export const columnApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: [{type: ApiTags.Column}]
         }),
+        swapColumn: builder.mutation<void, ISwapColumnCommand>({
+            query: command => ({
+                url: `${ApiTags.Column}/Swap`,
+                method: HttpMethod.PUT,
+                body: command
+            }),
+            invalidatesTags: [{type: ApiTags.Column}]
+        }),
     }),
 });
 
@@ -44,5 +53,6 @@ export const {
     useGetColumnsByBoardQuery,
     useCreateColumnMutation,
     useDeleteColumnMutation,
-    useUpdateColumnMutation
+    useUpdateColumnMutation,
+    useSwapColumnMutation
 } = columnApi

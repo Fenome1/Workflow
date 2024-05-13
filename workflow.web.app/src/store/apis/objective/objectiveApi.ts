@@ -8,6 +8,7 @@ import {
 } from "../../../features/commands/objective/IAssignifyUserToObjectiveCommand.ts";
 import {ICreateObjectiveCommand} from "../../../features/commands/objective/ICreateObjectiveCommand.ts";
 import {IGetObjectiveByUserCommand} from "../../../features/commands/objective/IGetObjectiveByUserCommand.ts";
+import {ISwapObjectiveCommand} from "../../../features/commands/objective/ISwapObjectiveCommand.ts";
 
 export const objectiveApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -62,6 +63,15 @@ export const objectiveApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: () =>
                 [{type: ApiTags.Objective}]
+        }),
+        swapObjective: builder.mutation<void, ISwapObjectiveCommand>({
+            query: command => ({
+                url: `${ApiTags.Objective}/Swap`,
+                method: HttpMethod.PUT,
+                body: command,
+            }),
+            invalidatesTags: () =>
+                [{type: ApiTags.Objective}]
         })
     }),
 });
@@ -72,5 +82,6 @@ export const {
     useCreateObjectiveMutation,
     useDeleteObjectiveMutation,
     useUpdateObjectiveMutation,
-    useAssignifyUserToObjectiveMutation
+    useAssignifyUserToObjectiveMutation,
+    useSwapObjectiveMutation,
 } = objectiveApi
