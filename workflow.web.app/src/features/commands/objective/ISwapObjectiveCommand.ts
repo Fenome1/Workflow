@@ -1,5 +1,5 @@
 export interface ISwapObjectiveCommand {
-    objectiveId: number
     columnId: number
-    order: number
+    objectiveId: number
+    targetOrder?: number
 }

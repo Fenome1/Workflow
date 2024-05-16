@@ -11,7 +11,7 @@ import {useDialog} from "../../../../hok/useDialog.ts";
 import CreateObjectiveCard from "./create-objective/CreateObjectiveCard.tsx";
 import {IUpdateColumnCommand} from "../../../../features/commands/column/IUpdateColumnCommand.ts";
 import {useUpdateColumnMutation} from "../../../../store/apis/column/columnApi.ts";
-import {Draggable} from "react-beautiful-dnd";
+import {Draggable, Droppable} from "react-beautiful-dnd";
 
 interface IColumnCardProps {
     column: IColumn
@@ -58,8 +58,7 @@ const ColumnCard: FC<IColumnCardProps> = ({column}) => {
             {(provided) => (
                 <div className='column-card' ref={provided.innerRef} {...provided.draggableProps}>
                     <div className='column-card-header'
-                         {...provided.dragHandleProps}
-                        >
+                         {...provided.dragHandleProps}>
                         <div className='column-card-header-title'>
                             {editingDialog.open ? (
                                 <Input
@@ -93,15 +92,21 @@ const ColumnCard: FC<IColumnCardProps> = ({column}) => {
                         {objectives && objectives.length > 0 &&
                             <Progress percent={percentComplete()} strokeColor='lightgreen'/>}
                     </div>
-                    <div className='column-objectives-content'>
-                        {createObjectiveDialog.open &&
-                            <CreateObjectiveCard columnId={column.columnId} dialog={createObjectiveDialog}/>}
-                        {objectives && objectives?.map((objective) => (
-                            <Skeleton loading={isLoading}>
-                                <ObjectiveCard key={objective.objectiveId} objective={objective}/>
-                            </Skeleton>
-                        ))}
-                    </div>
+                    <Droppable droppableId={column.columnId.toString()}
+                               key={column.columnId.toString()}
+                               type="column">
+                        {provided => (
+                            <div className='column-objectives-content'
+                                 ref={provided.innerRef} {...provided.droppableProps}>
+                                {createObjectiveDialog.open &&
+                                    <CreateObjectiveCard columnId={column.columnId} dialog={createObjectiveDialog}/>}
+                                {objectives && objectives?.map((objective) => (
+                                    <Skeleton loading={isLoading}>
+                                        <ObjectiveCard key={objective.objectiveId} objective={objective}/>
+                                    </Skeleton>
+                                ))}
+                            </div>)}
+                    </Droppable>
                 </div>
             )}
         </Draggable>

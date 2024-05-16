@@ -26,7 +26,7 @@ public sealed class DeleteObjectiveCommandHandler(WorkflowDbContext context)
                 .ToListAsync(cancellationToken);
 
             for (var i = 0; i < remainingObjectives.Count; i++)
-                remainingObjectives[i].Order = i + 1;
+                remainingObjectives[i].Order = i;
 
             context.Objectives.Remove(deletingObjective);
             await context.SaveChangesAsync(cancellationToken);
