@@ -10,6 +10,8 @@ import {AppColors} from "../../../../common/Colors.ts";
 import {DragDropContext, Droppable, OnDragEndResponder} from "react-beautiful-dnd";
 import {useState} from "react";
 import {ISwapColumnCommand} from "../../../../features/commands/column/ISwapColumnCommand.ts";
+import {ISwapObjectiveCommand} from "../../../../features/commands/objective/ISwapObjectiveCommand.ts";
+import {useSwapObjectiveMutation} from "../../../../store/apis/objective/objectiveApi.ts";
 
 
 const CurrentBoard = () => {
@@ -17,6 +19,8 @@ const CurrentBoard = () => {
     const toTeam = () => navigate("/team")
 
     const [swapColumn] = useSwapColumnMutation()
+    const [swapObjective] = useSwapObjectiveMutation()
+
     const [isAnyDragging, setIsAnyDragging] = useState(false);
 
     const selectedBoardId = useTypedSelector((state) => state.board?.selectedBoardId);
@@ -25,13 +29,31 @@ const CurrentBoard = () => {
         {skip: selectedBoardId === null});
 
     const handleDragEnd: OnDragEndResponder = async (result) => {
-        const command: ISwapColumnCommand = {
-            columnId: Number(result.draggableId),
-            targetOrder: result.destination?.index,
+        let command : ISwapColumnCommand | ISwapObjectiveCommand;
+
+        switch (result.type) {
+            case 'column':
+                command = {
+                    columnId: Number(result.destination?.droppableId),
+                    objectiveId: Number(result.draggableId),
+                    targetOrder: result.destination?.index,
+                };
+                await swapObjective(command)
+                break;
+            case 'board':
+                command = {
+                    columnId: Number(result.draggableId),
+                    targetOrder: result.destination?.index,
+                };
+                await swapColumn(command)
+                break;
+            default:
+                console.error('Unknown type:', result.type);
+                break;
         }
-        await swapColumn(command)
+
         setIsAnyDragging(false);
-    }
+    };
 
     return (
         <Spin spinning={isLoading}>
