@@ -15,17 +15,15 @@ const useTimer = (status: boolean, deadline: string | null): TimerResult => {
                 const deadlineDate = new Date(deadline);
                 const now = new Date();
 
-                const isDeadlineToday = deadlineDate.toDateString() === now.toDateString();
-                const isDeadlinePassed = now > deadlineDate;
+                const isDeadlineToday = deadlineDate.toLocaleDateString() === now.toLocaleDateString();
+                const isDeadlinePassed = now.toLocaleDateString() > deadlineDate.toLocaleDateString();
 
                 if (isDeadlineToday && !isDeadlinePassed) {
                     const endOfToday = new Date(
                         now.getFullYear(),
                         now.getMonth(),
                         now.getDate(),
-                        23,
-                        59,
-                        59);
+                        24);
 
                     const difference = Math.max(0, endOfToday.getTime() - now.getTime());
                     const hours = Math.floor(difference / (1000 * 60 * 60));
