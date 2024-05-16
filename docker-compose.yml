@@ -19,13 +19,13 @@ services:
     #logging:
       #driver: none
   
-  order.api:
-    container_name: Order.Api
-    image: order.api
+  workflow.api:
+    container_name: Workflow.Api
+    image: workflow.api
     build:
       network: host
-      context: ./order.api
-      dockerfile: Order.Api/Dockerfile
+      context: ./workflow.back
+      dockerfile: Workflow.Api/Dockerfile
     depends_on:
       - mssql
     ports:
@@ -36,20 +36,20 @@ services:
     volumes:
       - ~/.aspnet/https:/https:ro
     restart: unless-stopped
-    #logging:
-      #driver: none
+    logging:
+      driver: none
   
   nginx:
-    container_name: Order.WebApp
+    container_name: Workflow.WebApp
     image: react
     build:
       network: host
-      context: ./order.web.app
+      context: ./workflow.web.app
       dockerfile: Dockerfile
     ports:
       - "3000:80"
     depends_on:
-      - order.api
+      - workflow.api
     stdin_open: true
     restart: unless-stopped
     #logging:
