@@ -9,8 +9,7 @@ using Workflow.Persistense.Context;
 namespace Workflow.Application.Features.Invitations.Commands.Send;
 
 public sealed class SendInvitationCommandHandler(
-    WorkflowDbContext context,
-    IMapper mapper
+    WorkflowDbContext context
 ) : IRequestHandler<SendInvitationCommand, int>
 {
     public async Task<int> Handle(SendInvitationCommand request, CancellationToken cancellationToken)
@@ -48,12 +47,20 @@ public sealed class SendInvitationCommandHandler(
             if (existingInvitation is not null)
                 throw new Exception($"Пользователю {request.Email} уже отправлено приглашение в данное агентство");
 
-            context.Invitations.RemoveRange(context.Invitations
-                .Where(i => i.UserId == user.UserId &&
-                            i.AgencyId == request.AgencyId));
 
-            var invitation = mapper.Map<Invitation>(request);
-            invitation.UserId = user.UserId;
+            var existingInvitations = await context.Invitations
+                .Where(i => i.UserId == user.UserId &&
+                            i.AgencyId == request.AgencyId)
+                .ToListAsync(cancellationToken: cancellationToken);
+
+            if (existingInvitations is not null && existingInvitations.Count > 0)
+                context.Invitations.RemoveRange(existingInvitations);
+
+            var invitation = new Invitation
+            {
+                AgencyId = request.AgencyId,
+                UserId = user.UserId
+            };
 
             await context.Invitations.AddAsync(invitation, cancellationToken);
             await context.SaveChangesAsync(cancellationToken);

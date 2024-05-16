@@ -153,6 +153,24 @@ public partial class WorkflowDbContext : DbContext
         {
             entity.Property(e => e.InvitationStatusId).ValueGeneratedNever();
             entity.Property(e => e.Name).HasMaxLength(50);
+            
+            entity.HasData([
+                new InvitationStatus()
+                {
+                    InvitationStatusId = 1,
+                    Name = "Ожидание",
+                },
+                new InvitationStatus()
+                {
+                    InvitationStatusId = 2,
+                    Name = "Принято",
+                },
+                new InvitationStatus()
+                {
+                    InvitationStatusId = 3,
+                    Name = "Отклонено",
+                },
+            ]);
         });
 
         modelBuilder.Entity<Objective>(entity =>
