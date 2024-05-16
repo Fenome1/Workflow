@@ -56,7 +56,7 @@ const ColumnCard: FC<IColumnCardProps> = ({column}) => {
     return (
         <Draggable draggableId={column.columnId.toString()} index={column.order}>
             {(provided) => (
-                <div className='column-card' ref={provided.innerRef} {...provided.draggableProps}>
+                <div className={`column-card`} ref={provided.innerRef} {...provided.draggableProps}>
                     <div className='column-card-header'
                          {...provided.dragHandleProps}>
                         <div className='column-card-header-title'>
@@ -65,6 +65,7 @@ const ColumnCard: FC<IColumnCardProps> = ({column}) => {
                                     className='column-card-name-input'
                                     placeholder='Имя'
                                     type="text"
+                                    maxLength={25}
                                     value={editedName}
                                     onChange={(event) => setEditedName(event.target.value)}
                                     onBlur={updateTitle}
@@ -93,7 +94,6 @@ const ColumnCard: FC<IColumnCardProps> = ({column}) => {
                             <Progress percent={percentComplete()} strokeColor='lightgreen'/>}
                     </div>
                     <Droppable droppableId={column.columnId.toString()}
-                               key={column.columnId.toString()}
                                type="column">
                         {provided => (
                             <div className='column-objectives-content'
@@ -101,10 +101,11 @@ const ColumnCard: FC<IColumnCardProps> = ({column}) => {
                                 {createObjectiveDialog.open &&
                                     <CreateObjectiveCard columnId={column.columnId} dialog={createObjectiveDialog}/>}
                                 {objectives && objectives?.map((objective) => (
-                                    <Skeleton loading={isLoading}>
+                                    <Skeleton loading={isLoading} key={objective.objectiveId}>
                                         <ObjectiveCard key={objective.objectiveId} objective={objective}/>
                                     </Skeleton>
                                 ))}
+                                {provided.placeholder}
                             </div>)}
                     </Droppable>
                 </div>

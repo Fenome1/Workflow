@@ -1,10 +1,10 @@
-import {IDialog} from "../../../../../../../features/models/IDialog.ts";
+import {IDialog} from "../../../../../../../../features/models/IDialog.ts";
 import {FC} from "react";
 import {Form, FormProps, Input, message, Modal} from "antd";
 import TextArea from "antd/es/input/TextArea";
-import {IUpdateAgencyCommand} from "../../../../../../../features/commands/agency/IUpdateAgencyCommand.ts";
-import {IAgency} from "../../../../../../../features/models/IAgency.ts";
-import {useUpdateAgencyMutation} from "../../../../../../../store/apis/agency/agencyApi.ts";
+import {IUpdateAgencyCommand} from "../../../../../../../../features/commands/agency/IUpdateAgencyCommand.ts";
+import {IAgency} from "../../../../../../../../features/models/IAgency.ts";
+import {useUpdateAgencyMutation} from "../../../../../../../../store/apis/agency/agencyApi.ts";
 
 interface EditAgencyModalProps {
     dialog: IDialog
@@ -56,7 +56,7 @@ const UpdateAgencyModal: FC<EditAgencyModalProps> = ({dialog, agency}) => {
                     name='name'
                     label="Название агентства"
                     rules={[{required: true, message: 'Введите название агентства'}]}>
-                    <Input placeholder='Название агентства...' showCount maxLength={25}/>
+                    <Input placeholder='Название агентства...' showCount maxLength={50}/>
                 </Form.Item>
                 <Form.Item
                     initialValue={agency?.description}

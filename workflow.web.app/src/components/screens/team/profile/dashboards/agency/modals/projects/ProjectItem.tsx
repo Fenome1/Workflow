@@ -53,6 +53,7 @@ const ProjectItem: FC<ProjectItemProps> = ({project}) => {
                     variant='borderless'
                     onChange={(event) => setEditedName(event.target.value)}
                     onBlur={updateName}
+                    maxLength={25}
                     onKeyDown={async (e) => {
                         if (e.key === 'Enter') {
                             await updateName();

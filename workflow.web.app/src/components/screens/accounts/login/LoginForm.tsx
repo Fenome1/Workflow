@@ -46,17 +46,15 @@ const LoginForm = () => {
                             name="loginForm"
                             form={form}
                             onFinish={onFinish}
-                            className="login-form"
-                        >
+                            className="login-form">
                             <Form.Item
                                 name="email"
                                 rules={[
                                     {required: true, message: "Пожалуйста, введите ваш email!"},
-                                ]}
-                            >
+                                    {type:'email', message: 'Некорректный формат email адреса'}
+                                ]}>
                                 <Input
                                     style={{fontSize: "1rem"}}
-                                    type="email"
                                     prefix={<UserOutlined/>}
                                     placeholder="E-mail.."
                                     disabled={isLoading}
@@ -65,10 +63,7 @@ const LoginForm = () => {
 
                             <Form.Item
                                 name="password"
-                                rules={[
-                                    {required: true, message: "Пожалуйста, введите ваш пароль!"},
-                                ]}
-                            >
+                                rules={[{required: true, message: "Пожалуйста, введите ваш пароль!"},]}>
                                 <Input.Password
                                     style={{fontSize: "1rem"}}
                                     prefix={<LockOutlined/>}

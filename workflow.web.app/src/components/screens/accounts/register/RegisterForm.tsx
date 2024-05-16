@@ -63,17 +63,23 @@ const RegisterForm = () => {
                             className="login-form">
                             <Form.Item
                                 name="email"
-                                rules={[{required: true, message: 'Пожалуйста, введите ваш email!'}]}>
+                                rules={[
+                                    { required: true, message: 'Пожалуйста, введите ваш email!' },
+                                    { type: 'email', message: 'Некорректный формат email адреса' }
+                                ]}>
                                 <Input style={{fontSize: '1rem'}}
                                        disabled={isLoading}
-                                       type='email'
                                        placeholder="E-mail.."
                                        prefix={<UserOutlined/>}/>
                             </Form.Item>
 
                             <Form.Item
                                 name="password"
-                                rules={[{required: true, message: 'Пожалуйста, введите ваш пароль!'}]}>
+                                rules={[
+                                    { required: true, message: 'Пожалуйста, введите ваш пароль!' },
+                                    { min: 6, message: 'Пароль должен содержать минимум 6 символов' },
+                                    { max: 20, message: 'Пароль должен содержать максимум 20 символов' }
+                                ]}>
                                 <Input.Password style={{fontSize: '1rem'}}
                                                 disabled={isLoading}
                                                 placeholder="Пароль"

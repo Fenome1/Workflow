@@ -43,6 +43,8 @@ const ProjectCreate: FC<ProjectCreateProps> = ({dialog, agencyId}) => {
             <Input variant='borderless'
                    autoFocus
                    value={name}
+                   className='project-name'
+                   maxLength={25}
                    onKeyDown={handleKeyPress}
                    onChange={(event) => setName(event.target.value)}
                    onBlur={handleBlur}

@@ -41,6 +41,7 @@ const CreateColumnCard: FC<CreateColumnCardProps> = ({dialog, boardId}) => {
     return (
         <div className='create-column-card'>
             <Input variant='borderless'
+                   maxLength={25}
                    autoFocus
                    value={title}
                    onKeyDown={handleKeyPress}

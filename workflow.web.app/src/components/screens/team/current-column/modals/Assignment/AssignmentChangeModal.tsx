@@ -19,7 +19,7 @@ const AssignmentChangeModal: FC<AssignmentChangeModalProps> = ({dialog, objectiv
     const [searchText, setSearchText] = useState('');
 
     const filteredUsers = agencyUsers?.filter(user =>
-        user.email.toLowerCase().startsWith(searchText.toLowerCase())
+        user.name.toLowerCase().startsWith(searchText.toLowerCase())
     );
 
     const handleClose = () => {

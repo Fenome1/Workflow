@@ -42,6 +42,8 @@ const CreateObjectiveCard: FC<CreateObjectiveCardProps> = ({columnId, dialog}) =
     return (
         <div className='create-objective-card'>
             <Input variant='borderless'
+                   style={{fontSize: '12pt'}}
+                   maxLength={500}
                    autoFocus
                    value={title}
                    onKeyDown={handleKeyPress}

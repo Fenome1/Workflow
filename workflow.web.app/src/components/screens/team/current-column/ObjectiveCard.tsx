@@ -69,15 +69,14 @@ const ObjectiveCard: FC<IObjectiveCardProps> = ({objective}) => {
         <Draggable draggableId={objective.objectiveId.toString()} index={objective.order}>
             {(provided) => (
                 <div className={`objective-card ${isDeadlineExpired ? 'overdo' : ''}`}
-                     style={{
-                         opacity: objective.status ? (hovered ? 1 : 0.7) : 1,
-                     }}
                      onMouseEnter={() => setHovered(true)}
                      onMouseLeave={() => setHovered(false)}
                      ref={provided.innerRef}
                      {...provided.draggableProps}
                      {...provided.dragHandleProps}>
-                    <div className='objective-card-container'>
+                    <div className='objective-card-container' style={{
+                        opacity: objective.status ? (hovered ? 1 : 0.7) : 1,
+                    }}>
                         <div className='objective-card-container-head'>
                             <div className='objective-card-status-icon'
                                  style={{color: objective.status ? "forestgreen" : 'gray'}} onClick={updateStatus}>
@@ -89,6 +88,7 @@ const ObjectiveCard: FC<IObjectiveCardProps> = ({objective}) => {
                                         className='objective-card-name'
                                         placeholder='Имя'
                                         type="text"
+                                        maxLength={500}
                                         value={editedName}
                                         onChange={(event) => setEditedName(event.target.value)}
                                         onBlur={updateTitle}

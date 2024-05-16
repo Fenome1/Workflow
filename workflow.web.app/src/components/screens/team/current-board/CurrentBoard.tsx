@@ -7,7 +7,7 @@ import {useNavigate} from "react-router-dom";
 import CreateColumnButton from "./create-column/CreateColumnButton.tsx";
 import {LeftOutlined} from "@ant-design/icons";
 import {AppColors} from "../../../../common/Colors.ts";
-import {DragDropContext, Droppable, OnDragEndResponder} from "react-beautiful-dnd";
+import {DragDropContext, Droppable, OnDragEndResponder, OnDragStartResponder} from "react-beautiful-dnd";
 import {useState} from "react";
 import {ISwapColumnCommand} from "../../../../features/commands/column/ISwapColumnCommand.ts";
 import {ISwapObjectiveCommand} from "../../../../features/commands/objective/ISwapObjectiveCommand.ts";
@@ -55,9 +55,13 @@ const CurrentBoard = () => {
         setIsAnyDragging(false);
     };
 
+    const handleDragStart: OnDragStartResponder = async () => {
+        setIsAnyDragging(true)
+    }
+
     return (
         <Spin spinning={isLoading}>
-            <DragDropContext onDragEnd={handleDragEnd} onDragStart={() => setIsAnyDragging(true)}>
+            <DragDropContext onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
                 <div className='board-column-container' style={{background: AppColors.Primary}}>
                     <div className='board-column-header-container'>
                         <Button icon={<LeftOutlined/>} size='large' shape='round' className='board-column-button'

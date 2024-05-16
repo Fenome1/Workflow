@@ -4,7 +4,7 @@ import {IUser} from "../../../../../../features/models/IUser.ts";
 import {DeleteOutlined, EditOutlined, ProductFilled, ProductOutlined} from "@ant-design/icons";
 import {useDialog} from "../../../../../../hok/useDialog.ts";
 import DeleteAgencyModal from "./modals/modals/DeleteAgencyModal.tsx";
-import UpdateAgencyModal from "./modals/UpdateAgencyModal.tsx";
+import UpdateAgencyModal from "./modals/modals/UpdateAgencyModal.tsx";
 import SettingsAgencyModal from "./modals/SettingsAgencyModal.tsx";
 import LeaveButton from "./LeaveButton.tsx";
 

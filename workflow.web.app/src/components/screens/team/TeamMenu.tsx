@@ -41,7 +41,6 @@ const TeamMenu: FC<TeamMenuProps> = ({selectedAgencyId, selectedProjectId, curre
     useEffect(() => {
         if (selectedMenuItem !== TeamMenuItem.Projects)
             return
-
         setSelectedProjectAsync()
     }, [projects]);
 
