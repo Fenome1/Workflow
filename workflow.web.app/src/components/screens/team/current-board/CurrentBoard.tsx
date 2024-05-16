@@ -25,15 +25,11 @@ const CurrentBoard = () => {
         {skip: selectedBoardId === null});
 
     const handleDragEnd: OnDragEndResponder = async (result) => {
-        console.log(result);
-
         const command: ISwapColumnCommand = {
             columnId: Number(result.draggableId),
             targetOrder: result.destination?.index,
         }
-
         await swapColumn(command)
-
         setIsAnyDragging(false);
     }
 

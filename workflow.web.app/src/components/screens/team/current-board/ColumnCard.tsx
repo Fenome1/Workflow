@@ -56,10 +56,10 @@ const ColumnCard: FC<IColumnCardProps> = ({column}) => {
     return (
         <Draggable draggableId={column.columnId.toString()} index={column.order}>
             {(provided) => (
-                <div className='column-card' {...provided.draggableProps}
-                     {...provided.dragHandleProps}
-                     ref={provided.innerRef} onDrag={() => console.log('драгается')}>
-                    <div className='column-card-header'>
+                <div className='column-card' ref={provided.innerRef} {...provided.draggableProps}>
+                    <div className='column-card-header'
+                         {...provided.dragHandleProps}
+                        >
                         <div className='column-card-header-title'>
                             {editingDialog.open ? (
                                 <Input
