@@ -1,12 +1,12 @@
 import {FC, useState} from 'react';
-import {Avatar, Popconfirm, Spin, Table, TableColumnsType, Tag} from 'antd';
+import {Avatar, Button, Popconfirm, Spin, Table, TableColumnsType, Tag} from 'antd';
 import {IObjective} from '../../../../features/models/IObjective.ts';
 import AvatarItem from "../../../ui/AvatarItem.tsx";
 import {IUser} from "../../../../features/models/IUser.ts";
 import {formatDateTime} from "../../../../hok/formatDateTime.ts";
 import {useGetPriorityQuery} from "../../../../store/apis/priority/priorityApi.ts";
-import {CheckCircleOutlined} from "@ant-design/icons";
-import {useUpdateObjectiveMutation} from "../../../../store/apis/objective/objectiveApi.ts";
+import {CheckCircleOutlined, DeleteOutlined} from "@ant-design/icons";
+import {useDeleteObjectiveMutation, useUpdateObjectiveMutation} from "../../../../store/apis/objective/objectiveApi.ts";
 import {IUpdateObjectiveCommand} from "../../../../features/commands/objective/IUpdateObjectiveCommand.ts";
 import {FaChevronDown, FaChevronUp} from "react-icons/fa";
 import {selectDeadlineColor} from "../current-column/stickers/deadline/DeadlineStickerContent.tsx";
@@ -21,6 +21,7 @@ const OpenObjectives: FC<OpenObjectivesProps> = ({objectives, loading}) => {
     const [updateObjective] = useUpdateObjectiveMutation();
     const {data: priorities, isLoading: priorityLoading} = useGetPriorityQuery()
     const [tableVisible, setTableVisible] = useState<boolean>(true);
+    const [deleteObjective] = useDeleteObjectiveMutation()
 
     const updateStatus = async (objective: IObjective) => {
 
@@ -33,13 +34,17 @@ const OpenObjectives: FC<OpenObjectivesProps> = ({objectives, loading}) => {
         await updateObjective(updateStatusCommand)
     }
 
+    const handleDelete = async (objectiveId: number) => {
+        await deleteObjective(objectiveId)
+    }
+
     const columns: TableColumnsType<IObjective> = [
         {
             title: 'Название задачи',
             dataIndex: 'name',
             key: 'name',
             align: 'left',
-            width: 650,
+            width: 500,
             render: (_, objective) => (
                 <div className='objective-name-column'>
                     <Popconfirm
@@ -61,7 +66,7 @@ const OpenObjectives: FC<OpenObjectivesProps> = ({objectives, loading}) => {
             dataIndex: 'users',
             key: 'users',
             align: 'center',
-            width: 1,
+            width: "0",
             sorter: (a, b) => {
                 return (a.users?.length ?? 0) - (b.users?.length ?? 0);
             },
@@ -150,6 +155,23 @@ const OpenObjectives: FC<OpenObjectivesProps> = ({objectives, loading}) => {
                 )
             }
         },
+        {
+            title: 'Удалить',
+            dataIndex: 'delete',
+            key: 'delete',
+            align: 'center',
+            width: '0',
+            render: (_, value) => {
+                return (
+                    <>
+                        <Popconfirm title="Вы точно хотите удалить задачу?"
+                                    onConfirm={() => handleDelete(value.objectiveId)}>
+                            <Button danger type='link' icon={<DeleteOutlined/>}/>
+                        </Popconfirm>
+                    </>
+                )
+            }
+        }
     ];
 
     return (

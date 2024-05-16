@@ -4,7 +4,7 @@ services:
 
   mssql:
     image: mcr.microsoft.com/mssql/server:latest
-    container_name: MSSQL
+    container_name: SqlServer
     environment:
       SA_PASSWORD: P@ssw0rd
       ACCEPT_EULA: Y
@@ -16,6 +16,42 @@ services:
       - sql_data:/var/opt/sqlserver/sql_data
       - sql_log:/var/opt/sqlserver/sql_log
       - sql_backup:/var/opt/sqlserver/sql_backups
+    #logging:
+      #driver: none
+  
+  order.api:
+    container_name: Order.Api
+    image: order.api
+    build:
+      network: host
+      context: ./order.api
+      dockerfile: Order.Api/Dockerfile
+    depends_on:
+      - mssql
+    ports:
+      - "5050:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
+    volumes:
+      - ~/.aspnet/https:/https:ro
+    restart: unless-stopped
+    #logging:
+      #driver: none
+  
+  nginx:
+    container_name: Order.WebApp
+    image: react
+    build:
+      network: host
+      context: ./order.web.app
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - order.api
+    stdin_open: true
+    restart: unless-stopped
     #logging:
       #driver: none
 
