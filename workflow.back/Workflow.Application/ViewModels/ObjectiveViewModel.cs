@@ -17,7 +17,7 @@ public record ObjectiveViewModel : IMapWith<Objective>
 
     public DateTime CreationDate { get; set; }
 
-    public DateOnly? Deadline { get; set; }
+    public DateTime? Deadline { get; set; }
 
     public PriorityViewModel? Priority { get; set; }
 

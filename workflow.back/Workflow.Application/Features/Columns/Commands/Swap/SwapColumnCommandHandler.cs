@@ -32,19 +32,15 @@ public class SwapColumnCommandHandler(WorkflowDbContext context) : IRequestHandl
                 return Unit.Value;
 
             if (targetIndex < originalIndex)
-            {
                 foreach (var col in columns.Where(
-                             col => col.Order >= targetIndex && 
+                             col => col.Order >= targetIndex &&
                                     col.Order < originalIndex))
                     col.Order++;
-            }
             else
-            {
                 foreach (var col in columns.Where(
-                             col => col.Order > originalIndex && 
+                             col => col.Order > originalIndex &&
                                     col.Order <= targetIndex))
                     col.Order--;
-            }
 
             column.Order = targetIndex;
 

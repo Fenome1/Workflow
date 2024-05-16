@@ -12,7 +12,7 @@ public class Objective
 
     public DateTime CreationDate { get; set; }
 
-    public DateOnly? Deadline { get; set; }
+    public DateTime? Deadline { get; set; }
 
     public int? PriorityId { get; set; }
 

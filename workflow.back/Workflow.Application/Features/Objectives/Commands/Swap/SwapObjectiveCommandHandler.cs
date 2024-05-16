@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Workflow.Application.Common.Exceptions;
 using Workflow.Core.Models;
@@ -26,9 +25,9 @@ public class SwapObjectiveCommandHandler(
 
         if (destinationColumn == null)
             throw new NotFoundException(nameof(Column), request.ColumnId);
-        
+
         var sourceObjectives = await context.Objectives
-            .Where(o => o.ColumnId == sourceColumn.ColumnId && 
+            .Where(o => o.ColumnId == sourceColumn.ColumnId &&
                         o.ObjectiveId != objective.ObjectiveId)
             .OrderBy(o => o.Order)
             .ToListAsync(cancellationToken);
@@ -43,14 +42,11 @@ public class SwapObjectiveCommandHandler(
             if (sourceColumn.ColumnId != destinationColumn.ColumnId)
             {
                 objective.ColumnId = request.ColumnId;
-                
-                for (int i = 0; i < sourceObjectives.Count; i++)
+
+                for (var i = 0; i < sourceObjectives.Count; i++)
                     sourceObjectives[i].Order = i;
 
-                foreach (var obj in destinationObjectives.Where(o => o.Order >= request.TargetOrder))
-                {
-                    obj.Order++;
-                }
+                foreach (var obj in destinationObjectives.Where(o => o.Order >= request.TargetOrder)) obj.Order++;
 
                 objective.Order = request.TargetOrder;
             }
@@ -63,19 +59,15 @@ public class SwapObjectiveCommandHandler(
                     return Unit.Value;
 
                 if (targetIndex < originalIndex)
-                {
                     foreach (var obj in destinationObjectives.Where(
-                                 obj => obj.Order >= targetIndex && 
+                                 obj => obj.Order >= targetIndex &&
                                         obj.Order < originalIndex))
                         obj.Order++;
-                }
                 else
-                {
                     foreach (var obj in destinationObjectives.Where(
-                                 ojb => ojb.Order > originalIndex && 
+                                 ojb => ojb.Order > originalIndex &&
                                         ojb.Order <= targetIndex))
                         obj.Order--;
-                }
 
                 objective.Order = targetIndex;
             }
