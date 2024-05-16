@@ -14,29 +14,35 @@ const CreateObjectiveCard: FC<CreateObjectiveCardProps> = ({columnId, dialog}) =
     const [createObjective] = useCreateObjectiveMutation()
     const [title, setTitle] = useState('');
 
+    const handleCreateColumn = async () => {
+        if (!title.trim()) return;
+
+        const createObjectiveCommand: ICreateObjectiveCommand = {
+            columnId: columnId,
+            name: title.trim()
+        }
+
+        await createObjective(createObjectiveCommand);
+
+        setTitle('');
+        dialog.close()
+    };
+
     const handleKeyPress = async (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
-
-            const createObjectiveCommand: ICreateObjectiveCommand = {
-                columnId: columnId,
-                name: title
-            }
-
-            await createObjective(createObjectiveCommand);
-
+            await handleCreateColumn();
+        } else if (e.key === 'Escape') {
             setTitle('');
-            dialog.close()
-            return
-        }
-        if (e.key === 'Escape') {
-            dialog.close()
-            return;
+            dialog.close();
         }
     };
 
-    const handleBlur = () => {
-        dialog.close();
-        setTitle('');
+    const handleBlur = async () => {
+        if (title.trim()) {
+            await handleCreateColumn();
+        } else {
+            dialog.close();
+        }
     };
 
     return (

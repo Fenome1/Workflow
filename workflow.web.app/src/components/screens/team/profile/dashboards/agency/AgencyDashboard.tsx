@@ -1,4 +1,4 @@
-import {FC} from "react";
+import {FC, useEffect, useState} from "react";
 import {useGetAgencyByUserQuery} from "../../../../../../store/apis/agency/agencyApi.ts";
 import {IUser} from "../../../../../../features/models/IUser.ts";
 import AgencyItem from "./AgencyItem.tsx";
@@ -17,6 +17,17 @@ const AgencyDashboard: FC<AgencyDashboardProfile> = ({currentUser}) => {
 
     const createAgencyDialog = useDialog()
 
+    const [isAgencyLast, setIsAgencyLast] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (!agencies)
+            return
+
+        setIsAgencyLast(
+            agencies?.filter((a) => a.ownerId === currentUser?.userId).length <= 1
+        );
+    }, [agencies, currentUser]);
+
     return (
         <div className="agencies-dashboard-container">
             <div className='dashboard-header'>
@@ -26,7 +37,10 @@ const AgencyDashboard: FC<AgencyDashboardProfile> = ({currentUser}) => {
                 {isLoading ? (<Skeleton active paragraph={{rows: 1}} round style={{padding: '10px'}}/>)
                     :
                     agencies && agencies.length > 0 && agencies.map((agency) =>
-                        <AgencyItem key={agency.agencyId} agency={agency} currentUser={currentUser}/>)
+                        <AgencyItem key={agency.agencyId}
+                                    agency={agency}
+                                    currentUser={currentUser}
+                                    isAgencyLast={isAgencyLast}/>)
                 }
             </div>
             {isLoading ? (<Skeleton.Button active shape={'round'} className='agency-create-button'/>)

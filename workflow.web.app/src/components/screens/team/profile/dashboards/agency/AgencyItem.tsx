@@ -7,19 +7,29 @@ import DeleteAgencyModal from "./modals/modals/DeleteAgencyModal.tsx";
 import UpdateAgencyModal from "./modals/modals/UpdateAgencyModal.tsx";
 import SettingsAgencyModal from "./modals/SettingsAgencyModal.tsx";
 import LeaveButton from "./LeaveButton.tsx";
+import {message} from "antd";
 
 interface AgencyItemProps {
     agency: IAgency
     currentUser: IUser | null
+    isAgencyLast: boolean
 }
 
-const AgencyItem: FC<AgencyItemProps> = ({agency, currentUser}) => {
+const AgencyItem: FC<AgencyItemProps> = ({agency, currentUser, isAgencyLast}) => {
 
     const isOwnedAgency = currentUser?.userId === agency.ownerId;
 
     const deleteAgencyDialog = useDialog()
     const updateAgencyDialog = useDialog()
     const settingAgencyDialog = useDialog()
+
+    const handleDelete = () => {
+        if (isAgencyLast) {
+            message.error("Не возможно удалить последнее агенство!")
+            return
+        }
+        deleteAgencyDialog.show()
+    }
 
     return (
         <>
@@ -37,11 +47,12 @@ const AgencyItem: FC<AgencyItemProps> = ({agency, currentUser}) => {
                                 e.stopPropagation()
                                 updateAgencyDialog.show()
                             }}/>
-                            <DeleteOutlined className='agency-dashboard-button-delete' onClick={(e) => {
-                                e.preventDefault()
-                                e.stopPropagation()
-                                deleteAgencyDialog.show()
-                            }}/>
+                            <DeleteOutlined className='agency-dashboard-button-delete'
+                                            onClick={(e) => {
+                                                e.preventDefault()
+                                                e.stopPropagation()
+                                                handleDelete()
+                                            }}/>
                         </> :
                         <>
                             <LeaveButton agency={agency} currentUser={currentUser}/>
