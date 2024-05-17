@@ -66,7 +66,10 @@ const ObjectiveCard: FC<IObjectiveCardProps> = ({objective}) => {
     };
 
     return (
-        <Draggable draggableId={objective.objectiveId.toString()} index={objective.order}>
+        <Draggable
+            draggableId={`${objective.columnId.toString()}-${objective.objectiveId.toString()}`}
+            index={objective.order}
+        >
             {(provided) => (
                 <div className={`objective-card ${isDeadlineExpired ? 'overdo' : ''}`}
                      onMouseEnter={() => setHovered(true)}

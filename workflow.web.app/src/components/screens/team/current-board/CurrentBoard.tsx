@@ -35,7 +35,7 @@ const CurrentBoard = () => {
             case 'column':
                 command = {
                     columnId: Number(result.destination?.droppableId),
-                    objectiveId: Number(result.draggableId),
+                    objectiveId: Number(result.draggableId.toString().split('-')[1]),
                     targetOrder: result.destination?.index,
                 };
                 await swapObjective(command)
