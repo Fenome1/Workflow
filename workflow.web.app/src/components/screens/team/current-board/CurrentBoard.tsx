@@ -8,10 +8,11 @@ import CreateColumnButton from "./create-column/CreateColumnButton.tsx";
 import {LeftOutlined} from "@ant-design/icons";
 import {AppColors} from "../../../../common/Colors.ts";
 import {DragDropContext, Droppable, OnDragEndResponder, OnDragStartResponder} from "react-beautiful-dnd";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {ISwapColumnCommand} from "../../../../features/commands/column/ISwapColumnCommand.ts";
 import {ISwapObjectiveCommand} from "../../../../features/commands/objective/ISwapObjectiveCommand.ts";
 import {useSwapObjectiveMutation} from "../../../../store/apis/objective/objectiveApi.ts";
+import {IColumn} from "../../../../features/models/IColumn.ts";
 
 
 const CurrentBoard = () => {
@@ -28,28 +29,24 @@ const CurrentBoard = () => {
     const {data: columns, isLoading} = useGetColumnsByBoardQuery(selectedBoardId || 0,
         {skip: selectedBoardId === null});
 
+    const [myColumns, setMyColumns] = useState<IColumn[]>([])
+
     const handleDragEnd: OnDragEndResponder = async (result) => {
         let command : ISwapColumnCommand | ISwapObjectiveCommand;
 
-        switch (result.type) {
-            case 'column':
-                command = {
-                    columnId: Number(result.destination?.droppableId),
-                    objectiveId: Number(result.draggableId.toString().split('-')[1]),
-                    targetOrder: result.destination?.index,
-                };
-                await swapObjective(command)
-                break;
-            case 'board':
-                command = {
-                    columnId: Number(result.draggableId),
-                    targetOrder: result.destination?.index,
-                };
-                await swapColumn(command)
-                break;
-            default:
-                console.error('Unknown type:', result.type);
-                break;
+        if (result.type === 'column') {
+            command = {
+                columnId: Number(result.destination?.droppableId),
+                objectiveId: Number(result.draggableId.toString().split('-')[1]),
+                targetOrder: result.destination?.index,
+            };
+            await swapObjective(command)
+        } else if (result.type === 'board') {
+            command = {
+                columnId: Number(result.draggableId),
+                targetOrder: result.destination?.index,
+            };
+            await swapColumn(command)
         }
 
         setIsAnyDragging(false);
@@ -58,6 +55,12 @@ const CurrentBoard = () => {
     const handleDragStart: OnDragStartResponder = async () => {
         setIsAnyDragging(true)
     }
+
+    useEffect(() => {
+        if (columns) {
+            setMyColumns(columns)
+        }
+    }, [columns])
 
     return (
         <Spin spinning={isLoading}>
@@ -75,7 +78,7 @@ const CurrentBoard = () => {
                                    type="board">
                             {provided => (
                                 <div ref={provided.innerRef} {...provided.droppableProps} className='board-columns'>
-                                    {columns && columns?.map((column) => (
+                                    {myColumns?.map((column) => (
                                         <ColumnCard key={column.columnId} column={column}/>
                                     ))}
                                     {!isAnyDragging &&
