@@ -1,19 +1,18 @@
-import {FC, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {useGetAgencyByUserQuery} from "../../../../../../store/apis/agency/agencyApi.ts";
-import {IUser} from "../../../../../../features/models/IUser.ts";
 import AgencyItem from "./AgencyItem.tsx";
 import {Button, Skeleton} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
 import {useDialog} from "../../../../../../hok/useDialog.ts";
 import CreateAgencyModal from "./modals/modals/CreateAgencyModal.tsx";
+import {useTypedSelector} from "../../../../../../store/hooks/hooks.ts";
 
-interface AgencyDashboardProfile {
-    currentUser: IUser | null
-}
+const AgencyDashboard = () => {
+    const { user} = useTypedSelector(state => state.user)
 
-const AgencyDashboard: FC<AgencyDashboardProfile> = ({currentUser}) => {
-
-    const {data: agencies, isLoading} = useGetAgencyByUserQuery(currentUser?.userId ?? 0, {skip: currentUser === null});
+    const {data: agencies, isLoading} = useGetAgencyByUserQuery(user?.userId ?? 0, {
+        skip: user === null
+    });
 
     const createAgencyDialog = useDialog()
 
@@ -24,9 +23,9 @@ const AgencyDashboard: FC<AgencyDashboardProfile> = ({currentUser}) => {
             return
 
         setIsAgencyLast(
-            agencies?.filter((a) => a.ownerId === currentUser?.userId).length <= 1
+            agencies?.filter((a) => a.ownerId === user?.userId).length <= 1
         );
-    }, [agencies, currentUser]);
+    }, [agencies, user]);
 
     return (
         <div className="agencies-dashboard-container">
@@ -39,7 +38,7 @@ const AgencyDashboard: FC<AgencyDashboardProfile> = ({currentUser}) => {
                     agencies && agencies.length > 0 && agencies.map((agency) =>
                         <AgencyItem key={agency.agencyId}
                                     agency={agency}
-                                    currentUser={currentUser}
+                                    currentUser={user}
                                     isAgencyLast={isAgencyLast}/>)
                 }
             </div>
@@ -49,7 +48,7 @@ const AgencyDashboard: FC<AgencyDashboardProfile> = ({currentUser}) => {
                           className='agency-create-button'
                           onClick={createAgencyDialog.show}>Создать агентство</Button>
             }
-            <CreateAgencyModal dialog={createAgencyDialog} userId={currentUser?.userId}/>
+            <CreateAgencyModal dialog={createAgencyDialog} userId={user?.userId}/>
         </div>
     );
 };

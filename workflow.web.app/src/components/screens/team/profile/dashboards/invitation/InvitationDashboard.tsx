@@ -1,18 +1,17 @@
 import InvitationItem from "./InvitationItem.tsx";
-import {FC} from "react";
 import {useGetUserInvitationsQuery} from "../../../../../../store/apis/invitation/invitationApi.ts";
 import {Empty, Skeleton} from "antd";
+import {useTypedSelector} from "../../../../../../store/hooks/hooks.ts";
 
-interface InvitationDashBoardProps {
-    currentUserId?: number
-}
-
-const InvitationDashboard: FC<InvitationDashBoardProps> = ({currentUserId}) => {
+const InvitationDashboard = () => {
+    const { user } = useTypedSelector(state => state.user)
 
     const {
         data: userInvitations,
         isLoading
-    } = useGetUserInvitationsQuery(currentUserId ?? 0, {skip: currentUserId === undefined})
+    } = useGetUserInvitationsQuery(user?.userId ?? 0, {
+        skip: user === null
+    })
 
     return (
         <div className="invitation-dashboard-container">

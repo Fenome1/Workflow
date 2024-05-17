@@ -1,10 +1,9 @@
-import {BASE_HUB_URL} from "../../config.ts";
 import {AppDispatch, RootState} from "./store.ts";
 import {HttpTransportType, HubConnectionBuilder, LogLevel, signalMiddleware, withCallbacks} from "redux-signalr";
 
 export const connection = new HubConnectionBuilder()
     .configureLogging(LogLevel.Debug)
-    .withUrl(`${BASE_HUB_URL}/testHub`, {
+    .withUrl(`${import.meta.env.VITE_API_URL}/testHub`, {
         skipNegotiation: true,
         transport: HttpTransportType.WebSockets,
     })

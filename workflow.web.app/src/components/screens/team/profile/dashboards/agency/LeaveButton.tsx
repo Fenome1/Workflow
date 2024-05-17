@@ -30,8 +30,8 @@ const LeaveButton: FC<LeaveButtonProps> = ({agency, currentUser}) => {
         }
 
         if (selectedAgencyId === agency.agencyId) {
-            await dispatch(selectAgency(null))
-            await dispatch(selectProject(null))
+            await dispatch(selectAgency(undefined))
+            await dispatch(selectProject(undefined))
         }
 
         await fireUserFormAgency(command)

@@ -1,7 +1,6 @@
 import {RootState} from "./store";
 import {Mutex} from "async-mutex";
 import {BaseQueryFn, FetchArgs, fetchBaseQuery, FetchBaseQueryError} from "@reduxjs/toolkit/query";
-import {BASE_API_URL} from "../../config.ts";
 import {IRefreshUserCommand} from "../features/commands/user/IRefreshUserCommand.ts";
 import {authApi} from "./apis";
 
@@ -20,7 +19,7 @@ export enum ApiTags {
 }
 
 export const baseQuery = fetchBaseQuery({
-    baseUrl: BASE_API_URL,
+    baseUrl: `${import.meta.env.VITE_API_URL}/api`,
     headers: {
         "Accept": "application/json",
         "Content-Type": "application/json",
