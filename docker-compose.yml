@@ -36,8 +36,8 @@ services:
     volumes:
       - ~/.aspnet/https:/https:ro
     restart: unless-stopped
-    logging:
-      driver: none
+    #logging:
+      #driver: none
   
   nginx:
     container_name: Workflow.WebApp
