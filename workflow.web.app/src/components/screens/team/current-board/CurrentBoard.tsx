@@ -8,12 +8,10 @@ import CreateColumnButton from "./create-column/CreateColumnButton.tsx";
 import {LeftOutlined} from "@ant-design/icons";
 import {AppColors} from "../../../../common/Colors.ts";
 import {DragDropContext, Droppable, OnDragEndResponder, OnDragStartResponder} from "react-beautiful-dnd";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {ISwapColumnCommand} from "../../../../features/commands/column/ISwapColumnCommand.ts";
 import {ISwapObjectiveCommand} from "../../../../features/commands/objective/ISwapObjectiveCommand.ts";
 import {useSwapObjectiveMutation} from "../../../../store/apis/objective/objectiveApi.ts";
-import {IColumn} from "../../../../features/models/IColumn.ts";
-
 
 const CurrentBoard = () => {
     const navigate = useNavigate();
@@ -28,8 +26,6 @@ const CurrentBoard = () => {
 
     const {data: columns, isLoading} = useGetColumnsByBoardQuery(selectedBoardId || 0,
         {skip: selectedBoardId === null});
-
-    const [myColumns, setMyColumns] = useState<IColumn[]>([])
 
     const handleDragEnd: OnDragEndResponder = async (result) => {
         let command : ISwapColumnCommand | ISwapObjectiveCommand;
@@ -56,12 +52,6 @@ const CurrentBoard = () => {
         setIsAnyDragging(true)
     }
 
-    useEffect(() => {
-        if (columns) {
-            setMyColumns(columns)
-        }
-    }, [columns])
-
     return (
         <Spin spinning={isLoading}>
             <DragDropContext onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
@@ -78,7 +68,7 @@ const CurrentBoard = () => {
                                    type="board">
                             {provided => (
                                 <div ref={provided.innerRef} {...provided.droppableProps} className='board-columns'>
-                                    {myColumns?.map((column) => (
+                                    {columns && columns?.map((column) => (
                                         <ColumnCard key={column.columnId} column={column}/>
                                     ))}
                                     {!isAnyDragging &&
