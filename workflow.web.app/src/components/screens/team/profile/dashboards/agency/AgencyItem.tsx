@@ -25,7 +25,7 @@ const AgencyItem: FC<AgencyItemProps> = ({agency, currentUser, isAgencyLast}) =>
 
     const handleDelete = () => {
         if (isAgencyLast) {
-            message.error("Не возможно удалить последнее агенство!")
+            message.error("Не возможно удалить последнее агенство")
             return
         }
         deleteAgencyDialog.show()

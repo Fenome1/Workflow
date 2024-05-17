@@ -1,6 +1,6 @@
 import {FC, useState} from 'react';
 import {IProject} from "../../../../../../../../features/models/IProject.ts";
-import {Button, Input, Popconfirm} from 'antd';
+import {Button, Input, message, Popconfirm} from 'antd';
 import {DeleteOutlined, EditOutlined, FolderOutlined} from '@ant-design/icons';
 import {
     useDeleteProjectMutation,
@@ -11,9 +11,10 @@ import {IUpdateProjectCommand} from "../../../../../../../../features/commands/p
 
 interface ProjectItemProps {
     project: IProject
+    isLastProject: boolean
 }
 
-const ProjectItem: FC<ProjectItemProps> = ({project}) => {
+const ProjectItem: FC<ProjectItemProps> = ({project, isLastProject}) => {
     const editingDialog = useDialog()
 
     const [editedName, setEditedName] = useState(project.name);
@@ -39,6 +40,10 @@ const ProjectItem: FC<ProjectItemProps> = ({project}) => {
     const handleEditClick = () => editingDialog.show();
 
     const handleDeleteConfirm = async () => {
+        if(isLastProject){
+            message.error("Не возможно удалить последний проект")
+            return
+        }
         await deleteProject(project.projectId)
     }
 

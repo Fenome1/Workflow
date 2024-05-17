@@ -1,19 +1,19 @@
 import "../style.scss";
 import {useNavigate} from "react-router-dom";
-import {useCallback} from "react";
-import {connection} from "../../../../store/signalRClient.ts";
 import {Button, Form, Input, Spin} from "antd";
 import {Card} from "react-bootstrap";
 import {LockOutlined, UserOutlined} from "@ant-design/icons";
 import {ILoginUserCommand} from "../../../../features/commands/user/ILoginUserCommand.ts";
 import {useLoginMutation} from "../../../../store/apis";
+import useAuth from "../../../../hok/useAuth.ts";
 
 const LoginForm = () => {
     const navigate = useNavigate();
-    const toRegisterPage = () => navigate("/reg");
-    const toTeamPage = () => navigate("/team");
+    const navigateToRegisterPage = () => navigate("/reg");
 
     const [login, {isLoading}] = useLoginMutation();
+    const { startConnection, navigateToTeamPage } = useAuth();
+
     const [form] = Form.useForm();
 
     const onFinish = async (values: ILoginUserCommand) => {
@@ -22,19 +22,12 @@ const LoginForm = () => {
             if ("data" in result && result.data) {
                 form.resetFields();
                 startConnection();
-                toTeamPage();
+                navigateToTeamPage();
             }
         } catch (error) {
             console.error(error);
         }
     };
-
-    const startConnection = useCallback(() => {
-        connection
-            .start()
-            .then(() => console.log("Connection started"))
-            .catch((err) => console.error(err.toString()));
-    }, []);
 
     return (
         <div>
@@ -76,7 +69,7 @@ const LoginForm = () => {
                                 Войти
                             </Button>
                             <Button
-                                onClick={toRegisterPage}
+                                onClick={navigateToRegisterPage}
                                 type="link"
                                 className="register-button"
                                 disabled={isLoading}>

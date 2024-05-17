@@ -8,7 +8,6 @@ import {useDialog} from "../../../../../../../../hok/useDialog.ts";
 import './style.scss'
 import ProjectCreate from "./ProjectCreate.tsx";
 
-
 interface ProjectsProps {
     agency: IAgency
 }
@@ -23,7 +22,7 @@ const Projects: FC<ProjectsProps> = ({agency}) => {
                 {isLoading ? (<Skeleton active paragraph={{rows: 1}} round style={{padding: '10px'}}/>)
                     :
                     projects && projects.length > 0 && projects.map((project) =>
-                        <ProjectItem key={project.projectId} project={project}/>)
+                        <ProjectItem key={project.projectId} project={project} isLastProject={projects?.length <= 1}/>)
                 }
                 {createProjectDialog.open && <ProjectCreate dialog={createProjectDialog} agencyId={agency.agencyId}/>}
             </div>
