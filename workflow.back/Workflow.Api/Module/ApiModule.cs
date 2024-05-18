@@ -2,6 +2,7 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Workflow.Application.Services.TokenService;
 using Workflow.Persistense.Context;
@@ -14,7 +15,8 @@ public class ApiModule(IConfiguration configuration) : Autofac.Module
     {
         var services = new ServiceCollection();
 
-        services.AddDbContext<WorkflowDbContext>();
+        services.AddDbContext<WorkflowDbContext>(options =>
+            options.UseSqlServer("Name=WorkflowDev"));
 
         services.AddSignalR();
 

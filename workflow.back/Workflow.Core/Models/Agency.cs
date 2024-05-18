@@ -12,6 +12,8 @@ public class Agency
 
     public virtual ICollection<Invitation> Invitations { get; set; } = new List<Invitation>();
 
+    public virtual ICollection<Link> Links { get; set; } = new List<Link>();
+
     public virtual User Owner { get; set; } = null!;
 
     public virtual ICollection<Project> Projects { get; set; } = new List<Project>();

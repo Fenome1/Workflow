@@ -24,6 +24,8 @@ public partial class WorkflowDbContext : DbContext
 
     public virtual DbSet<InvitationStatus> InvitationStatuses { get; set; }
 
+    public virtual DbSet<Link> Links { get; set; }
+
     public virtual DbSet<Objective> Objectives { get; set; }
 
     public virtual DbSet<Priority> Priorities { get; set; }
@@ -34,55 +36,6 @@ public partial class WorkflowDbContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-    public async Task WithTransactionAsync(Func<Task> action, CancellationToken cancellationToken = default)
-    {
-        if (Database.CurrentTransaction != null)
-        {
-            await action();
-        }
-        else
-        {
-            await using var transaction = await Database.BeginTransactionAsync(cancellationToken);
-            try
-            {
-                await action();
-                await transaction.CommitAsync(cancellationToken);
-            }
-            catch
-            {
-                await transaction.RollbackAsync(cancellationToken);
-                throw;
-            }
-        }
-    }
-
-    public async Task<T> WithTransactionAsync<T>(Func<Task<T>> action, CancellationToken cancellationToken = default)
-    {
-        if (Database.CurrentTransaction != null) return await action();
-
-        await using var transaction = await Database.BeginTransactionAsync(cancellationToken);
-
-        try
-        {
-            var result = await action();
-            await transaction.CommitAsync(cancellationToken);
-            return result;
-        }
-        catch
-        {
-            await transaction.RollbackAsync(cancellationToken);
-            throw;
-        }
-    }
-
-    
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https: //go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer(
-            "Server=host.docker.internal;Database=Workflow;User id=sa;Password=P@ssw0rd;trustservercertificate=true");
-    
-    /*deploy Server=mssql;Database=Workflow;User id=sa;Password=P@ssw0rd;trustservercertificate=true*/
-    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Agency>(entity =>
@@ -153,24 +106,49 @@ public partial class WorkflowDbContext : DbContext
         {
             entity.Property(e => e.InvitationStatusId).ValueGeneratedNever();
             entity.Property(e => e.Name).HasMaxLength(50);
-            
             entity.HasData([
-                new InvitationStatus()
+                new InvitationStatus
                 {
                     InvitationStatusId = 1,
-                    Name = "Ожидание",
+                    Name = "Ожидание"
                 },
-                new InvitationStatus()
+                new InvitationStatus
                 {
                     InvitationStatusId = 2,
-                    Name = "Принято",
+                    Name = "Принято"
                 },
-                new InvitationStatus()
+                new InvitationStatus
                 {
                     InvitationStatusId = 3,
-                    Name = "Отклонено",
-                },
+                    Name = "Отклонено"
+                }
             ]);
+        });
+
+        modelBuilder.Entity<Link>(entity =>
+        {
+            entity.Property(e => e.LinkId).ValueGeneratedNever();
+            entity.Property(e => e.CreationDate).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.Token).HasMaxLength(255);
+
+            entity.HasOne(d => d.Agency).WithMany(p => p.Links)
+                .HasForeignKey(d => d.AgencyId)
+                .HasConstraintName("FK_Links_Agencies");
+
+            entity.HasMany(d => d.Users).WithMany(p => p.Links)
+                .UsingEntity<Dictionary<string, object>>(
+                    "LinksUser",
+                    r => r.HasOne<User>().WithMany()
+                        .HasForeignKey("UserId")
+                        .HasConstraintName("FK_LinksUsers_Users"),
+                    l => l.HasOne<Link>().WithMany()
+                        .HasForeignKey("LinkId")
+                        .HasConstraintName("FK_LinksUsers_Links"),
+                    j =>
+                    {
+                        j.HasKey("LinkId", "UserId");
+                        j.ToTable("LinksUsers");
+                    });
         });
 
         modelBuilder.Entity<Objective>(entity =>
@@ -180,7 +158,6 @@ public partial class WorkflowDbContext : DbContext
             entity.Property(e => e.CreationDate)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
-            entity.Property(e => e.Deadline).HasColumnType("datetime");
             entity.Property(e => e.Name).HasMaxLength(500);
 
             entity.HasOne(d => d.Column).WithMany(p => p.Objectives)
@@ -216,21 +193,21 @@ public partial class WorkflowDbContext : DbContext
             entity.Property(e => e.Name).HasMaxLength(50);
 
             entity.HasData([
-                new Priority()
+                new Priority
                 {
                     PriorityId = 1,
-                    Name = "Низкий",
+                    Name = "Низкий"
                 },
-                new Priority()
+                new Priority
                 {
                     PriorityId = 2,
-                    Name = "Средний",
+                    Name = "Средний"
                 },
-                new Priority()
+                new Priority
                 {
                     PriorityId = 3,
-                    Name = "Высокий",
-                },
+                    Name = "Высокий"
+                }
             ]);
         });
 

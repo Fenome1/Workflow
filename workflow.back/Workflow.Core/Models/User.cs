@@ -20,5 +20,7 @@ public class User
 
     public virtual ICollection<Agency> Agencies { get; set; } = new List<Agency>();
 
+    public virtual ICollection<Link> Links { get; set; } = new List<Link>();
+
     public virtual ICollection<Objective> Objectives { get; set; } = new List<Objective>();
 }

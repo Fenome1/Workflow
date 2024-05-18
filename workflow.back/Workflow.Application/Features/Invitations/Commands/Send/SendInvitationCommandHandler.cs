@@ -1,9 +1,9 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Workflow.Application.Common.Enums;
 using Workflow.Application.Common.Exceptions;
 using Workflow.Core.Models;
+using Workflow.Persistense.Configurations;
 using Workflow.Persistense.Context;
 
 namespace Workflow.Application.Features.Invitations.Commands.Send;
@@ -51,7 +51,7 @@ public sealed class SendInvitationCommandHandler(
             var existingInvitations = await context.Invitations
                 .Where(i => i.UserId == user.UserId &&
                             i.AgencyId == request.AgencyId)
-                .ToListAsync(cancellationToken: cancellationToken);
+                .ToListAsync(cancellationToken);
 
             if (existingInvitations is not null && existingInvitations.Count > 0)
                 context.Invitations.RemoveRange(existingInvitations);

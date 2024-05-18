@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Workflow.Application.Common.Exceptions;
 using Workflow.Core.Models;
+using Workflow.Persistense.Configurations;
 using Workflow.Persistense.Context;
 
 namespace Workflow.Application.Features.Objectives.Commands.Create;
