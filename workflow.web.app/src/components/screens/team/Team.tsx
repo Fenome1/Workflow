@@ -9,7 +9,7 @@ import {AppColors} from "../../../common/Colors.ts";
 import React from "react";
 
 const Team = () => {
-    const { selectedMenuItem } = useTypedSelector(state => state.menu);
+    const {selectedMenuItem} = useTypedSelector(state => state.menu);
 
     const getRenderComponent = (): React.ReactNode => {
         switch (selectedMenuItem) {

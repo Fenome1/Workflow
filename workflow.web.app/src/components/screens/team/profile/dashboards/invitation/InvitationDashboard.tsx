@@ -4,7 +4,7 @@ import {Empty, Skeleton} from "antd";
 import {useTypedSelector} from "../../../../../../store/hooks/hooks.ts";
 
 const InvitationDashboard = () => {
-    const { user } = useTypedSelector(state => state.user)
+    const {user} = useTypedSelector(state => state.user)
 
     const {
         data: userInvitations,

@@ -40,7 +40,7 @@ const ProjectItem: FC<ProjectItemProps> = ({project, isLastProject}) => {
     const handleEditClick = () => editingDialog.show();
 
     const handleDeleteConfirm = async () => {
-        if(isLastProject){
+        if (isLastProject) {
             message.error("Не возможно удалить последний проект")
             return
         }

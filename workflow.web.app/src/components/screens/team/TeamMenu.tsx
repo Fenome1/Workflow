@@ -12,11 +12,12 @@ import AvatarItem from "../../ui/AvatarItem.tsx";
 import {AppColors} from "../../../common/Colors.ts";
 
 const TeamMenu = () => {
-    const { user } = useTypedSelector(state => state.user)
-    const { selectedAgencyId } = useTypedSelector((state) => state.agency);
-    const { selectedProjectId } = useTypedSelector((state) => state.project);
     const dispatch = useAppDispatch();
 
+    const {user} = useTypedSelector(state => state.user)
+    const {selectedAgencyId} = useTypedSelector((state) => state.agency);
+    const {selectedProjectId} = useTypedSelector((state) => state.project);
+    const {selectedMenuItem} = useTypedSelector((state) => state.menu);
     const [selectedKey, setSelectedKey] = useState<string>("projects");
 
     const {data: projects, isLoading} = useGetProjectsByAgencyQuery(selectedAgencyId || 0, {
@@ -46,10 +47,10 @@ const TeamMenu = () => {
             } else {
                 setSelectedKey(selectedProjectId?.toString() ?? 'null')
             }
-            await dispatch(selectMenuItem(TeamMenuItem.Projects))
         };
 
-        setSelectedProjectAsync()
+        if (selectedMenuItem === TeamMenuItem.Projects)
+            setSelectedProjectAsync()
     }, [projects]);
 
     return (
@@ -64,28 +65,24 @@ const TeamMenu = () => {
                     mode="inline"
                     defaultOpenKeys={['projects']}
                     theme='light'
-                    onSelect={onSelect}
-                >
+                    onSelect={onSelect}>
                     <Menu.Item
                         className='team-menu-profile'
                         key="profile"
-                        icon={<AvatarItem user={user}className='team-menu-profile-img'/>}
-                    >
+                        icon={<AvatarItem user={user} className='team-menu-profile-img'/>}>
                         <span>Мой профиль</span>
                     </Menu.Item>
                     <Menu.Item
                         key="objectives"
                         className='team-menu-objectives'
-                        icon={<SolutionOutlined className='menu-icon'/>}
-                    >
+                        icon={<SolutionOutlined className='menu-icon'/>}>
                         Мои задачи
                     </Menu.Item>
                     <Menu.SubMenu
                         key="projects"
                         className='team-menu-projects'
                         icon={<GlobalOutlined className='menu-icon'/>}
-                        title='Проекты'
-                    >
+                        title='Проекты'>
                         {projects && projects.length > 0 ? (
                             projects.map((project) => (
                                 <Menu.Item key={project.projectId}>

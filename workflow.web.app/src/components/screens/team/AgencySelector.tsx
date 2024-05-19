@@ -8,9 +8,10 @@ import {selectAgency} from "../../../store/slices/agencySlice.ts";
 import {useEffect} from "react";
 
 const AgencySelector = () => {
-    const { user } = useTypedSelector(state => state.user)
-    const { selectedAgencyId } = useTypedSelector((state) => state.agency);
     const dispatch = useAppDispatch();
+
+    const {user} = useTypedSelector(state => state.user)
+    const {selectedAgencyId} = useTypedSelector((state) => state.agency);
 
     const {data: agencies, isLoading} =
         useGetAgencyByUserQuery(user?.userId ?? 0, {

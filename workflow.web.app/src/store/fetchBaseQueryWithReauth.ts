@@ -15,7 +15,8 @@ export enum ApiTags {
     Column = "Column",
     Objective = 'Objective',
     Priority = 'Priority',
-    Invitation = "Invitation"
+    Invitation = "Invitation",
+    Link = "Link"
 }
 
 export const baseQuery = fetchBaseQuery({

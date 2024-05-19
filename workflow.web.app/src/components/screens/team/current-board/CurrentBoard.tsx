@@ -28,7 +28,7 @@ const CurrentBoard = () => {
         {skip: selectedBoardId === null});
 
     const handleDragEnd: OnDragEndResponder = async (result) => {
-        let command : ISwapColumnCommand | ISwapObjectiveCommand;
+        let command: ISwapColumnCommand | ISwapObjectiveCommand;
 
         if (result.type === 'column') {
             command = {

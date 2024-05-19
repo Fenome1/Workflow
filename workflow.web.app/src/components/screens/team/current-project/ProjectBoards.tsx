@@ -6,8 +6,8 @@ import CreateBoardButton from "./borad/CreateBoardButton.tsx";
 import {Spin} from "antd";
 import {useTypedSelector} from "../../../../store/hooks/hooks.ts";
 
-const ProjectBoards= () => {
-    const { selectedProjectId } = useTypedSelector((state) => state.project);
+const ProjectBoards = () => {
+    const {selectedProjectId} = useTypedSelector((state) => state.project);
 
     const {data: boards, isLoading} = useGetBoardsByProjectQuery(selectedProjectId || 0, {
         skip: selectedProjectId === undefined

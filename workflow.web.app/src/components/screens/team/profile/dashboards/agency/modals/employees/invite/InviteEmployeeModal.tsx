@@ -1,21 +1,13 @@
 import {IDialog} from "../../../../../../../../../features/models/IDialog.ts";
-import {Button, Form, FormProps, Input, Modal, Space, Table, TableColumnsType, Tabs, Tag} from "antd";
+import {Modal, Tabs,} from "antd";
 import {FC} from "react";
 import TabPane from "antd/es/tabs/TabPane";
-import {CloseOutlined, MailOutlined, UsergroupAddOutlined} from "@ant-design/icons";
-import {
-    ISendInvitationCommand
-} from "../../../../../../../../../features/commands/invitation/ISendInvitationCommand.ts";
-import {
-    useGetAgencyInvitationsQuery,
-    useRecallInvitationMutation,
-    useSendInvitationMutation
-} from "../../../../../../../../../store/apis/invitation/invitationApi.ts";
 import {IAgency} from "../../../../../../../../../features/models/IAgency.ts";
-import {IInvitation} from "../../../../../../../../../features/models/IInvitation.ts";
-import {InvitationStatus} from "../../../../../../../../../common/InvitationStatus.ts";
 import './style.scss'
-import {PiUsersFourLight} from "react-icons/pi";
+import AgencyInviteForm from "./AgencyInviteForm.tsx";
+import AgencyCreateLinkForm from "./AgencyCreateLinkForm.tsx";
+import InvitationsTable from "./InvitationsTable.tsx";
+
 
 interface InviteEmployeeModalProps {
     dialog: IDialog
@@ -23,69 +15,6 @@ interface InviteEmployeeModalProps {
 }
 
 const InviteEmployeeModal: FC<InviteEmployeeModalProps> = ({dialog, agency}) => {
-    const [form] = Form.useForm();
-    const [sendInvitation] = useSendInvitationMutation()
-    const [recallInvitation] = useRecallInvitationMutation()
-
-    const {data: invitedUsers} = useGetAgencyInvitationsQuery(agency?.agencyId ?? 0,
-        {skip: agency?.agencyId === undefined})
-
-    const onFinish: FormProps['onFinish'] = async (command: ISendInvitationCommand) => {
-        if (!agency) return;
-        command.agencyId = agency.agencyId;
-        await sendInvitation(command);
-        form.resetFields();
-    };
-
-    const columns: TableColumnsType<IInvitation> = [
-        {
-            title: 'Email',
-            dataIndex: 'user',
-            align: 'start',
-            key: 'user',
-            render: (_, value) => (
-                <div>{value.user?.email}</div>
-            )
-        },
-        {
-            title: 'Статус',
-            dataIndex: 'status',
-            align: 'center',
-            key: 'status',
-            filters: [
-                {text: 'Ожидание', value: InvitationStatus.Expectation},
-                {text: 'Принято', value: InvitationStatus.Accepted},
-                {text: 'Отклонено', value: InvitationStatus.Denied},
-            ],
-            defaultFilteredValue: [InvitationStatus.Expectation],
-            onFilter: (value, record) => record.invitationStatus.invitationStatusId === value,
-            render: (_, value) => (
-                <>
-                    <Tag color={
-                        value.invitationStatus.invitationStatusId === InvitationStatus.Accepted ? 'success' :
-                            value.invitationStatus.invitationStatusId === InvitationStatus.Denied ? 'error' : 'processing'}>
-                        {value.invitationStatus.name}
-                    </Tag>
-                </>
-            ),
-        },
-        {
-            title: 'Действие',
-            align: 'center',
-            key: 'recall',
-            render: (_, value) => (
-                <Space size="middle">
-                    {value.invitationStatus.invitationStatusId === InvitationStatus.Expectation &&
-                        <Button type="link" icon={<CloseOutlined/>}
-                                onClick={() => handleRecallInvitation(value.invitationId)}>Отменить</Button>}
-                </Space>
-            ),
-        },
-    ];
-
-    const handleRecallInvitation = async (invitationId: number) => {
-        await recallInvitation(invitationId)
-    };
 
     return (
         <Modal
@@ -98,27 +27,14 @@ const InviteEmployeeModal: FC<InviteEmployeeModalProps> = ({dialog, agency}) => 
             title='Приглашение'
             footer={null}>
             <Tabs defaultActiveKey="1">
-                <TabPane icon={<UsergroupAddOutlined/>} tab="Отправить приглашение" key="1">
-                    <Form
-                        className='agency-invite-form'
-                        form={form}
-                        name="inviteForm"
-                        layout="horizontal"
-                        onFinish={onFinish}>
-                        <Form.Item
-                            label="Email"
-                            name="email"
-                            rules={[{required: true, message: 'Пожалуйста, введите email!'}]}>
-                            <Input type='email' prefix={<MailOutlined/>} placeholder="Email сотрудника..."/>
-                        </Form.Item>
-                        <Form.Item>
-                            <Button className='agency-form-invite-button' type='primary'
-                                    htmlType="submit">Отправить</Button>
-                        </Form.Item>
-                    </Form>
+                <TabPane tab="По email" key="1">
+                    <AgencyInviteForm agency={agency}/>
                 </TabPane>
-                <TabPane icon={<PiUsersFourLight/>} tab="Приглашенные пользователи" key="2">
-                    <Table pagination={false} columns={columns} dataSource={invitedUsers}/>
+                <TabPane tab="По ссылке" key="2">
+                    <AgencyCreateLinkForm agency={agency}/>
+                </TabPane>
+                <TabPane tab="Отправленные" key="3">
+                    <InvitationsTable agency={agency}/>
                 </TabPane>
             </Tabs>
         </Modal>

@@ -23,6 +23,10 @@ public sealed class ApplicationModule : Module
             .As<ITokenService>()
             .AsSelf();
 
+        builder.RegisterType<LinkService>()
+            .As<ILinkService>()
+            .AsSelf();
+
         builder.RegisterMediatR(MediatRConfigurationBuilder
             .Create(ThisAssembly)
             .WithAllOpenGenericHandlerTypesRegistered()

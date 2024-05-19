@@ -8,7 +8,7 @@ import CreateAgencyModal from "./modals/modals/CreateAgencyModal.tsx";
 import {useTypedSelector} from "../../../../../../store/hooks/hooks.ts";
 
 const AgencyDashboard = () => {
-    const { user} = useTypedSelector(state => state.user)
+    const {user} = useTypedSelector(state => state.user)
 
     const {data: agencies, isLoading} = useGetAgencyByUserQuery(user?.userId ?? 0, {
         skip: user === null

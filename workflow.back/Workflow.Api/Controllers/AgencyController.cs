@@ -5,7 +5,9 @@ using Workflow.Api.Controllers.Base;
 using Workflow.Application.Features.Agencies.Commands.Create;
 using Workflow.Application.Features.Agencies.Commands.Delete;
 using Workflow.Application.Features.Agencies.Commands.FireUser;
+using Workflow.Application.Features.Agencies.Commands.Join;
 using Workflow.Application.Features.Agencies.Commands.Update;
+using Workflow.Application.Features.Agencies.Queries.ByToken;
 using Workflow.Application.Features.Agencies.Queries.ByUser;
 using Workflow.Application.ViewModels;
 
@@ -20,6 +22,20 @@ public class AgencyController : BaseController
         try
         {
             return Ok(await Mediator.Send(new ListAgenciesByUserQuery(userId)));
+        }
+        catch (Exception e)
+        {
+            return BadRequest($"{e.Message}");
+        }
+    }
+
+    [Authorize]
+    [HttpGet("Token/{token}")]
+    public async Task<ActionResult<List<AgencyViewModel>>> GetByToken(string token)
+    {
+        try
+        {
+            return Ok(await Mediator.Send(new GetAgencyByTokenQuery(token)));
         }
         catch (Exception e)
         {
@@ -69,8 +85,21 @@ public class AgencyController : BaseController
         }
     }
 
+    [HttpPut("Join")]
+    public async Task<ActionResult<Unit>> Join([FromBody] JoinToAgencyCommand command)
+    {
+        try
+        {
+            return Ok(await Mediator.Send(command));
+        }
+        catch (Exception e)
+        {
+            return BadRequest($"{e.Message}");
+        }
+    }
+
     [HttpDelete("Fire")]
-    public async Task<ActionResult<Unit>> Delete([FromBody] FireUserFromAgencyCommand command)
+    public async Task<ActionResult<Unit>> Fire([FromBody] FireUserFromAgencyCommand command)
     {
         try
         {

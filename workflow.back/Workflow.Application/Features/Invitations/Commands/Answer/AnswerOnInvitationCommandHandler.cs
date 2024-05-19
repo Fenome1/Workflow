@@ -26,7 +26,12 @@ public sealed class AnswerOnInvitationCommandHandler(WorkflowDbContext context)
                 throw new NotFoundException(nameof(Invitation), request.InvitationId);
 
             if (invitation.InvitationStatusId != (int)InvitationStatuses.Expectation)
+            {
+                context.Invitations.Remove(invitation);
+                await context.SaveChangesAsync(cancellationToken);
+
                 throw new Exception("Приглашение не действительно");
+            }
 
             switch (request.AnswerType)
             {

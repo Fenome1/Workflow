@@ -56,21 +56,8 @@
   }
 }
 
-.agency-settings-modal {
-  .ant-tabs-nav {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-  }
-
-  .ant-tabs-tab {
-    flex: 1;
-    text-align: center;
-  }
-
-  .ant-tabs-nav-list {
-    width: 100%;
-  }
+.ant-tabs-nav-list {
+  width: 100%;
 }
 
 

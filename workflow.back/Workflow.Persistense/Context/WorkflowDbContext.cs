@@ -127,28 +127,14 @@ public partial class WorkflowDbContext : DbContext
 
         modelBuilder.Entity<Link>(entity =>
         {
-            entity.Property(e => e.LinkId).ValueGeneratedNever();
+            entity.HasIndex(e => e.AgencyId, "IX_Links").IsUnique();
+
             entity.Property(e => e.CreationDate).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.Token).HasMaxLength(255);
 
-            entity.HasOne(d => d.Agency).WithMany(p => p.Links)
-                .HasForeignKey(d => d.AgencyId)
+            entity.HasOne(d => d.Agency).WithOne(p => p.Link)
+                .HasForeignKey<Link>(d => d.AgencyId)
                 .HasConstraintName("FK_Links_Agencies");
-
-            entity.HasMany(d => d.Users).WithMany(p => p.Links)
-                .UsingEntity<Dictionary<string, object>>(
-                    "LinksUser",
-                    r => r.HasOne<User>().WithMany()
-                        .HasForeignKey("UserId")
-                        .HasConstraintName("FK_LinksUsers_Users"),
-                    l => l.HasOne<Link>().WithMany()
-                        .HasForeignKey("LinkId")
-                        .HasConstraintName("FK_LinksUsers_Links"),
-                    j =>
-                    {
-                        j.HasKey("LinkId", "UserId");
-                        j.ToTable("LinksUsers");
-                    });
         });
 
         modelBuilder.Entity<Objective>(entity =>

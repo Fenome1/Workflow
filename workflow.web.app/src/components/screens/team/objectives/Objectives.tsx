@@ -6,12 +6,12 @@ import CloseObjectives from "./CloseObjectives.tsx";
 
 const Objectives = () => {
     const {selectedAgencyId} = useTypedSelector((state) => state.agency);
-    const { user } = useTypedSelector(state => state.user)
+    const {user} = useTypedSelector(state => state.user)
 
     const {data: objectives, isLoading} = useGetObjectivesByUserQuery({
-            userId: user?.userId ?? 0,
-            agencyId: selectedAgencyId
-        }, {
+        userId: user?.userId ?? 0,
+        agencyId: selectedAgencyId ?? 0
+    }, {
         skip: selectedAgencyId === null
     })
 

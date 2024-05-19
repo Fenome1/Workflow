@@ -12,7 +12,7 @@ import {useLogoutMutation} from "../../../../../../store/apis";
 import {useTypedSelector} from "../../../../../../store/hooks/hooks.ts";
 
 const ProfileDashboard = () => {
-    const { user, accessToken, refreshToken } = useTypedSelector(state => state.user)
+    const {user, accessToken, refreshToken} = useTypedSelector(state => state.user)
 
     const [userName, setUserName] = useState(user?.name);
 

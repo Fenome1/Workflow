@@ -4,6 +4,7 @@ import RegisterPage from "./components/screens/accounts/register/RegisterPage.ts
 import Team from "./components/screens/team/Team.tsx";
 import CurrentBoard from "./components/screens/team/current-board/CurrentBoard.tsx";
 import RequireAuth from "./hok/RequireAuth.tsx";
+import JoinAgency from "./components/screens/join/JoinAgency.tsx";
 
 export const router = createBrowserRouter(
     createRoutesFromElements([
@@ -18,6 +19,12 @@ export const router = createBrowserRouter(
             <Route path='current-board' element={<RequireAuth>
                 <CurrentBoard/>
             </RequireAuth>}/>
+
+            <Route path='join/:token' element={<RequireAuth>
+                <JoinAgency/>
+            </RequireAuth>}>
+            </Route>
+
 
             <Route path="*" element={<Navigate to="/team" replace={true}/>}/>
         </Route>
