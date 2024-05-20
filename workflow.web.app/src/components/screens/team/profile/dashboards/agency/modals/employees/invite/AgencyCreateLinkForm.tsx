@@ -4,6 +4,7 @@ import {FC, useEffect} from "react";
 import {useGetLinkByAgencyQuery, useRefreshLinkMutation} from "../../../../../../../../../store/apis/link/linkApi.ts";
 import SkeletonInput from "antd/es/skeleton/Input";
 import "./style.scss"
+import {BiRefresh} from "react-icons/bi";
 
 interface AgencyCreateLinkForm {
     agency?: IAgency
@@ -51,6 +52,8 @@ const AgencyCreateLinkForm: FC<AgencyCreateLinkForm> = ({agency}) => {
         return expiryDate.toLocaleDateString();
     };
 
+    const isLinkExpired = agencyLink?.expirationDate && new Date(agencyLink.expirationDate) < new Date();
+
     return (
         <Form
             className='create-link-form'
@@ -69,9 +72,21 @@ const AgencyCreateLinkForm: FC<AgencyCreateLinkForm> = ({agency}) => {
                                             onClick={handleCopy}>{agencyLink?.value}</Typography>
                                 <div className='agency-link-description'>
                                     {agencyLink?.expirationDate &&
-                                        <Typography.Text type="secondary">
-                                            Действительна до: {calculateExpiryDate(agencyLink.expirationDate)}
-                                        </Typography.Text>}
+                                        <div className='agency-work-link-date'>
+                                            <div className='agency-link-date-text'>
+                                                {!isLinkExpired ?
+                                                    <Typography.Text type="secondary">
+                                                        Действительна
+                                                        до: {calculateExpiryDate(agencyLink.expirationDate)}
+                                                    </Typography.Text> :
+                                                    <Typography.Text type="danger">Не действительна</Typography.Text>}
+                                            </div>
+                                            {isLinkExpired &&
+                                                <Button danger type='link' icon={<BiRefresh/>}
+                                                        onClick={handleRefresh}
+                                                        className='agency-link-date-button'>Заменить</Button>}
+                                        </div>
+                                    }
                                     {agencyLink && agencyLink?.usedCount > 0 &&
                                         <Typography.Text type="secondary">
                                             Использовано: {agencyLink.usedCount}

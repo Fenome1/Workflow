@@ -52,14 +52,25 @@ const JoinAgency: FC = () => {
                 centered
                 title="Присоединиться к агентству"
                 open={joinDialog.open}
-                onOk={handleJoin}
                 onCancel={handleCancel}
-                okText="Присоединиться"
-                cancelText="Отмена">
+                footer={null}>
                 {agency && (
-                    <Typography>
-                        Вы хотите присоединиться к агентству "{agency.name}" ?
-                    </Typography>
+                    <div className="join-agency-content">
+                        <img src="../public/thinking.svg" alt="thinking" className="join-agency-image"/>
+                        <Typography.Title level={4} className="join-agency-name">{agency.name}</Typography.Title>
+                        {agency.description &&
+                            <Typography.Text type="secondary" className="join-agency-description">
+                                {agency.description}
+                            </Typography.Text>}
+                        <Typography.Text className="join-agency-question">
+                            Вы хотите присоединиться к агентству "{agency.name}"?
+                        </Typography.Text>
+                        <div className="join-agency-buttons">
+                            <Button type="primary" onClick={handleJoin}
+                                    className="join-agency-button">Присоединиться</Button>
+                            <Button onClick={handleCancel} className="join-agency-button">Отмена</Button>
+                        </div>
+                    </div>
                 )}
             </Modal>
             {error && (

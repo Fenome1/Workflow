@@ -28,7 +28,6 @@
       background-color: whitesmoke;
     }
 
-
     .generated-link-text {
       white-space: nowrap;
       overflow: hidden;
@@ -44,6 +43,20 @@
       .agency-link-description {
         display: flex;
         flex-direction: column;
+        gap: 5px;
+
+        .agency-work-link-date {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+
+          .agency-link-date-text {
+          }
+
+          .agency-link-date-button {
+
+          }
+        }
       }
 
     }
