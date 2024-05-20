@@ -21,7 +21,12 @@ export const baseApi = createApi({
     endpoints: () => ({})
 })
 
-export const authApi = baseApi.injectEndpoints({
+export const authApi = createApi({
+    reducerPath: "authApi",
+    baseQuery: baseQuery,
+    refetchOnReconnect: true,
+    refetchOnFocus: true,
+    keepUnusedDataFor: 0,
     endpoints: (builder) => ({
         login: builder.mutation<ILoginUserResponse, ILoginUserCommand>({
             query: command => ({
