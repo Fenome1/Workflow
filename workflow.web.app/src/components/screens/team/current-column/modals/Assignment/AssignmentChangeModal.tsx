@@ -38,17 +38,18 @@ const AssignmentChangeModal: FC<AssignmentChangeModalProps> = ({dialog, objectiv
         setSearchText('')
     }
 
+    
     const handleDeleteAll = () => {
         agencyUsers?.forEach(async user => {
             const userExists = objective.users?.some(objectiveUser => objectiveUser.userId === user.userId);
 
             if (userExists) {
-                const updateAssinifyCommand: IAssignifyUserToObjectiveCommand = {
+                const updateAssignifyCommand: IAssignifyUserToObjectiveCommand = {
                     objectiveId: objective.objectiveId,
                     userId: user.userId,
                     assignifyType: AssignifyType.Unassign,
                 }
-                await updateAssignifyUserToObjective(updateAssinifyCommand)
+                await updateAssignifyUserToObjective(updateAssignifyCommand)
             }
         });
     }

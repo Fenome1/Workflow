@@ -2,7 +2,8 @@ import {IDialog} from "../../../../../../../../features/models/IDialog.ts";
 import React, {FC, useState} from "react";
 import {useCreateProjectMutation} from "../../../../../../../../store/apis/project/projectApi.ts";
 import {ICreateProjectCommand} from "../../../../../../../../features/commands/project/ICreateProjectCommand.ts";
-import {Input} from "antd";
+import {Input, message} from "antd";
+import {FolderOutlined} from "@ant-design/icons";
 
 interface ProjectCreateProps {
     dialog: IDialog
@@ -16,9 +17,14 @@ const ProjectCreate: FC<ProjectCreateProps> = ({dialog, agencyId}) => {
     const handleKeyPress = async (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
 
+            if (!name.trim()) {
+                message.error('Название проекта не может быть пустым');
+                return;
+            }
+
             const createObjectiveCommand: ICreateProjectCommand = {
                 agencyId: agencyId,
-                name: name
+                name: name.trim()
             }
 
             await createProject(createObjectiveCommand);
@@ -40,8 +46,10 @@ const ProjectCreate: FC<ProjectCreateProps> = ({dialog, agencyId}) => {
 
     return (
         <div className="project-item">
+            <FolderOutlined style={{fontSize: '13pt', marginRight: '10px'}}/>
             <Input variant='borderless'
                    autoFocus
+                   required
                    value={name}
                    className='project-name'
                    maxLength={25}
