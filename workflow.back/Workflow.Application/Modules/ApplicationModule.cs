@@ -13,7 +13,8 @@ public sealed class ApplicationModule : Module
 {
     protected override void Load(ContainerBuilder builder)
     {
-        builder.RegisterAutoMapper(config => { config.AddProfile(new AssemblyMappingProfile(ThisAssembly)); });
+        builder.RegisterAutoMapper(config => 
+            { config.AddProfile(new AssemblyMappingProfile(ThisAssembly)); });
 
         builder.RegisterType<PasswordHasher>()
             .As<IPasswordHasher>()
@@ -25,6 +26,10 @@ public sealed class ApplicationModule : Module
 
         builder.RegisterType<LinkService>()
             .As<ILinkService>()
+            .AsSelf();
+        
+        builder.RegisterType<ExcelExporter>()
+            .As<IExcelExporter>()
             .AsSelf();
 
         builder.RegisterMediatR(MediatRConfigurationBuilder

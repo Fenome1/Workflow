@@ -13,7 +13,8 @@ public class LinkService(IConfiguration configuration) : ILinkService
 
         rng.GetBytes(tokenBytes);
 
-        var token = BitConverter.ToString(tokenBytes).Replace("-", "").ToLower();
+        var token = BitConverter.ToString(tokenBytes)
+            .Replace("-", "").ToLower();
 
         return token;
     }
