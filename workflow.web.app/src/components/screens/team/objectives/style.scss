@@ -6,6 +6,7 @@
 }
 
 .objectives-tab-container {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -21,7 +22,6 @@
     flex-direction: column;
     align-content: center;
     gap: 20px;
-
 
     .objectives-header {
       display: flex;
@@ -79,6 +79,11 @@
         gap: 10px;
       }
     }
+  }
+
+  .export-user-objectives-button{
+    margin-top: auto;
+    align-self: start;
   }
 }
 

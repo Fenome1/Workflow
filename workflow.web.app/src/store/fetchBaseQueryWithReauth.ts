@@ -16,7 +16,8 @@ export enum ApiTags {
     Objective = 'Objective',
     Priority = 'Priority',
     Invitation = "Invitation",
-    Link = "Link"
+    Link = "Link",
+    Export = "Export"
 }
 
 export const baseQuery = fetchBaseQuery({
