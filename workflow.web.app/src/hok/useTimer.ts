@@ -1,4 +1,5 @@
 import {useEffect, useState} from "react";
+import dayjs from "dayjs";
 
 interface TimerResult {
     timeLeft: string | null;
@@ -12,32 +13,30 @@ const useTimer = (status: boolean, deadline: string | null): TimerResult => {
     useEffect(() => {
         const calculateTimeLeft = () => {
             if (!status && deadline) {
-                const deadlineDate = new Date(deadline);
-                const now = new Date();
+                const deadlineDateFormated = dayjs(dayjs(deadline).format('YYYY-MM-DD'));
+                const nowFormated = dayjs(dayjs().format('YYYY-MM-DD'));
 
-                const isDeadlineToday = deadlineDate.toLocaleDateString() === now.toLocaleDateString();
-                const isDeadlinePassed = now.toLocaleDateString() > deadlineDate.toLocaleDateString();
+                const isDeadlineToday = deadlineDateFormated.isSame(nowFormated);
+                const isDeadlinePassed = nowFormated.isAfter(deadlineDateFormated);
 
                 if (isDeadlineToday && !isDeadlinePassed) {
-                    const endOfToday = new Date(
-                        now.getFullYear(),
-                        now.getMonth(),
-                        now.getDate(),
-                        24);
+                    const now = dayjs();
+                    const endOfToday = dayjs(now.endOf('day'));
 
-                    const difference = Math.max(0, endOfToday.getTime() - now.getTime());
+                    const difference = Math.max(0, endOfToday.diff(now));
                     const hours = Math.floor(difference / (1000 * 60 * 60));
                     const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
                     const seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
                     setTimeLeft(`${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`);
                     setIsDeadlineExpired(false);
-                } else if (!isDeadlineToday && !isDeadlinePassed) {
-                    setTimeLeft("")
-                    setIsDeadlineExpired(false)
-                } else if (!isDeadlineToday && isDeadlinePassed) {
+
+                } else if (isDeadlinePassed) {
                     setTimeLeft("");
                     setIsDeadlineExpired(true);
+                } else {
+                    setTimeLeft("");
+                    setIsDeadlineExpired(false);
                 }
 
             } else {

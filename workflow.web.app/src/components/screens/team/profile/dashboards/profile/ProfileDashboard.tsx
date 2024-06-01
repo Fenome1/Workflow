@@ -122,8 +122,8 @@ const ProfileDashboard = () => {
                             <Button type='link' className='profile-dashboard-avatar-upload'
                                     onClick={handleUploadButtonClick}>Загрузить
                                 фото</Button>
-                            <input type="file" onChange={handleImageChange} style={{display: 'none'}}
-                                   ref={fileInputRef}/>
+                                <input type="file" onChange={handleImageChange} style={{display: 'none'}}
+                                       ref={fileInputRef} accept=".png, .jpg, .jpeg"/>
                             {user?.avatarImage &&
                                 <Button type='link' className='profile-dashboard-avatar-delete'
                                         onClick={handleImageDelete}>Удалить
