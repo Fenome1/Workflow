@@ -33,8 +33,10 @@ const AgencyInviteForm: FC<AgencyInviteFormProps> = ({agency}) => {
             <Form.Item
                 label="Email"
                 name="email"
-                rules={[{required: true, message: 'Пожалуйста, введите email!'}]}>
-                <Input type='email' prefix={<MailOutlined/>} placeholder="Email сотрудника..."/>
+                rules={[{required: true, message: 'Пожалуйста, введите email!'},
+                    {type: 'email', message: 'Некорректный формат email адреса'}]}
+            >
+                <Input prefix={<MailOutlined/>} placeholder="Email сотрудника..."/>
             </Form.Item>
             <Form.Item>
                 <Button className='agency-form-invite-button' type='primary'

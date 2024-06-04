@@ -12,7 +12,6 @@ public class UpdateObjectiveCommandHandlerTest
         // Arrange
         var options = new DbContextOptionsBuilder<WorkflowDbContext>()
             .UseInMemoryDatabase(databaseName: "WorkflowTest").Options;
-        
         await using var context = new WorkflowDbContext(options);
 
         var existingObjective = new Core.Models.Objective
