@@ -16,7 +16,7 @@ public class ApiModule(IConfiguration configuration) : Autofac.Module
         var services = new ServiceCollection();
 
         services.AddDbContext<WorkflowDbContext>(options =>
-            options.UseSqlServer("Name=WorkflowDev"));
+            options.UseSqlServer("Name=WorkflowDeploy"));
 
         services.AddSignalR();
 
