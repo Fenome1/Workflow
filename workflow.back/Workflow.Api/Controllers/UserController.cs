@@ -4,6 +4,7 @@ using Workflow.Api.Controllers.Base;
 using Workflow.Application.Features.Users.Commands.Create;
 using Workflow.Application.Features.Users.Commands.Update;
 using Workflow.Application.Features.Users.Queries.ByAgency;
+using Workflow.Application.Features.Users.Queries.Get;
 using Workflow.Application.ViewModels;
 
 namespace Workflow.Api.Controllers;
@@ -17,6 +18,20 @@ public class UserController : BaseController
         try
         {
             return Ok(await Mediator.Send(new ListUsersByAgencyQuery(agencyId)));
+        }
+        catch (Exception e)
+        {
+            return BadRequest($"{e.Message}");
+        }
+    }
+
+    [Authorize]
+    [HttpGet("Get/{userId}")]
+    public async Task<ActionResult<List<UserViewModel>>> GetByUserId(int userId)
+    {
+        try
+        {
+            return Ok(await Mediator.Send(new GetUserByIdQuery(userId)));
         }
         catch (Exception e)
         {

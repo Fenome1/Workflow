@@ -21,7 +21,7 @@ const RegisterForm = () => {
 
     const [registerUser, {isLoading: isRegisterLoading}] = useRegiserUserMutation();
     const [login, {isLoading: isLoginLoading}] = useLoginMutation();
-    const { startConnection, navigateToTeamPage } = useAuth();
+    const {startConnection, navigateToTeamPage} = useAuth();
 
 
     const [form] = Form.useForm();
@@ -70,8 +70,8 @@ const RegisterForm = () => {
                             <Form.Item
                                 name="email"
                                 rules={[
-                                    { required: true, message: 'Пожалуйста, введите ваш email!' },
-                                    { type: 'email', message: 'Некорректный формат email адреса' }
+                                    {required: true, message: 'Пожалуйста, введите ваш email!'},
+                                    {type: 'email', message: 'Некорректный формат email адреса'}
                                 ]}>
                                 <Input style={{fontSize: '1rem'}}
                                        disabled={isRegisterLoading || isLoginLoading}
@@ -82,9 +82,9 @@ const RegisterForm = () => {
                             <Form.Item
                                 name="password"
                                 rules={[
-                                    { required: true, message: 'Пожалуйста, введите ваш пароль!' },
-                                    { min: 6, message: 'Пароль должен содержать минимум 6 символов' },
-                                    { max: 20, message: 'Пароль должен содержать максимум 20 символов' }
+                                    {required: true, message: 'Пожалуйста, введите ваш пароль!'},
+                                    {min: 6, message: 'Пароль должен содержать минимум 6 символов'},
+                                    {max: 20, message: 'Пароль должен содержать максимум 20 символов'}
                                 ]}>
                                 <Input.Password style={{fontSize: '1rem'}}
                                                 disabled={isRegisterLoading || isLoginLoading}
@@ -113,11 +113,13 @@ const RegisterForm = () => {
                                                 placeholder="Подтвердите пароль"/>
                             </Form.Item>
 
-                            <Button type="primary" htmlType="submit" disabled={isRegisterLoading || isLoginLoading} className="login-button">
+                            <Button type="primary" htmlType="submit" disabled={isRegisterLoading || isLoginLoading}
+                                    className="login-button">
                                 Зарегистрироваться
                             </Button>
 
-                            <Button onClick={navigateToLoginPage} type="link" disabled={isRegisterLoading || isLoginLoading} className="register-button">
+                            <Button onClick={navigateToLoginPage} type="link"
+                                    disabled={isRegisterLoading || isLoginLoading} className="register-button">
                                 Уже есть аккаунт? Войдите сейчас!
                             </Button>
                         </Form>

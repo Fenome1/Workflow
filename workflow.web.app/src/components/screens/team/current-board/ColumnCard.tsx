@@ -3,7 +3,7 @@ import {IColumn} from "../../../../features/models/IColumn.ts";
 import EllipsisColumnDropDown from "./EllipsisColumnDropDown.tsx";
 import '../current-project/style.scss'
 import './style.scss';
-import {Button, Input, Progress, Skeleton} from "antd";
+import {Button, Input, message, Progress, Skeleton} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
 import ObjectiveCard from "../current-column/ObjectiveCard.tsx";
 import {useGetObjectivesByColumnQuery} from "../../../../store/apis/objective/objectiveApi.ts";
@@ -27,15 +27,20 @@ const ColumnCard: FC<IColumnCardProps> = ({column}) => {
     const [editedName, setEditedName] = useState(column.name);
 
     const updateTitle = async () => {
+        if (editedName.trim() === '') {
+            setEditedName(column.name);
+            message.error('Название колонки не может быть пустым');
+            return;
+        }
 
-        if (editedName === column.name) {
+        if (editedName.trim() === column.name) {
             editingDialog.close();
             return;
         }
 
         const updateNameCommand: IUpdateColumnCommand = {
             columnId: column.columnId,
-            name: editedName
+            name: editedName.trim()
         };
 
         await updateColumn(updateNameCommand);

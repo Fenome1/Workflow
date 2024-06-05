@@ -8,7 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workflow.Core", "Workflow.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workflow.Persistense", "Workflow.Persistense\Workflow.Persistense.csproj", "{D16EDD74-826C-405A-85EC-8958E9C94AE7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workflow.Tests", "Workflow.Tests\Workflow.Tests.csproj", "{A10CDB50-208A-49E1-AEB9-4EC736408BC2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workflow.Tests", "Workflow.Tests\Workflow.Tests.csproj", "{8D42616A-D1D6-4E52-A151-3C5070314565}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,9 +32,9 @@ Global
 		{D16EDD74-826C-405A-85EC-8958E9C94AE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D16EDD74-826C-405A-85EC-8958E9C94AE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D16EDD74-826C-405A-85EC-8958E9C94AE7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A10CDB50-208A-49E1-AEB9-4EC736408BC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A10CDB50-208A-49E1-AEB9-4EC736408BC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A10CDB50-208A-49E1-AEB9-4EC736408BC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A10CDB50-208A-49E1-AEB9-4EC736408BC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D42616A-D1D6-4E52-A151-3C5070314565}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D42616A-D1D6-4E52-A151-3C5070314565}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D42616A-D1D6-4E52-A151-3C5070314565}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D42616A-D1D6-4E52-A151-3C5070314565}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

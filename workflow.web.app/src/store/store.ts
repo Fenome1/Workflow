@@ -7,10 +7,11 @@ import agencySlice from "./slices/agencySlice.ts";
 import projectSlice from "./slices/projectSlice.ts";
 import boardSlice from "./slices/boardSlice.ts";
 import menuSlice from "./slices/menuSlice.ts";
-import {baseApi} from "./apis";
+import {authApi, baseApi} from "./apis";
 
 const rootReducer = combineReducers({
     [baseApi.reducerPath]: baseApi.reducer,
+    [authApi.reducerPath]: authApi.reducer,
     user: userSlice,
     agency: agencySlice,
     project: projectSlice,
@@ -33,6 +34,7 @@ export const setupStore = () => {
                     ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
                 }
             }).concat(baseApi.middleware)
+                .concat(authApi.middleware)
     })
 }
 

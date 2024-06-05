@@ -10,3 +10,63 @@
     justify-content: center;
   }
 }
+
+.create-link-form {
+  @extend .agency-invite-form;
+
+  .generated-link-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 11px;
+    justify-content: space-between;
+    transition: all ease-in-out 0.2s;
+
+    &:hover {
+      background-color: whitesmoke;
+    }
+
+    .generated-link-text {
+      white-space: nowrap;
+      overflow: hidden;
+      margin-right: 5px;
+
+      .agency-link {
+        font-size: 12pt;
+        color: #1890ff;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .agency-link-description {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+
+        .agency-work-link-date {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+
+          .agency-link-date-text {
+          }
+
+          .agency-link-date-button {
+
+          }
+        }
+      }
+
+    }
+
+    .generated-link-button-copy {
+
+    }
+  }
+
+  .regenerate-link-button {
+    @extend .agency-form-invite-button;
+  }
+}

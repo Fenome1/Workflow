@@ -1,18 +1,16 @@
-import {FC} from 'react';
 import {useGetBoardsByProjectQuery} from "../../../../store/apis/board/boardApi.ts";
 import {IBoard} from "../../../../features/models/IBoard.ts";
 import BoardCard from "./borad/BoardCard.tsx";
 import './style.scss'
 import CreateBoardButton from "./borad/CreateBoardButton.tsx";
 import {Spin} from "antd";
+import {useTypedSelector} from "../../../../store/hooks/hooks.ts";
 
-interface ProjectBoardsProps {
-    selectedProjectId: number | null
-}
+const ProjectBoards = () => {
+    const {selectedProjectId} = useTypedSelector((state) => state.project);
 
-const ProjectBoards: FC<ProjectBoardsProps> = ({selectedProjectId}) => {
     const {data: boards, isLoading} = useGetBoardsByProjectQuery(selectedProjectId || 0, {
-        skip: selectedProjectId === null
+        skip: selectedProjectId === undefined
     });
 
     return (

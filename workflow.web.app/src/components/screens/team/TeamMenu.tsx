@@ -1,4 +1,4 @@
-import {FC, useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {Menu, MenuProps, Skeleton} from "antd";
 import {FolderOutlined, GlobalOutlined, SolutionOutlined} from "@ant-design/icons";
 import {useAppDispatch, useTypedSelector} from "../../../store/hooks/hooks.ts";
@@ -9,44 +9,20 @@ import {useGetProjectsByAgencyQuery} from "../../../store/apis/project/projectAp
 import {selectMenuItem} from "../../../store/slices/menuSlice.ts";
 import {TeamMenuItem} from "../../../common/TeamMenuItem.ts";
 import AvatarItem from "../../ui/AvatarItem.tsx";
-import {IUser} from "../../../features/models/IUser.ts";
 import {AppColors} from "../../../common/Colors.ts";
 
-interface TeamMenuProps {
-    selectedAgencyId: number | null
-    selectedProjectId: number | null
-    currentUser: IUser | null
-}
-
-const TeamMenu: FC<TeamMenuProps> = ({selectedAgencyId, selectedProjectId, currentUser}) => {
+const TeamMenu = () => {
     const dispatch = useAppDispatch();
 
+    const {user} = useTypedSelector(state => state.user)
+    const {selectedAgencyId} = useTypedSelector((state) => state.agency);
+    const {selectedProjectId} = useTypedSelector((state) => state.project);
+    const {selectedMenuItem} = useTypedSelector((state) => state.menu);
     const [selectedKey, setSelectedKey] = useState<string>("projects");
 
-    const selectedMenuItem = useTypedSelector((state) => state.menu.selectedMenuItem)
-
-    const {data: projects, isLoading} = useGetProjectsByAgencyQuery(selectedAgencyId || 0,
-        {skip: selectedAgencyId === null});
-
-    const setSelectedProjectAsync = async () => {
-        if (selectedProjectId === null && projects && projects.length > 0) {
-            await dispatch(selectProject(projects[0]?.projectId));
-            setSelectedKey(projects[0]?.projectId.toString())
-        } else {
-            setSelectedKey(selectedProjectId?.toString() ?? 'null')
-        }
-        await dispatch(selectMenuItem(TeamMenuItem.Projects))
-    };
-
-    useEffect(() => {
-        if (selectedMenuItem !== TeamMenuItem.Projects)
-            return
-        setSelectedProjectAsync()
-    }, [projects]);
-
-    useEffect(() => {
-        setSelectedProjectAsync()
-    }, [selectedAgencyId]);
+    const {data: projects, isLoading} = useGetProjectsByAgencyQuery(selectedAgencyId || 0, {
+        skip: selectedAgencyId === null
+    });
 
     const onSelect: MenuProps['onSelect'] = async (selectInfo) => {
         if (selectInfo.keyPath[1] === 'projects') {
@@ -59,8 +35,23 @@ const TeamMenu: FC<TeamMenuProps> = ({selectedAgencyId, selectedProjectId, curre
         if (selectInfo.key === 'objectives') {
             await dispatch(selectMenuItem(TeamMenuItem.Objectives))
         }
+
         setSelectedKey(selectInfo.key)
     };
+
+    useEffect(() => {
+        const setSelectedProjectAsync = async () => {
+            if (!selectedProjectId && projects && projects.length > 0) {
+                await dispatch(selectProject(projects[0]?.projectId));
+                setSelectedKey(projects[0]?.projectId.toString())
+            } else {
+                setSelectedKey(selectedProjectId?.toString() ?? 'null')
+            }
+        };
+
+        if (selectedMenuItem === TeamMenuItem.Projects)
+            setSelectedProjectAsync()
+    }, [projects]);
 
     return (
         <div className='team-menu'>
@@ -75,19 +66,23 @@ const TeamMenu: FC<TeamMenuProps> = ({selectedAgencyId, selectedProjectId, curre
                     defaultOpenKeys={['projects']}
                     theme='light'
                     onSelect={onSelect}>
-                    <Menu.Item className='team-menu-profile'
-                               key="profile"
-                               icon={<AvatarItem user={currentUser} className='team-menu-profile-img'/>}>
+                    <Menu.Item
+                        className='team-menu-profile'
+                        key="profile"
+                        icon={<AvatarItem user={user} className='team-menu-profile-img'/>}>
                         <span>Мой профиль</span>
                     </Menu.Item>
-                    <Menu.Item key="objectives" className='team-menu-objectives'
-                               icon={<SolutionOutlined className='menu-icon'/>}>
+                    <Menu.Item
+                        key="objectives"
+                        className='team-menu-objectives'
+                        icon={<SolutionOutlined className='menu-icon'/>}>
                         Мои задачи
                     </Menu.Item>
-                    <Menu.SubMenu key="projects"
-                                  className='team-menu-projects'
-                                  icon={<GlobalOutlined className='menu-icon'/>}
-                                  title='Проекты'>
+                    <Menu.SubMenu
+                        key="projects"
+                        className='team-menu-projects'
+                        icon={<GlobalOutlined className='menu-icon'/>}
+                        title='Проекты'>
                         {projects && projects.length > 0 ? (
                             projects.map((project) => (
                                 <Menu.Item key={project.projectId}>
@@ -104,8 +99,10 @@ const TeamMenu: FC<TeamMenuProps> = ({selectedAgencyId, selectedProjectId, curre
                 </Menu>
             </Skeleton>
             <div className='agency-selector'>
-                <span className='agency-selector-header'>Выбранное агентство</span>
-                <AgencySelector currentUser={currentUser}/>
+                <span className='agency-selector-header'>
+                    Выбранное агентство
+                </span>
+                <AgencySelector/>
             </div>
         </div>
     );

@@ -23,14 +23,20 @@ const ProjectItem: FC<ProjectItemProps> = ({project, isLastProject}) => {
     const [deleteProject] = useDeleteProjectMutation();
 
     const updateName = async () => {
-        if (editedName === project.name) {
+        if (editedName.trim() === '') {
+            setEditedName(project.name);
+            message.error('Название проекта не может быть пустым');
+            return;
+        }
+
+        if (editedName.trim() === project.name) {
             editingDialog.close();
             return;
         }
 
         const updateNameCommand: IUpdateProjectCommand = {
             projectId: project.projectId,
-            name: editedName
+            name: editedName.trim()
         };
 
         await updateProject(updateNameCommand);
@@ -40,7 +46,7 @@ const ProjectItem: FC<ProjectItemProps> = ({project, isLastProject}) => {
     const handleEditClick = () => editingDialog.show();
 
     const handleDeleteConfirm = async () => {
-        if(isLastProject){
+        if (isLastProject) {
             message.error("Не возможно удалить последний проект")
             return
         }

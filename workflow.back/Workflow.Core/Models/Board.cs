@@ -1,6 +1,6 @@
 ﻿namespace Workflow.Core.Models;
 
-public class Board
+public partial class Board
 {
     public int BoardId { get; set; }
 

@@ -1,5 +1,5 @@
-import { useNavigate } from "react-router-dom";
-import { useCallback } from "react";
+import {useNavigate} from "react-router-dom";
+import {useCallback} from "react";
 import {connection} from "../store/signalRClient.ts";
 
 const useAuth = () => {
@@ -14,7 +14,7 @@ const useAuth = () => {
 
     const navigateToTeamPage = () => navigate("/team");
 
-    return { startConnection, navigateToTeamPage };
+    return {startConnection, navigateToTeamPage};
 };
 
 export default useAuth;

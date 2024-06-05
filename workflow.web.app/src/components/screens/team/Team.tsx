@@ -6,24 +6,34 @@ import ProjectBoards from "./current-project/ProjectBoards.tsx";
 import Profile from "./profile/Profile.tsx";
 import Objectives from "./objectives/Objectives.tsx";
 import {AppColors} from "../../../common/Colors.ts";
+import React from "react";
 
 const Team = () => {
-    const selectedMenuItem = useTypedSelector(state => state.menu?.selectedMenuItem);
-    const selectedAgencyId = useTypedSelector((state) => state.agency?.selectedAgencyId);
-    const selectedProjectId = useTypedSelector((state) => state.project?.selectedProjectId);
-    const userState = useTypedSelector(state => state.user);
+    const {selectedMenuItem} = useTypedSelector(state => state.menu);
+
+    const getRenderComponent = (): React.ReactNode => {
+        switch (selectedMenuItem) {
+            case TeamMenuItem.Profile:
+                return (
+                    <Profile/>
+                )
+            case TeamMenuItem.Objectives:
+                return (
+                    <Objectives/>
+                )
+            case TeamMenuItem.Projects:
+                return (
+                    <ProjectBoards/>
+                )
+            default:
+                return null
+        }
+    }
 
     return (
         <div className='team-page' style={{background: AppColors.Primary}}>
-            <TeamMenu selectedAgencyId={selectedAgencyId}
-                      selectedProjectId={selectedProjectId}
-                      currentUser={userState.user}/>
-            {selectedMenuItem && selectedMenuItem === TeamMenuItem.Profile &&
-                <Profile userState={userState}/>}
-            {selectedMenuItem && selectedMenuItem === TeamMenuItem.Objectives &&
-                <Objectives currentUser={userState.user}/>}
-            {selectedMenuItem && selectedMenuItem === TeamMenuItem.Projects &&
-                <ProjectBoards selectedProjectId={selectedProjectId}/>}
+            <TeamMenu/>
+            {getRenderComponent()}
         </div>
     );
 };

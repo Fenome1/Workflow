@@ -18,6 +18,12 @@ export const userApi = baseApi.injectEndpoints({
             }),
             providesTags: [{type: ApiTags.User}],
         }),
+        getUserById: builder.query<IUser, number>({
+            query: query => ({
+                url: `${ApiTags.User}/Get/${query}`,
+                method: HttpMethod.GET,
+            }),
+        }),
         updateUser: builder.mutation<IUser, IUpdateUserCommand>({
             query: command => ({
                 url: `${ApiTags.User}/Update`,
@@ -55,6 +61,7 @@ export const userApi = baseApi.injectEndpoints({
 });
 
 export const {
+    useGetUserByIdQuery,
     useRegiserUserMutation,
     useUpdateUserMutation,
     useGetUsersByAgencyQuery

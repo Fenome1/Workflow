@@ -1,6 +1,6 @@
 ﻿namespace Workflow.Core.Models;
 
-public class Objective
+public partial class Objective
 {
     public int ObjectiveId { get; set; }
 
@@ -12,7 +12,7 @@ public class Objective
 
     public DateTime CreationDate { get; set; }
 
-    public DateTime? Deadline { get; set; }
+    public DateOnly? Deadline { get; set; }
 
     public int? PriorityId { get; set; }
 

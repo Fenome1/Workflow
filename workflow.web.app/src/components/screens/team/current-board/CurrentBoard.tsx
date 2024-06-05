@@ -2,7 +2,7 @@ import {useTypedSelector} from "../../../../store/hooks/hooks.ts";
 import {useGetColumnsByBoardQuery, useSwapColumnMutation} from "../../../../store/apis/column/columnApi.ts";
 import ColumnCard from "./ColumnCard.tsx";
 import './style.scss'
-import {Button, Spin} from "antd";
+import {Button, FloatButton, Spin} from "antd";
 import {useNavigate} from "react-router-dom";
 import CreateColumnButton from "./create-column/CreateColumnButton.tsx";
 import {LeftOutlined} from "@ant-design/icons";
@@ -12,11 +12,12 @@ import {useState} from "react";
 import {ISwapColumnCommand} from "../../../../features/commands/column/ISwapColumnCommand.ts";
 import {ISwapObjectiveCommand} from "../../../../features/commands/objective/ISwapObjectiveCommand.ts";
 import {useSwapObjectiveMutation} from "../../../../store/apis/objective/objectiveApi.ts";
-
+import {useDialog} from "../../../../hok/useDialog.ts";
+import ReferenceModal from "./modals/ReferenceModal.tsx";
 
 const CurrentBoard = () => {
     const navigate = useNavigate();
-    const toTeam = () => navigate("/team")
+    const toTeamPage = () => navigate("/team")
 
     const [swapColumn] = useSwapColumnMutation()
     const [swapObjective] = useSwapObjectiveMutation()
@@ -28,28 +29,24 @@ const CurrentBoard = () => {
     const {data: columns, isLoading} = useGetColumnsByBoardQuery(selectedBoardId || 0,
         {skip: selectedBoardId === null});
 
-    const handleDragEnd: OnDragEndResponder = async (result) => {
-        let command : ISwapColumnCommand | ISwapObjectiveCommand;
+    const referenceModalDialog = useDialog()
 
-        switch (result.type) {
-            case 'column':
-                command = {
-                    columnId: Number(result.destination?.droppableId),
-                    objectiveId: Number(result.draggableId),
-                    targetOrder: result.destination?.index,
-                };
-                await swapObjective(command)
-                break;
-            case 'board':
-                command = {
-                    columnId: Number(result.draggableId),
-                    targetOrder: result.destination?.index,
-                };
-                await swapColumn(command)
-                break;
-            default:
-                console.error('Unknown type:', result.type);
-                break;
+    const handleDragEnd: OnDragEndResponder = async (result) => {
+        let command: ISwapColumnCommand | ISwapObjectiveCommand;
+
+        if (result.type === 'column') {
+            command = {
+                columnId: Number(result.destination?.droppableId),
+                objectiveId: Number(result.draggableId.toString().split('-')[1]),
+                targetOrder: result.destination?.index,
+            };
+            await swapObjective(command)
+        } else if (result.type === 'board') {
+            command = {
+                columnId: Number(result.draggableId),
+                targetOrder: result.destination?.index,
+            };
+            await swapColumn(command)
         }
 
         setIsAnyDragging(false);
@@ -65,7 +62,7 @@ const CurrentBoard = () => {
                 <div className='board-column-container' style={{background: AppColors.Primary}}>
                     <div className='board-column-header-container'>
                         <Button icon={<LeftOutlined/>} size='large' shape='round' className='board-column-button'
-                                onClick={toTeam}>Вернуться</Button>
+                                onClick={toTeamPage}>Вернуться</Button>
                         <b className='board-column-header'>Доступные колонки</b>
                     </div>
                     {!isLoading &&
@@ -85,6 +82,8 @@ const CurrentBoard = () => {
                                     {provided.placeholder}
                                 </div>)}
                         </Droppable>}
+                    <FloatButton onClick={referenceModalDialog.show}/>
+                    <ReferenceModal dialog={referenceModalDialog}></ReferenceModal>
                 </div>
             </DragDropContext>
         </Spin>

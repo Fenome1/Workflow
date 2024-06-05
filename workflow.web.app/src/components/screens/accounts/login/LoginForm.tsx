@@ -12,7 +12,7 @@ const LoginForm = () => {
     const navigateToRegisterPage = () => navigate("/reg");
 
     const [login, {isLoading}] = useLoginMutation();
-    const { startConnection, navigateToTeamPage } = useAuth();
+    const {startConnection, navigateToTeamPage} = useAuth();
 
     const [form] = Form.useForm();
 
@@ -44,7 +44,7 @@ const LoginForm = () => {
                                 name="email"
                                 rules={[
                                     {required: true, message: "Пожалуйста, введите ваш email!"},
-                                    {type:'email', message: 'Некорректный формат email адреса'}
+                                    {type: 'email', message: 'Некорректный формат email адреса'}
                                 ]}>
                                 <Input
                                     style={{fontSize: "1rem"}}

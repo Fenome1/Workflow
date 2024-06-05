@@ -23,16 +23,13 @@ public class ListObjectivesByUserQueryHandler(WorkflowDbContext context, IMapper
         if (!isUserExists)
             throw new NotFoundException(nameof(User), request.UserId);
 
-        var objectives = await context.Agencies
+        var objectives = await context.Objectives
             .AsNoTrackingWithIdentityResolution()
-            .Where(a => a.AgencyId == request.AgencyId)
-            .SelectMany(a => a.Projects)
-            .SelectMany(p => p.Boards)
-            .SelectMany(b => b.Columns)
-            .SelectMany(c => c.Objectives)
+            .Where(o => o.Column.Board.Project.Agency.AgencyId == request.AgencyId &&
+                        o.Users.Any(u => u.UserId == request.UserId))
+            .Include(o => o.Column.Board.Project.Agency)
             .Include(o => o.Users)
             .Include(o => o.Priority)
-            .Where(o => o.Users.Any(u => u.UserId == request.UserId))
             .ProjectTo<ObjectiveViewModel>(mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);
 

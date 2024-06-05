@@ -1,6 +1,6 @@
 ﻿namespace Workflow.Core.Models;
 
-public class Agency
+public partial class Agency
 {
     public int AgencyId { get; set; }
 
@@ -11,6 +11,8 @@ public class Agency
     public int OwnerId { get; set; }
 
     public virtual ICollection<Invitation> Invitations { get; set; } = new List<Invitation>();
+
+    public virtual Link? Link { get; set; }
 
     public virtual User Owner { get; set; } = null!;
 

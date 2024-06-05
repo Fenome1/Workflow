@@ -19,10 +19,7 @@ public sealed class AssignifyUserToObjectiveCommandCommand(WorkflowDbContext con
                             .Include(o => o.Users)
                             .FirstOrDefaultAsync(o => o.ObjectiveId == request.ObjectiveId, cancellationToken)
                         ?? throw new NotFoundException(nameof(Objective), request.ObjectiveId);
-
-        if (objective is null)
-            throw new NotFoundException(nameof(Objective), request.ObjectiveId);
-
+        
         if (request.AssignifyType == AssignifyType.Assign)
         {
             if (objective.Users.Contains(user))

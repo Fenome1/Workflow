@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Workflow.Application.Common.Enums;
 using Workflow.Application.Common.Exceptions;
 using Workflow.Core.Models;
+using Workflow.Persistense.Configurations;
 using Workflow.Persistense.Context;
 
 namespace Workflow.Application.Features.Invitations.Commands.Answer;
@@ -25,7 +26,12 @@ public sealed class AnswerOnInvitationCommandHandler(WorkflowDbContext context)
                 throw new NotFoundException(nameof(Invitation), request.InvitationId);
 
             if (invitation.InvitationStatusId != (int)InvitationStatuses.Expectation)
+            {
+                context.Invitations.Remove(invitation);
+                await context.SaveChangesAsync(cancellationToken);
+
                 throw new Exception("Приглашение не действительно");
+            }
 
             switch (request.AnswerType)
             {

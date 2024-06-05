@@ -9,6 +9,7 @@ import {ApiTags} from "../../fetchBaseQueryWithReauth.ts";
 import {baseApi} from "../index.ts";
 import {getErrorMessageFormBaseQuery} from "../../../hok/getErrorMessageFormBaseQuery.ts";
 import {FetchBaseQueryError} from "@reduxjs/toolkit/query/react";
+import {IJoinToAgencyCommand} from "../../../features/commands/agency/IJoinToAgencyCommand.ts";
 
 export const agencyApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
@@ -18,6 +19,12 @@ export const agencyApi = baseApi.injectEndpoints({
                 method: HttpMethod.GET,
             }),
             providesTags: [{type: ApiTags.User}],
+        }),
+        getAgencyByToken: builder.query<IAgency, string>({
+            query: query => ({
+                url: `${ApiTags.Agency}/Token/${query}`,
+                method: HttpMethod.GET,
+            })
         }),
         createAgency: builder.mutation<number, ICreateAgencyCommand>({
             query: command => ({
@@ -69,14 +76,32 @@ export const agencyApi = baseApi.injectEndpoints({
                 }
             },
             invalidatesTags: [{type: ApiTags.User}],
+        }),
+        joinToAgency: builder.mutation<number, IJoinToAgencyCommand>({
+            query: command => ({
+                url: `${ApiTags.Agency}/Join`,
+                method: HttpMethod.PUT,
+                body: command
+            }),
+            async onQueryStarted(_, {queryFulfilled}) {
+                try {
+                    await queryFulfilled
+                    message.success("Вы успешно присоединились в агентство", 3)
+                } catch (error) {
+                    message.error(getErrorMessageFormBaseQuery(error as FetchBaseQueryError), 3)
+                }
+            },
+            invalidatesTags: [{type: ApiTags.User}],
         })
     }),
 });
 
 export const {
     useGetAgencyByUserQuery,
+    useGetAgencyByTokenQuery,
     useCreateAgencyMutation,
     useUpdateAgencyMutation,
     useDeleteAgencyMutation,
-    useFireUserFromAgencyMutation
+    useFireUserFromAgencyMutation,
+    useJoinToAgencyMutation
 } = agencyApi

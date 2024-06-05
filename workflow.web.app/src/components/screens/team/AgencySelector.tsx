@@ -1,45 +1,58 @@
-import {FC, useEffect} from 'react';
 import {Form} from "react-bootstrap";
 import {useAppDispatch, useTypedSelector} from "../../../store/hooks/hooks.ts";
 import {useGetAgencyByUserQuery} from "../../../store/apis/agency/agencyApi.ts";
-import {selectAgency} from "../../../store/slices/agencySlice.ts";
-import {selectProject} from "../../../store/slices/projectSlice.ts";
 import './style.scss'
-import {IUser} from "../../../features/models/IUser.ts";
 import SkeletonInput from "antd/es/skeleton/Input";
+import {selectProject} from "../../../store/slices/projectSlice.ts";
+import {selectAgency} from "../../../store/slices/agencySlice.ts";
+import {useEffect} from "react";
 
-interface AgencySelectorProps {
-    currentUser: IUser | null
-}
-
-const AgencySelector: FC<AgencySelectorProps> = ({currentUser}) => {
+const AgencySelector = () => {
     const dispatch = useAppDispatch();
-    const {data: agencies, isLoading} = useGetAgencyByUserQuery(currentUser?.userId ?? 0, {skip: currentUser === null});
 
-    const selectedAgencyIdRedux = useTypedSelector((state) => state.agency?.selectedAgencyId);
+    const {user} = useTypedSelector(state => state.user)
+    const {selectedAgencyId} = useTypedSelector((state) => state.agency);
 
-    const handleAgencyChange = async (agencyId: number) => {
-        await dispatch(selectAgency(agencyId));
-        await dispatch(selectProject(null))
-    };
+    const {data: agencies, isLoading} =
+        useGetAgencyByUserQuery(user?.userId ?? 0, {
+            skip: user === null
+        });
+
+    const handleChange = async (id: number) => {
+        await dispatch(selectProject(undefined))
+        await dispatch(selectAgency(id))
+    }
 
     useEffect(() => {
-        if (selectedAgencyIdRedux === null && agencies && agencies.length > 0) {
-            dispatch(selectAgency(agencies[0]?.agencyId));
+        const selectFirstAgency = async () => {
+            const isNotSelected = !selectedAgencyId && agencies && agencies.length > 0
+            const isDeletedSelected = agencies && !agencies.map(a => a.agencyId).includes(selectedAgencyId ?? -1)
+
+            if (isNotSelected || isDeletedSelected) {
+                await dispatch(selectAgency(agencies[0]?.agencyId));
+            }
         }
-    }, [dispatch, selectedAgencyIdRedux, agencies]);
+
+        selectFirstAgency()
+    }, [agencies, dispatch, selectedAgencyId]);
 
     return (
-        <> {isLoading ? (<SkeletonInput active/>) :
-            <Form.Select value={selectedAgencyIdRedux || ''}
-                         onChange={(e) =>
-                             handleAgencyChange(parseInt(e.target.value))}>
-                {agencies?.map((agency) => (
-                    <option key={agency.agencyId} value={agency.agencyId}>
-                        {agency.name}
-                    </option>
-                ))}
-            </Form.Select>}
+        <>
+            {
+                isLoading ? (
+                    <SkeletonInput active/>
+                ) : (
+                    <Form.Select
+                        value={selectedAgencyId || ''}
+                        onChange={(event) => handleChange(parseInt(event.target.value))}
+                    >
+                        {agencies?.map((agency) => (
+                            <option key={agency.agencyId} value={agency.agencyId}>
+                                {agency.name}
+                            </option>
+                        ))}
+                    </Form.Select>
+                )}
         </>
     );
 };

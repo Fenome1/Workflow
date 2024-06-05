@@ -19,18 +19,14 @@ const DeleteAgencyModal: FC<DeleteAgencyModalProps> = ({dialog, agencyId}) => {
     const [deleteAgency] = useDeleteAgencyMutation();
 
     const handleOk = async () => {
-        try {
-            await deleteAgency(agencyId);
+        await deleteAgency(agencyId);
 
-            if (selectedAgencyId === agencyId) {
-                await dispatch(selectAgency(null))
-                await dispatch(selectProject(null))
-            }
-
-            dialog.close();
-        } catch (error) {
-            console.error('Ошибка при удалении агентства:', error);
+        if (selectedAgencyId === agencyId) {
+            await dispatch(selectAgency(undefined))
+            await dispatch(selectProject(undefined))
         }
+
+        dialog.close();
     };
 
     return (

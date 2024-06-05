@@ -10,7 +10,7 @@ import {
     UserOutlined
 } from "@ant-design/icons";
 import {IUpdateObjectiveCommand} from "../../../../features/commands/objective/IUpdateObjectiveCommand.ts";
-import {Avatar, Input} from "antd";
+import {Avatar, Input, message} from "antd";
 import PrioritySticker from "./stickers/priority/PrioritySticker.tsx";
 import DeadlineSticker from "./stickers/deadline/DeadlineSticker.tsx";
 import AddStickerPopup from "./stickers/sticker-add/AddStickerPopup.tsx";
@@ -50,15 +50,20 @@ const ObjectiveCard: FC<IObjectiveCardProps> = ({objective}) => {
     }
 
     const updateTitle = async () => {
+        if (!editedName.trim()) {
+            setEditedName(objective.name)
+            message.error('Название задачи не может быть пустым');
+            return;
+        }
 
-        if (editedName === objective.name) {
+        if (editedName.trim() === objective.name) {
             editingDialog.close();
             return;
         }
 
         const updateNameCommand: IUpdateObjectiveCommand = {
             objectiveId: objective.objectiveId,
-            name: editedName
+            name: editedName.trim()
         };
 
         await updateObjective(updateNameCommand);
@@ -66,7 +71,10 @@ const ObjectiveCard: FC<IObjectiveCardProps> = ({objective}) => {
     };
 
     return (
-        <Draggable draggableId={objective.objectiveId.toString()} index={objective.order}>
+        <Draggable
+            draggableId={`${objective.columnId.toString()}-${objective.objectiveId.toString()}`}
+            index={objective.order}
+        >
             {(provided) => (
                 <div className={`objective-card ${isDeadlineExpired ? 'overdo' : ''}`}
                      onMouseEnter={() => setHovered(true)}

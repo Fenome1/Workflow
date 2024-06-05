@@ -8,7 +8,7 @@ interface RequireAuthProps {
 
 const RequireAuth: FC<RequireAuthProps> = ({children}) => {
     const location = useLocation()
-    const user = useTypedSelector(state => state.user?.user)
+    const {user} = useTypedSelector((state) => state.user)
 
     if (!user) {
         return <Navigate to='/login' state={{form: location}}/>

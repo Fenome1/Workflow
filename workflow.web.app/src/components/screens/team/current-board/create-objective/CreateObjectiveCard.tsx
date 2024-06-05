@@ -1,5 +1,5 @@
 import './style.scss'
-import {Input} from "antd";
+import {Input, message} from "antd";
 import React, {FC, useState} from "react";
 import {IDialog} from "../../../../../features/models/IDialog.ts";
 import {useCreateObjectiveMutation} from "../../../../../store/apis/objective/objectiveApi.ts";
@@ -15,7 +15,10 @@ const CreateObjectiveCard: FC<CreateObjectiveCardProps> = ({columnId, dialog}) =
     const [title, setTitle] = useState('');
 
     const handleCreateColumn = async () => {
-        if (!title.trim()) return;
+        if (!title.trim()) {
+            message.error('Название задачи не может быть пустым');
+            return;
+        }
 
         const createObjectiveCommand: ICreateObjectiveCommand = {
             columnId: columnId,

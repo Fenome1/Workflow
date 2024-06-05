@@ -2,18 +2,18 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {PURGE} from "redux-persist/es/constants";
 
 interface IAgencyState {
-    selectedAgencyId: number | null;
+    selectedAgencyId: number | undefined;
 }
 
 const initialState: IAgencyState = {
-    selectedAgencyId: null,
+    selectedAgencyId: undefined,
 }
 
 const agencySlice = createSlice({
     name: 'agency',
     initialState,
     reducers: {
-        selectAgency(state, action: PayloadAction<number | null>) {
+        selectAgency(state, action: PayloadAction<number | undefined>) {
             state.selectedAgencyId = action.payload;
         },
     },

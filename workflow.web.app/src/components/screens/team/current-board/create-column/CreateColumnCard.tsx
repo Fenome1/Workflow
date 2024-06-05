@@ -2,7 +2,7 @@ import React, {FC, useState} from 'react';
 import {IDialog} from "../../../../../features/models/IDialog.ts";
 import {ICreateColumnCommand} from "../../../../../features/commands/column/ICreateColumnCommand.ts";
 import {useCreateColumnMutation} from "../../../../../store/apis/column/columnApi.ts";
-import {Input} from "antd";
+import {Input, message} from "antd";
 
 interface CreateColumnCardProps {
     dialog: IDialog
@@ -14,7 +14,10 @@ const CreateColumnCard: FC<CreateColumnCardProps> = ({dialog, boardId}) => {
     const [title, setTitle] = useState('');
 
     const handleCreateColumn = async () => {
-        if (!title.trim()) return;
+        if (!title.trim()) {
+            message.error('Название колонки не может быть пустым');
+            return;
+        }
 
         const createObjectiveCommand: ICreateColumnCommand = {
             boardId: boardId,
