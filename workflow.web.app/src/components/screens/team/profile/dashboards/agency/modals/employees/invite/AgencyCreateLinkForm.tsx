@@ -36,8 +36,8 @@ const AgencyCreateLinkForm: FC<AgencyCreateLinkForm> = ({agency}) => {
 
     const handleCopy = async () => {
         if (agencyLink) {
-            await navigator.clipboard
-                .writeText(agencyLink?.value)
+             navigator.clipboard
+                .writeText(agencyLink.value)
                 .then(() => {
                     message.success("Ссылка скопирована");
                 })
