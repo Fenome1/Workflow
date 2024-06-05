@@ -34,10 +34,10 @@ const AgencyCreateLinkForm: FC<AgencyCreateLinkForm> = ({agency}) => {
         await refreshLink(agency.agencyId);
     }
 
-    const handleCopy = () => {
+    const handleCopy = async () => {
         if (agencyLink) {
-            navigator.clipboard
-                .writeText(agencyLink.value)
+            await navigator.clipboard
+                .writeText(agencyLink?.value)
                 .then(() => {
                     message.success("Ссылка скопирована");
                 })
@@ -68,7 +68,6 @@ const AgencyCreateLinkForm: FC<AgencyCreateLinkForm> = ({agency}) => {
                         {isLoading ? <SkeletonInput active/> :
                             <>
                                 <Typography className='agency-link'
-                                            rel="noopener noreferrer"
                                             onClick={handleCopy}>{agencyLink?.value}</Typography>
                                 <div className='agency-link-description'>
                                     {agencyLink?.expirationDate &&

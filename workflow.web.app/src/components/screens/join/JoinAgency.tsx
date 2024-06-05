@@ -56,7 +56,7 @@ const JoinAgency: FC = () => {
                 footer={null}>
                 {agency && (
                     <div className="join-agency-content">
-                        <img src="../public/thinking.svg" alt="thinking" className="join-agency-image"/>
+                        <img src="/thinking.svg" alt="thinking" className="join-agency-image"/>
                         <Typography.Title level={4} className="join-agency-name">{agency.name}</Typography.Title>
                         {agency.description &&
                             <Typography.Text type="secondary" className="join-agency-description">
