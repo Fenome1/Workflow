@@ -5,6 +5,7 @@ import {useGetLinkByAgencyQuery, useRefreshLinkMutation} from "../../../../../..
 import SkeletonInput from "antd/es/skeleton/Input";
 import "./style.scss"
 import {BiRefresh} from "react-icons/bi";
+import CopyToClipboard from "react-copy-to-clipboard";
 
 interface AgencyCreateLinkForm {
     agency?: IAgency
@@ -34,25 +35,16 @@ const AgencyCreateLinkForm: FC<AgencyCreateLinkForm> = ({agency}) => {
         await refreshLink(agency.agencyId);
     }
 
-    const handleCopy = async () => {
-        if (agencyLink) {
-            await navigator.clipboard
-                .writeText(agencyLink?.value)
-                .then(() => {
-                    message.success("Ссылка скопирована");
-                })
-                .catch(() => {
-                    message.error("Ошибка при копировании ссылки");
-                });
-        }
-    };
-
     const calculateExpiryDate = (expiryDateString: string) => {
         const expiryDate = new Date(expiryDateString);
         return expiryDate.toLocaleDateString();
     };
 
     const isLinkExpired = agencyLink?.expirationDate && new Date(agencyLink.expirationDate) < new Date();
+
+    const onCopyComplete = () => {
+        message.success("Сылка скопирована в буфер обмена")
+    }
 
     return (
         <Form
@@ -67,8 +59,10 @@ const AgencyCreateLinkForm: FC<AgencyCreateLinkForm> = ({agency}) => {
                     <div className='generated-link-text'>
                         {isLoading ? <SkeletonInput active/> :
                             <>
-                                <Typography className='agency-link'
-                                            onClick={handleCopy}>{agencyLink?.value}</Typography>
+                                <CopyToClipboard text={agencyLink?.value ?? ""}
+                                                 onCopy={onCopyComplete}>
+                                    <Typography className='agency-link'>{agencyLink?.value}</Typography>
+                                </CopyToClipboard>
                                 <div className='agency-link-description'>
                                     {agencyLink?.expirationDate &&
                                         <div className='agency-work-link-date'>
@@ -94,8 +88,11 @@ const AgencyCreateLinkForm: FC<AgencyCreateLinkForm> = ({agency}) => {
                             </>
                         }
                     </div>
-                    <Button onClick={handleCopy} className='generated-link-button-copy'>Скопировать
-                    </Button>
+                    <CopyToClipboard text={agencyLink?.value ?? ""}
+                                     onCopy={onCopyComplete}>
+                        <Button className='generated-link-button-copy'>Скопировать
+                        </Button>
+                    </CopyToClipboard>
                 </div>
             </Form.Item>
             <Form.Item>
