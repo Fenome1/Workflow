@@ -66,7 +66,7 @@ const registerBoardCallBacks = (connection: signalR.HubConnection, dispatch: App
 const registerColumnCallBacks = (connection: signalR.HubConnection, dispatch: AppDispatch) => {
     connection.on('ColumnNotify', () => {
         dispatch(baseApi.util.invalidateTags([
-            {type: ApiTags.Column}
+            {type: ApiTags.Column}, {type: ApiTags.Board}
         ]))
     });
 }
@@ -74,7 +74,7 @@ const registerColumnCallBacks = (connection: signalR.HubConnection, dispatch: Ap
 const registerObjectiveCallBacks = (connection: signalR.HubConnection, dispatch: AppDispatch) => {
     connection.on('ObjectiveNotify', () => {
         dispatch(baseApi.util.invalidateTags([
-            {type: ApiTags.Objective}, {type: ApiTags.Board}, {type: ApiTags.Column}
+            {type: ApiTags.Objective}, {type: ApiTags.Board}
         ]))
     });
 }
