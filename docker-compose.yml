@@ -39,7 +39,7 @@ services:
     #logging:
       #driver: none
   
-  nginx:
+  react.web:
     container_name: Workflow.WebApp
     image: react
     build:
@@ -54,6 +54,21 @@ services:
     restart: unless-stopped
     #logging:
       #driver: none
+
+  proxy:
+    container_name: App.Proxy
+    image: proxy
+    depends_on:
+      - workflow.api
+      - react.web
+    ports:
+      - "8080:80"
+    build:
+      network: host
+      context: ./nginx-config
+      dockerfile: Dockerfile
+    restart: unless-stopped
+
 
 volumes:
   sql_system:

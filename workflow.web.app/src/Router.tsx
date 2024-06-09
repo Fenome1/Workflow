@@ -14,6 +14,9 @@ const Root = () => {
     const userState = useTypedSelector(state => state.user)
     const selectedAgencyId = useTypedSelector(state => state.agency.selectedAgencyId)
 
+    // eslint-disable-next-line
+    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [connection, setConnection] =
         useState<signalR.HubConnection | null>(signalRClient(dispatch, userState, selectedAgencyId))
 
