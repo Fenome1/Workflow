@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Workflow.Application.Common.Enums.Static;
 using Workflow.Application.Common.Exceptions;
 using Workflow.Application.Hubs;
 using Workflow.Core.Models;
@@ -30,8 +31,9 @@ public sealed class CreateProjectCommandHandler(
 
         await context.SaveChangesAsync(cancellationToken);
 
-        await hubContext.Clients.Group($"Agency_{agency.AgencyId}")
-            .SendAsync("ProjectNotify", agency.AgencyId,
+        await hubContext.Clients.Group(
+                SignalGroups.AgencyGroupWithId(agency.AgencyId))
+            .SendAsync(NotifyTypes.ProjectNotify, agency.AgencyId,
                 cancellationToken);
 
         return newProject.ProjectId;

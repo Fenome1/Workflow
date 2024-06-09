@@ -74,7 +74,7 @@ const registerColumnCallBacks = (connection: signalR.HubConnection, dispatch: Ap
 const registerObjectiveCallBacks = (connection: signalR.HubConnection, dispatch: AppDispatch) => {
     connection.on('ObjectiveNotify', () => {
         dispatch(baseApi.util.invalidateTags([
-            {type: ApiTags.Objective}, {type: ApiTags.Board}
+            {type: ApiTags.Objective}, {type: ApiTags.Board}, {type: ApiTags.Column}
         ]))
     });
 }

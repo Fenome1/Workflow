@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Workflow.Application.Common.Enums.Static;
 using Workflow.Application.Common.Exceptions;
 using Workflow.Application.Hubs;
 using Workflow.Core.Models;
@@ -36,8 +37,9 @@ public sealed class CreateColumnCommandHandler(
 
         await context.SaveChangesAsync(cancellationToken);
 
-        await hubContext.Clients.Group($"Agency_{ownerBoard.Project.AgencyId}")
-            .SendAsync("ColumnNotify", ownerBoard.Project.AgencyId,
+        await hubContext.Clients.Group(
+                SignalGroups.AgencyGroupWithId(ownerBoard.Project.AgencyId))
+            .SendAsync(NotifyTypes.ColumnNotify, ownerBoard.Project.AgencyId,
                 cancellationToken);
 
         return newColumn.ColumnId;

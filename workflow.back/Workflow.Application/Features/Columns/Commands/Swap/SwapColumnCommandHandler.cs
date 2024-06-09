@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Workflow.Application.Common.Enums.Static;
 using Workflow.Application.Common.Exceptions;
 using Workflow.Application.Hubs;
 using Workflow.Core.Models;
@@ -50,8 +51,9 @@ public class SwapColumnCommandHandler(WorkflowDbContext context, IHubContext<Not
 
             await context.SaveChangesAsync(cancellationToken);
 
-            await hubContext.Clients.Group($"Agency_{column.Board.Project.AgencyId}")
-                .SendAsync("ColumnNotify", column.Board.Project.AgencyId,
+            await hubContext.Clients.Group(
+                    SignalGroups.AgencyGroupWithId(column.Board.Project.AgencyId))
+                .SendAsync(NotifyTypes.ColumnNotify,  column.Board.Project.AgencyId,
                     cancellationToken);
 
             return Unit.Value;

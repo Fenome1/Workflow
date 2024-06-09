@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Workflow.Application.Common.Enums.Static;
 using Workflow.Application.Common.Exceptions;
 using Workflow.Application.Hubs;
 using Workflow.Core.Models;
@@ -24,8 +25,8 @@ public sealed class DeleteBoardCommandHandler(WorkflowDbContext context, IHubCon
         context.Boards.Remove(deletingBoard);
         await context.SaveChangesAsync(cancellationToken);
 
-        await hubContext.Clients.Group($"Agency_{deletingBoard.Project.AgencyId}")
-            .SendAsync("BoardNotify", deletingBoard.Project.AgencyId,
+        await hubContext.Clients.Group(SignalGroups.AgencyGroupWithId(deletingBoard.Project.AgencyId))
+            .SendAsync(NotifyTypes.BoardNotify, deletingBoard.Project.AgencyId,
                 cancellationToken);
 
         return Unit.Value;

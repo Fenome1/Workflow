@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Workflow.Application.Common.Enums.Static;
 using Workflow.Application.Common.Exceptions;
 using Workflow.Application.Hubs;
 using Workflow.Core.Models;
@@ -30,8 +31,8 @@ public sealed class CreateBoardCommandHandler(
 
         await context.SaveChangesAsync(cancellationToken);
 
-        await hubContext.Clients.Group($"Agency_{project.AgencyId}")
-            .SendAsync("BoardNotify", project.AgencyId,
+        await hubContext.Clients.Group(SignalGroups.AgencyGroupWithId(project.AgencyId))
+            .SendAsync(NotifyTypes.BoardNotify, project.AgencyId,
                 cancellationToken);
 
         return newBoard.BoardId;

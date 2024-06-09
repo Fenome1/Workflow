@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Workflow.Application.Common.Enums.Static;
 using Workflow.Application.Common.Exceptions;
 using Workflow.Application.Hubs;
 using Workflow.Persistense.Context;
@@ -23,8 +24,9 @@ public sealed class DeleteProjectCommandHandler(WorkflowDbContext context, IHubC
         context.Projects.Remove(deletingProject);
         await context.SaveChangesAsync(cancellationToken);
 
-        await hubContext.Clients.Group($"Agency_{deletingProject.AgencyId}")
-            .SendAsync("ProjectNotify", deletingProject.AgencyId,
+        await hubContext.Clients.Group(
+                SignalGroups.AgencyGroupWithId(deletingProject.AgencyId))
+            .SendAsync(NotifyTypes.ProjectNotify, deletingProject.AgencyId,
                 cancellationToken);
 
         return Unit.Value;

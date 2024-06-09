@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using Workflow.Application.Common.Enums.Static;
 
 namespace Workflow.Application.Hubs;
 
@@ -18,7 +19,7 @@ public class NotifyHub : Hub
 
         if (UserAgencyGroups.TryGetValue(connectionId, out var currentAgencyId))
         {
-            await Groups.RemoveFromGroupAsync(Context.ConnectionId, $"Agency_{currentAgencyId}");
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, SignalGroups.AgencyGroupWithId(currentAgencyId));
             UserAgencyGroups.Remove(connectionId);
         }
 

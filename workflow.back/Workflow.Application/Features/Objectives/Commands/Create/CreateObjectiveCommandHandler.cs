@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Workflow.Application.Common.Enums.Static;
 using Workflow.Application.Common.Exceptions;
 using Workflow.Application.Hubs;
 using Workflow.Core.Models;
@@ -38,8 +39,9 @@ public sealed class CreateObjectiveCommandHandler(
 
             await context.SaveChangesAsync(cancellationToken);
 
-            await hubContext.Clients.Group($"Agency_{ownerColumn.Board.Project.AgencyId}")
-                .SendAsync("ObjectiveNotify", ownerColumn.Board.Project.AgencyId,
+            await hubContext.Clients.Group(
+                    SignalGroups.AgencyGroupWithId(ownerColumn.Board.Project.AgencyId))
+                .SendAsync(NotifyTypes.ObjectiveNotify, ownerColumn.Board.Project.AgencyId,
                     cancellationToken);
 
             return newObjective.ObjectiveId;

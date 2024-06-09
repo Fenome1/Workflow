@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Workflow.Application.Common.Enums.Static;
 using Workflow.Application.Common.Exceptions;
 using Workflow.Application.Hubs;
 using Workflow.Core.Models;
@@ -37,8 +38,9 @@ public sealed class DeleteColumnCommandHandler(WorkflowDbContext context, IHubCo
             context.Columns.Remove(deletingColumn);
             await context.SaveChangesAsync(cancellationToken);
 
-            await hubContext.Clients.Group($"Agency_{deletingColumn.Board.Project.AgencyId}")
-                .SendAsync("ColumnNotify", deletingColumn.Board.Project.AgencyId,
+            await hubContext.Clients.Group(
+                    SignalGroups.AgencyGroupWithId(deletingColumn.Board.Project.AgencyId))
+                .SendAsync(NotifyTypes.ColumnNotify, deletingColumn.Board.Project.AgencyId,
                     cancellationToken);
 
             return Unit.Value;
