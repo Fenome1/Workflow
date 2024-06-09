@@ -11,13 +11,13 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.3.6",
+    "@microsoft/signalr": "^8.0.0",
     "@reduxjs/toolkit": "^2.2.3",
     "@types/react-beautiful-dnd": "^13.1.8",
     "@types/react-copy-to-clipboard": "^5.0.7",
     "@types/react-redux": "^7.1.33",
     "@types/react-transition-group": "^4.4.10",
     "@types/redux": "^3.6.0",
-    "@types/signalr": "^2.4.3",
     "antd": "^5.16.1",
     "antd-img-crop": "^4.22.0",
     "async-mutex": "^0.5.0",
@@ -42,7 +42,6 @@
     "react-spring": "^9.7.3",
     "react-transition-group": "^4.4.5",
     "redux-persist": "^6.0.0",
-    "redux-signalr": "^1.2.0",
     "swiper": "^11.1.1"
   },
   "devDependencies": {

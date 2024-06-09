@@ -24,7 +24,7 @@ const Objectives = () => {
     const closeObjectives = objectives?.filter(obj => obj.status) || [];
 
     const handleDownload = () => {
-        if(!user)
+        if (!user)
             return
 
         downloadObjectives(user.userId)

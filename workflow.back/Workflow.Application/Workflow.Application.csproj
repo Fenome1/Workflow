@@ -8,7 +8,6 @@
 
     <ItemGroup>
         <Folder Include="Features\Users\Queries\List\"/>
-        <Folder Include="Hubs\"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -17,11 +16,11 @@
         <PackageReference Include="AutoMapper" Version="13.0.1"/>
         <PackageReference Include="AutoMapper.Contrib.Autofac.DependencyInjection" Version="8.0.0"/>
         <PackageReference Include="BCrypt.Net-Next" Version="4.0.3"/>
-        <PackageReference Include="ClosedXML" Version="0.102.2" />
+        <PackageReference Include="ClosedXML" Version="0.102.2"/>
         <PackageReference Include="MediatR" Version="12.2.0"/>
         <PackageReference Include="MediatR.Extensions.Autofac.DependencyInjection" Version="12.0.0"/>
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.4"/>
-        <PackageReference Include="Microsoft.AspNetCore.SignalR.Common" Version="9.0.0-preview.2.24128.4"/>
+        <PackageReference Include="Microsoft.AspNetCore.SignalR.Common" Version="8.0.6"/>
     </ItemGroup>
 
     <ItemGroup>

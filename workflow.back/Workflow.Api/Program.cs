@@ -1,6 +1,7 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Workflow.Api.Module;
+using Workflow.Application.Hubs;
 using Workflow.Application.Modules;
 using Workflow.Application.Services.TokenService;
 using Workflow.Persistense.Context;
@@ -48,6 +49,8 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<NotifyHub>("Hubs/NotifyHub");
 
 await using var scope = app.Services.CreateAsyncScope();
 await using var context = scope.ServiceProvider.GetRequiredService<WorkflowDbContext>();

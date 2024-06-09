@@ -21,7 +21,7 @@ const RegisterForm = () => {
 
     const [registerUser, {isLoading: isRegisterLoading}] = useRegiserUserMutation();
     const [login, {isLoading: isLoginLoading}] = useLoginMutation();
-    const {startConnection, navigateToTeamPage} = useAuth();
+    const {navigateToTeamPage} = useAuth();
 
 
     const [form] = Form.useForm();
@@ -45,7 +45,6 @@ const RegisterForm = () => {
                 const result = await login(authUserCommand);
 
                 if ("data" in result && result.data) {
-                    startConnection();
                     navigateToTeamPage();
                 }
 

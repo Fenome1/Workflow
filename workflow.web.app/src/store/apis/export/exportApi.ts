@@ -18,14 +18,14 @@ export const exportApi = baseApi.injectEndpoints({
 
                 const headers = response!.meta?.response?.headers
 
-                if(headers){
+                if (headers) {
                     const fileName = getFileNameFromHeaders(headers)
 
                     const blob = response.data as Blob
                     downloadFile(fileName, blob)
                 }
 
-                return { error: response.error as FetchBaseQueryError };
+                return {error: response.error as FetchBaseQueryError};
             },
         }),
     }),
