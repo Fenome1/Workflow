@@ -1,10 +1,13 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.SignalR;
 using Workflow.Application.Common.Exceptions;
+using Workflow.Application.Hubs;
 using Workflow.Persistense.Context;
 
 namespace Workflow.Application.Features.Agencies.Commands.Delete;
 
-public sealed class DeleteAgencyCommandHandler(WorkflowDbContext context) : IRequestHandler<DeleteAgencyCommand, Unit>
+public sealed class DeleteAgencyCommandHandler(WorkflowDbContext context, IHubContext<NotifyHub> hubContext)
+    : IRequestHandler<DeleteAgencyCommand, Unit>
 {
     public async Task<Unit> Handle(DeleteAgencyCommand request, CancellationToken cancellationToken)
     {
@@ -16,6 +19,10 @@ public sealed class DeleteAgencyCommandHandler(WorkflowDbContext context) : IReq
 
         context.Agencies.Remove(deletingAgency);
         await context.SaveChangesAsync(cancellationToken);
+
+        await hubContext.Clients.Group($"Agency_{deletingAgency.AgencyId}")
+            .SendAsync("AgencyNotify", deletingAgency.AgencyId,
+                cancellationToken);
 
         return Unit.Value;
     }

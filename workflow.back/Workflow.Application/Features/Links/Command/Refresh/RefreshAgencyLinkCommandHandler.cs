@@ -1,7 +1,9 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Workflow.Application.Common.Exceptions;
 using Workflow.Application.Common.Interfaces;
+using Workflow.Application.Hubs;
 using Workflow.Core.Models;
 using Workflow.Persistense.Configurations;
 using Workflow.Persistense.Context;
@@ -11,6 +13,7 @@ namespace Workflow.Application.Features.Links.Command.Refresh;
 public class RefreshAgencyLinkCommandHandler(
     WorkflowDbContext context,
     IMediator mediator,
+    IHubContext<NotifyHub> hubContext,
     ILinkService linkService)
     : IRequestHandler<RefreshAgencyLinkCommand, Unit>
 {
@@ -43,6 +46,10 @@ public class RefreshAgencyLinkCommandHandler(
             agency.Link = link;
 
             await context.SaveChangesAsync(cancellationToken);
+
+            await hubContext.Clients.Group($"Agency_{agency.AgencyId}")
+                .SendAsync("LinkNotify", agency.AgencyId,
+                    cancellationToken);
 
             return Unit.Value;
         }, cancellationToken);

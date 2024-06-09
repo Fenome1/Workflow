@@ -11,7 +11,7 @@ public class UpdateObjectiveCommandHandlerTest
     {
         // Arrange
         var options = new DbContextOptionsBuilder<WorkflowDbContext>()
-            .UseInMemoryDatabase(databaseName: "WorkflowTest").Options;
+            .UseInMemoryDatabase("WorkflowTest").Options;
         await using var context = new WorkflowDbContext(options);
 
         var existingObjective = new Core.Models.Objective
@@ -21,21 +21,21 @@ public class UpdateObjectiveCommandHandlerTest
             CreationDate = DateTime.UtcNow,
             Name = "Задача 1",
             ColumnId = 1,
-            Order = 1,
+            Order = 1
         };
-        
+
         await context.Objectives.AddAsync(existingObjective);
         await context.SaveChangesAsync();
-        
-        var updateObjectiveCommand = new UpdateObjectiveCommand()
+
+        var updateObjectiveCommand = new UpdateObjectiveCommand
         {
             ObjectiveId = 1,
             Name = "Задача 2",
             Status = true,
-            Deadline = DateOnly.MaxValue,
+            Deadline = DateOnly.MaxValue
         };
 
-        var commandHandler = new UpdateObjectiveCommandHandler(context);
+        var commandHandler = new UpdateObjectiveCommandHandler(context, null);
 
         // Act
         await commandHandler.Handle(updateObjectiveCommand, CancellationToken.None);

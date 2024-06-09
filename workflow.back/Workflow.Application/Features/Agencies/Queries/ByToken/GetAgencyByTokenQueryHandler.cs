@@ -22,7 +22,7 @@ public class GetAgencyByTokenQueryHandler(
 
         if (currentLink is null)
             throw new NotFoundException(nameof(Link));
-        
+
         if (currentLink.ExpirationDate < DateTime.UtcNow)
             throw new Exception("Ссылка просрочена");
 

@@ -1,10 +1,13 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.SignalR;
 using Workflow.Application.Common.Exceptions;
+using Workflow.Application.Hubs;
 using Workflow.Persistense.Context;
 
 namespace Workflow.Application.Features.Projects.Commands.Update;
 
-public sealed class UpdateProjectCommandHandler(WorkflowDbContext context) : IRequestHandler<UpdateProjectCommand, int>
+public sealed class UpdateProjectCommandHandler(WorkflowDbContext context, IHubContext<NotifyHub> hubContext)
+    : IRequestHandler<UpdateProjectCommand, int>
 {
     public async Task<int> Handle(UpdateProjectCommand request, CancellationToken cancellationToken)
     {
@@ -18,6 +21,10 @@ public sealed class UpdateProjectCommandHandler(WorkflowDbContext context) : IRe
             editingProject.Name = request.Name;
 
         await context.SaveChangesAsync(cancellationToken);
+
+        await hubContext.Clients.Group($"Agency_{editingProject.AgencyId}")
+            .SendAsync("ProjectNotify", editingProject.AgencyId,
+                cancellationToken);
 
         return editingProject.ProjectId;
     }

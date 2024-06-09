@@ -1,6 +1,6 @@
 ﻿namespace Workflow.Core.Models;
 
-public partial class Link
+public class Link
 {
     public int LinkId { get; set; }
 
