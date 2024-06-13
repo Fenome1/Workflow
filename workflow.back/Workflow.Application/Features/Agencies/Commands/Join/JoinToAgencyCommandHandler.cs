@@ -1,12 +1,16 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Workflow.Application.Common.Enums.Static;
 using Workflow.Application.Common.Exceptions;
+using Workflow.Application.Hubs;
 using Workflow.Core.Models;
 using Workflow.Persistense.Context;
 
 namespace Workflow.Application.Features.Agencies.Commands.Join;
 
-public class JoinToAgencyCommandHandler(WorkflowDbContext context) : IRequestHandler<JoinToAgencyCommand, Unit>
+public class JoinToAgencyCommandHandler(WorkflowDbContext context, IHubContext<NotifyHub> hubContext)
+    : IRequestHandler<JoinToAgencyCommand, Unit>
 {
     public async Task<Unit> Handle(JoinToAgencyCommand request, CancellationToken cancellationToken)
     {
@@ -39,6 +43,10 @@ public class JoinToAgencyCommandHandler(WorkflowDbContext context) : IRequestHan
             agency.Link.UsedCount++;
 
         await context.SaveChangesAsync(cancellationToken);
+
+        await hubContext.Clients.Group(SignalGroups.AgencyGroupWithId(agency.AgencyId))
+            .SendAsync(NotifyTypes.AgencyNotify, agency.AgencyId,
+                cancellationToken);
 
         return Unit.Value;
     }

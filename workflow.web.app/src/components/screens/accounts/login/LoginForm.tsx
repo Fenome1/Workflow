@@ -12,7 +12,7 @@ const LoginForm = () => {
     const navigateToRegisterPage = () => navigate("/reg");
 
     const [login, {isLoading}] = useLoginMutation();
-    const {startConnection, navigateToTeamPage} = useAuth();
+    const {navigateToTeamPage} = useAuth();
 
     const [form] = Form.useForm();
 
@@ -21,7 +21,6 @@ const LoginForm = () => {
             const result = await login(values);
             if ("data" in result && result.data) {
                 form.resetFields();
-                startConnection();
                 navigateToTeamPage();
             }
         } catch (error) {

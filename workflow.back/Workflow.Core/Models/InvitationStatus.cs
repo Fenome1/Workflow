@@ -1,6 +1,6 @@
 ﻿namespace Workflow.Core.Models;
 
-public partial class InvitationStatus
+public class InvitationStatus
 {
     public int InvitationStatusId { get; set; }
 

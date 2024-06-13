@@ -13,7 +13,7 @@ const AgencySelector = () => {
     const {user} = useTypedSelector(state => state.user)
     const {selectedAgencyId} = useTypedSelector((state) => state.agency);
 
-    const {data: agencies, isLoading} =
+    const {data: agencies, isLoading, refetch} =
         useGetAgencyByUserQuery(user?.userId ?? 0, {
             skip: user === null
         });
@@ -32,6 +32,8 @@ const AgencySelector = () => {
                 await dispatch(selectAgency(agencies[0]?.agencyId));
             }
         }
+
+        refetch()
 
         selectFirstAgency()
     }, [agencies, dispatch, selectedAgencyId]);

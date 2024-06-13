@@ -12,20 +12,20 @@
     border-radius: 7px;
     flex-grow: 1;
 
-    .reference-title-container{
+    .reference-title-container {
       display: flex;
       flex-direction: row;
       gap: 7px;
       align-items: center;
       font-size: 13pt;
 
-      .reference-title{
+      .reference-title {
         margin-bottom: 0;
       }
     }
   }
 
-  .row-references{
+  .row-references {
     display: flex;
     flex-direction: row;
     gap: 10px;
@@ -50,6 +50,7 @@
 
   .interaction-reference {
     @extend .base-reference;
+
     .interaction-item {
       display: flex;
       align-items: center;
@@ -63,9 +64,10 @@
     }
   }
 
-  .timer-reference{
+  .timer-reference {
     @extend .base-reference;
-    .timer-item{
+
+    .timer-item {
       display: flex;
       gap: 10px;
       font-size: 12pt;

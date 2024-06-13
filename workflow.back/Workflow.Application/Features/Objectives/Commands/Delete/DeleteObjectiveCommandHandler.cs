@@ -1,19 +1,24 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Workflow.Application.Common.Enums.Static;
 using Workflow.Application.Common.Exceptions;
+using Workflow.Application.Hubs;
 using Workflow.Core.Models;
 using Workflow.Persistense.Configurations;
 using Workflow.Persistense.Context;
 
 namespace Workflow.Application.Features.Objectives.Commands.Delete;
 
-public sealed class DeleteObjectiveCommandHandler(WorkflowDbContext context)
+public sealed class DeleteObjectiveCommandHandler(WorkflowDbContext context, IHubContext<NotifyHub> hubContext)
     : IRequestHandler<DeleteObjectiveCommand, Unit>
 {
     public async Task<Unit> Handle(DeleteObjectiveCommand request, CancellationToken cancellationToken)
     {
         var deletingObjective = await context.Objectives
-            .FindAsync(request.ObjectiveId);
+            .Include(o => o.Column.Board.Project)
+            .FirstOrDefaultAsync(o => o.ObjectiveId == request.ObjectiveId,
+                cancellationToken);
 
         if (deletingObjective is null)
             throw new NotFoundException(nameof(Objective), request.ObjectiveId);
@@ -31,6 +36,12 @@ public sealed class DeleteObjectiveCommandHandler(WorkflowDbContext context)
 
             context.Objectives.Remove(deletingObjective);
             await context.SaveChangesAsync(cancellationToken);
+
+            await hubContext.Clients.Group(
+                    SignalGroups.AgencyGroupWithId(deletingObjective.Column.Board.Project.AgencyId))
+                .SendAsync(NotifyTypes.ObjectiveNotify, deletingObjective.Column.Board.Project.AgencyId,
+                    cancellationToken);
+
             return Unit.Value;
         }, cancellationToken);
     }

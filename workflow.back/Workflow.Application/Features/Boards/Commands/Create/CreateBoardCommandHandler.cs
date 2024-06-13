@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Workflow.Application.Common.Enums.Static;
 using Workflow.Application.Common.Exceptions;
+using Workflow.Application.Hubs;
 using Workflow.Core.Models;
 using Workflow.Persistense.Context;
 
@@ -9,16 +12,17 @@ namespace Workflow.Application.Features.Boards.Commands.Create;
 
 public sealed class CreateBoardCommandHandler(
     WorkflowDbContext context,
+    IHubContext<NotifyHub> hubContext,
     IMapper mapper) : IRequestHandler<CreateBoardCommand, int>
 {
     public async Task<int> Handle(CreateBoardCommand request, CancellationToken cancellationToken)
     {
-        var isProjectExists = await context.Projects
+        var project = await context.Projects
             .AsNoTrackingWithIdentityResolution()
-            .AnyAsync(p => p.ProjectId == request.ProjectId,
+            .FirstOrDefaultAsync(p => p.ProjectId == request.ProjectId,
                 cancellationToken);
 
-        if (!isProjectExists)
+        if (project is null)
             throw new NotFoundException(nameof(Project), request.ProjectId);
 
         var newBoard = mapper.Map<Board>(request);
@@ -26,6 +30,10 @@ public sealed class CreateBoardCommandHandler(
         await context.Boards.AddAsync(newBoard, cancellationToken);
 
         await context.SaveChangesAsync(cancellationToken);
+
+        await hubContext.Clients.Group(SignalGroups.AgencyGroupWithId(project.AgencyId))
+            .SendAsync(NotifyTypes.BoardNotify, project.AgencyId,
+                cancellationToken);
 
         return newBoard.BoardId;
     }

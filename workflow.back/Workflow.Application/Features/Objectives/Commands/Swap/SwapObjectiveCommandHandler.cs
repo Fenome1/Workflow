@@ -1,6 +1,9 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Workflow.Application.Common.Enums.Static;
 using Workflow.Application.Common.Exceptions;
+using Workflow.Application.Hubs;
 using Workflow.Core.Models;
 using Workflow.Persistense.Configurations;
 using Workflow.Persistense.Context;
@@ -8,11 +11,15 @@ using Workflow.Persistense.Context;
 namespace Workflow.Application.Features.Objectives.Commands.Swap;
 
 public class SwapObjectiveCommandHandler(
-    WorkflowDbContext context) : IRequestHandler<SwapObjectiveCommand, Unit>
+    WorkflowDbContext context,
+    IHubContext<NotifyHub> hubContext) : IRequestHandler<SwapObjectiveCommand, Unit>
 {
     public async Task<Unit> Handle(SwapObjectiveCommand request, CancellationToken cancellationToken)
     {
-        var objective = await context.Objectives.FindAsync(request.ObjectiveId);
+        var objective = await context.Objectives
+            .Include(o => o.Column.Board.Project)
+            .FirstOrDefaultAsync(o => o.ObjectiveId == request.ObjectiveId,
+                cancellationToken);
 
         if (objective == null)
             throw new NotFoundException(nameof(Objective), request.ObjectiveId);
@@ -74,6 +81,11 @@ public class SwapObjectiveCommandHandler(
             }
 
             await context.SaveChangesAsync(cancellationToken);
+
+            await hubContext.Clients.Group(
+                    SignalGroups.AgencyGroupWithId(objective.Column.Board.Project.AgencyId))
+                .SendAsync(NotifyTypes.ObjectiveNotify, objective.Column.Board.Project.AgencyId,
+                    cancellationToken);
 
             return Unit.Value;
         }, cancellationToken);

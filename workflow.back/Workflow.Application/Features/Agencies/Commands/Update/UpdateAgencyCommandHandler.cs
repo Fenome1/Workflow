@@ -1,12 +1,14 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
+using Microsoft.AspNetCore.SignalR;
+using Workflow.Application.Common.Enums.Static;
 using Workflow.Application.Common.Exceptions;
+using Workflow.Application.Hubs;
 using Workflow.Core.Models;
 using Workflow.Persistense.Context;
 
 namespace Workflow.Application.Features.Agencies.Commands.Update;
 
-public sealed class UpdateAgencyCommandHandler(WorkflowDbContext context, IMapper mapper)
+public sealed class UpdateAgencyCommandHandler(WorkflowDbContext context, IHubContext<NotifyHub> hubContext)
     : IRequestHandler<UpdateAgencyCommand, int>
 {
     public async Task<int> Handle(UpdateAgencyCommand request, CancellationToken cancellationToken)
@@ -24,6 +26,10 @@ public sealed class UpdateAgencyCommandHandler(WorkflowDbContext context, IMappe
             agency.Description = request.Description;
 
         await context.SaveChangesAsync(cancellationToken);
+
+        await hubContext.Clients.Group(SignalGroups.AgencyGroupWithId(agency.AgencyId))
+            .SendAsync(NotifyTypes.AgencyNotify, agency.AgencyId,
+                cancellationToken);
 
         return agency.AgencyId;
     }

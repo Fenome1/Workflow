@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Button, Input, InputRef} from "antd";
+import {Button, Input, InputRef, message, Upload, UploadProps} from "antd";
 import {LogoutOutlined} from "@ant-design/icons";
 import {useUpdateUserMutation} from "../../../../../../store/apis/user/userApi.ts";
 import {ILogoutUserCommand} from "../../../../../../features/commands/user/ILogoutUserCommand.ts";
@@ -10,20 +10,19 @@ import SkeletonInput from "antd/es/skeleton/Input";
 import SkeletonButton from "antd/es/skeleton/Button";
 import {useLogoutMutation} from "../../../../../../store/apis";
 import {useTypedSelector} from "../../../../../../store/hooks/hooks.ts";
+import ImgCrop from "antd-img-crop";
+import {RcFile} from "antd/es/upload";
 
 const ProfileDashboard = () => {
+    const nameInputRef = useRef<InputRef>(null)
+
     const {user, accessToken, refreshToken} = useTypedSelector(state => state.user)
 
     const [userName, setUserName] = useState(user?.name);
-
-    const fileInputRef = useRef<HTMLInputElement>(null)
-    const nameInputRef = useRef<InputRef>(null)
-
     const [avatarLoading, setAvatarLoading] = useState<boolean>(false);
 
     const [logout] = useLogoutMutation();
     const [updateUser] = useUpdateUserMutation();
-
 
     const handleLogout = async () => {
         if (!refreshToken || !accessToken) return;
@@ -35,22 +34,10 @@ const ProfileDashboard = () => {
         await logout(command);
     };
 
-    const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (!user) return;
-        const file = event.target.files?.[0];
-        if (!file) return;
-        setAvatarLoading(true);
-
-        const reader = new FileReader();
-        reader.readAsArrayBuffer(file);
-        reader.onload = handleFileLoad;
-        reader.onerror = handleFileError;
-    };
-
-    const handleFileLoad = (event: ProgressEvent<FileReader>) => {
+    const handleFileLoad = async (file: RcFile) => {
         if (!user) return
 
-        const arrayBuffer = event.target?.result as ArrayBuffer;
+        const arrayBuffer = await file.arrayBuffer();
         const base64String = btoa(new Uint8Array(arrayBuffer)
             .reduce((data, byte) => data + String.fromCharCode(byte), ''));
 
@@ -62,9 +49,15 @@ const ProfileDashboard = () => {
         updateUser(command).finally(() => setAvatarLoading(false));
     };
 
-    const handleFileError = (event: ProgressEvent<FileReader>) => {
-        console.error('Error reading file:', event.target?.error);
-        setAvatarLoading(false);
+    const handleImageChange: UploadProps['beforeUpload'] = async (file: RcFile) => {
+        if (!user) return;
+
+        if (file) {
+            setAvatarLoading(true);
+            await handleFileLoad(file);
+        } else {
+            message.error('Ошибка загрузки файла');
+        }
     };
 
     const handleImageDelete = async () => {
@@ -75,10 +68,6 @@ const ProfileDashboard = () => {
             isAvatarImageReset: true,
         };
         await updateUser(command).finally(() => setAvatarLoading(false));
-    };
-
-    const handleUploadButtonClick = () => {
-        fileInputRef.current?.click();
     };
 
     const handleEnterKeyPress = async (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -114,16 +103,23 @@ const ProfileDashboard = () => {
             <div className='profile-dashboard-avatar-container'>
                 {avatarLoading ?
                     <SkeletonAvatar active style={{height: '75px', width: '75px'}}/> :
-                    <AvatarItem user={user} className='profile-dashboard-avatar'/>
+                    <>
+                        <ImgCrop cropShape='round' modalTitle='Добавление изображения'>
+                            <Upload showUploadList={false} beforeUpload={handleImageChange}>
+                                <AvatarItem user={user} className='profile-dashboard-avatar'/>
+                            </Upload>
+                        </ImgCrop>
+                    </>
                 }
                 <div className='profile-dashboard-avatar-buttons'>
                     {avatarLoading ? (<SkeletonButton block active style={{marginLeft: '10px'}} size='large'/>)
                         : <>
-                            <Button type='link' className='profile-dashboard-avatar-upload'
-                                    onClick={handleUploadButtonClick}>Загрузить
-                                фото</Button>
-                                <input type="file" onChange={handleImageChange} style={{display: 'none'}}
-                                       ref={fileInputRef} accept=".png, .jpg, .jpeg"/>
+                            <ImgCrop cropShape='round' modalTitle='Добавление изображения'>
+                                <Upload showUploadList={false} beforeUpload={handleImageChange}>
+                                    <Button type='link' className='profile-dashboard-avatar-upload'>Загрузить
+                                        фото</Button>
+                                </Upload>
+                            </ImgCrop>
                             {user?.avatarImage &&
                                 <Button type='link' className='profile-dashboard-avatar-delete'
                                         onClick={handleImageDelete}>Удалить

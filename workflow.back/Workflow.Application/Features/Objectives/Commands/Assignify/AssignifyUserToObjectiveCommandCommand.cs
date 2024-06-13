@@ -1,13 +1,16 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Workflow.Application.Common.Enums;
+using Workflow.Application.Common.Enums.Static;
 using Workflow.Application.Common.Exceptions;
+using Workflow.Application.Hubs;
 using Workflow.Core.Models;
 using Workflow.Persistense.Context;
 
 namespace Workflow.Application.Features.Objectives.Commands.Assignify;
 
-public sealed class AssignifyUserToObjectiveCommandCommand(WorkflowDbContext context)
+public sealed class AssignifyUserToObjectiveCommandCommand(WorkflowDbContext context, IHubContext<NotifyHub> hubContext)
     : IRequestHandler<AssignifyUserToObjectiveCommand, Unit>
 {
     public async Task<Unit> Handle(AssignifyUserToObjectiveCommand request, CancellationToken cancellationToken)
@@ -16,10 +19,11 @@ public sealed class AssignifyUserToObjectiveCommandCommand(WorkflowDbContext con
                    ?? throw new NotFoundException(nameof(User), request.UserId);
 
         var objective = await context.Objectives
+                            .Include(o => o.Column.Board.Project)
                             .Include(o => o.Users)
                             .FirstOrDefaultAsync(o => o.ObjectiveId == request.ObjectiveId, cancellationToken)
                         ?? throw new NotFoundException(nameof(Objective), request.ObjectiveId);
-        
+
         if (request.AssignifyType == AssignifyType.Assign)
         {
             if (objective.Users.Contains(user))
@@ -34,6 +38,11 @@ public sealed class AssignifyUserToObjectiveCommandCommand(WorkflowDbContext con
 
             objective.Users.Remove(user);
         }
+
+        await hubContext.Clients.Group(
+                SignalGroups.AgencyGroupWithId(objective.Column.Board.Project.AgencyId))
+            .SendAsync(NotifyTypes.ObjectiveNotify,  objective.Column.Board.Project.AgencyId,
+                cancellationToken);
 
         await context.SaveChangesAsync(cancellationToken);
 

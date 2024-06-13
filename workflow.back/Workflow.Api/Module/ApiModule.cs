@@ -18,7 +18,7 @@ public class ApiModule(IConfiguration configuration) : Autofac.Module
         services.AddDbContext<WorkflowDbContext>(options =>
             options.UseSqlServer("Name=WorkflowDeploy"));
 
-        services.AddSignalR();
+        services.AddSignalR(opt => { opt.EnableDetailedErrors = true; });
 
         services.Configure<JwtOptions>(configuration.GetSection(nameof(JwtOptions)));
 

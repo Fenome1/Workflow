@@ -1,8 +1,6 @@
 ﻿using ClosedXML.Excel;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Workflow.Application.Common.Interfaces;
-using Workflow.Application.Services.TokenService;
 using Workflow.Application.ViewModels;
 using Workflow.Core.Models;
 
@@ -98,7 +96,7 @@ public class ExcelExporter : IExcelExporter
         await using var memoryStream = new MemoryStream();
         workbook.SaveAs(memoryStream);
         memoryStream.Seek(0, SeekOrigin.Begin);
-        
+
         var fileContent = memoryStream.ToArray();
         var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
         var fileName = $"Задачи пользователя {currentUser.Name}.xlsx";

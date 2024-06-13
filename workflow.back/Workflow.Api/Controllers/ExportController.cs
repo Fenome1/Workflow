@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Workflow.Api.Controllers.Base;
-using Workflow.Application.Features.Agencies.Queries.ByUser;
 using Workflow.Application.Features.Objectives.Queries.ExportUserObjectives;
-using Workflow.Application.ViewModels;
 
 namespace Workflow.Api.Controllers;
 

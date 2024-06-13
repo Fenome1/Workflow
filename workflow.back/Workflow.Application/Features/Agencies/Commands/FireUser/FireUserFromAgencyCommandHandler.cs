@@ -1,13 +1,16 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Workflow.Application.Common.Enums.Static;
 using Workflow.Application.Common.Exceptions;
+using Workflow.Application.Hubs;
 using Workflow.Core.Models;
 using Workflow.Persistense.Configurations;
 using Workflow.Persistense.Context;
 
 namespace Workflow.Application.Features.Agencies.Commands.FireUser;
 
-public sealed class FireUserFromAgencyCommandHandler(WorkflowDbContext context)
+public sealed class FireUserFromAgencyCommandHandler(WorkflowDbContext context, IHubContext<NotifyHub> hubContext)
     : IRequestHandler<FireUserFromAgencyCommand, Unit>
 {
     public async Task<Unit> Handle(FireUserFromAgencyCommand request, CancellationToken cancellationToken)
@@ -38,6 +41,10 @@ public sealed class FireUserFromAgencyCommandHandler(WorkflowDbContext context)
             agency.Users.Remove(user);
 
             await context.SaveChangesAsync(cancellationToken);
+
+            await hubContext.Clients.Group(SignalGroups.AgencyGroupWithId(agency.AgencyId))
+                .SendAsync(NotifyTypes.AgencyNotify, agency.AgencyId,
+                    cancellationToken);
 
             return Unit.Value;
         }, cancellationToken);

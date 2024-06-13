@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Workflow.Application.Common.Exceptions;
 using Workflow.Application.Common.Interfaces;
-using Workflow.Application.Services.TokenService;
 using Workflow.Application.ViewModels;
 using Workflow.Core.Models;
 using Workflow.Persistense.Context;
@@ -45,9 +44,7 @@ public class ExportUserObjectivesQueryHandler(
             .ToList();
 
         if (objectivesWithAgencies is null || !objectivesWithAgencies.Any())
-        {
             throw new Exception("Задач для экспорта не найдено");
-        }
 
         return await excelExporter.ExportUserObjectivesToExcel(user, objectivesWithAgencies);
     }
